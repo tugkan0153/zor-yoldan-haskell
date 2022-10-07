@@ -1,0 +1,46 @@
+\thispagestyle{empty}
+\fbox{
+  \begin{minipage}{365pt} %
+
+    \begin{center}
+      \addvspace{190pt}
+                {\fontsize{60pt}{70pt}\bf\selectfont\AabcedB Zor Yoldan Haskell}
+                % AGaramondPro-Regular
+	        \rule[5pt]{365pt}{0.5mm}
+                \begin{LARGE}\textcolor{magenta}{Haskell the Hard Way}\end{LARGE}\\
+             \begin{large}
+                  \bf\selectfont\AabcedB Yann Esposito
+                  \Garamond\small8.Şubat.2012\end{large} % 
+    \end{center}
+    
+    \addvspace{200pt}
+    \begin{minipage}{0.38\textwidth}
+      \begin{flushleft}
+	\includegraphics[]{img/Haskell-logo}
+        % Package keyval Error: width=120pt undefined
+      \end{flushleft}      
+    \end{minipage}
+    \begin{minipage}{0.58\textwidth}
+      \begin{flushright}
+	{\small Türkçeleştirilmiş Versiyon:\\
+                Joomy Korkut\footnotemark 2.Mayıs.2014\footnotemark\\
+	             PDF (\textbf{1.2MB})\\
+                     Tuğkan-0153\footnotemark 26.Haziran.2022\\
+                    Son düzenleme: \today\\}
+      \end{flushright}
+    \end{minipage}
+  \end{minipage}
+}
+
+\vspace{4pt}
+\begin{center}
+This is the Turkish translation of Y. Esposito's article\\
+Learn Haskell Fast and Hard\footnotemark
+\end{center}
+ 
+% altyazı numaralandırma doğru olması için addtocounter , stepcounter yapıyoruz
+\addtocounter{footnote}{-4} %3=n
+\stepcounter{footnote}\footnotetext{\texttt{github\centerdot com/joom}}
+\stepcounter{footnote}\footnotetext{\texttt{github\centerdot com/tugkan0153}}
+\stepcounter{footnote}\footnotetext{Github'taki İlk Gönderi (\emph{initial commit})}
+\stepcounter{footnote}\footnotetext{\label{note1}yannesposito\centerdot com/Scratch/en/blog/Haskell-the-Hard-Way}
