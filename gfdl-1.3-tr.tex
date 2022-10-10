@@ -1,0 +1,709 @@
+% \titleformat{\section}[runin]{\normalfont\scshape}{}{0pt}{}\titlespacing{\section}{\parindent}{*2}{\wordsep}
+
+{\Large GNU Free Documentation License\itshape Version 1.2, Nov 2002}\label{gfdl}
+\footnote{tr\centerdot pardus-wiki\centerdot org, orjinal kaynak: gnu\centerdot org/licenses/gpl.html}
+
+\noindent\footnotesize\copyright\ 2000,2001,2002  Free Software Foundation, Inc. 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+
+\noindent Bu yazı gövdesi, GNU Özgür Belgeleme Lisansının orijinal yazısının Özgür Yazılım Kurumunca onaysız (\emph{Free Software Foundation/FSF}) çevirisidir. Çeviride olabilecek anlam karışıklığı durumunda, FSF'nin orjinal yazısı temel alınmalıdır. 
+
+\newenvironment{ingliz}% environment name
+{\vspace{2pt}\noindent
+% begin code
+  % \par\vspace{\baselineskip}\noindent % Üstte cok boşluk bırakıyordu...
+  \Termes\it\footnotesize% \par\vspace{\baselineskip}\noindent\ignorespaces
+}%
+
+{
+% end code
+\ignorespacesafterend\vspace{\baselineskip}
+}
+
+\newenvironment{turkis}% environment name
+{
+% begin code
+  \par\vspace{\baselineskip}\noindent
+  \Termes\it\footnotesize% \par\vspace{\baselineskip}\noindent\ignorespaces
+}%
+
+{
+% end code
+\ignorespacesafterend\vspace{\baselineskip}
+}
+
+\def\lisansstil{\renewcommand{\thesubsection}{\thechapter.\arabic{subsection}}\let\section\subsection\setcounter{subsection}{-1}\multicolsep=1.5pc}
+
+\def\lisansbicim{
+        \renewcommand{\thesection}
+        {\arabic{subsection}}\let\section\subsection%\setcounter{section}{-1}
+        \multicolsep=1.5pc}
+
+\begin{multicols}{2}\small\lisansstil
+\begin{quotation}\small\begingroup 
+
+Herkes bu lisans belgesinin birebir özdeş kopyasını çoğaltıp dağıtabilir,
+ancak belgenin değiştirilmesine onay verilmemiştir.
+
+\begin{ingliz}
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
+\end{ingliz}
+
+\par\endgroup\smallskip\footnotesize\noindent
+\end{quotation}
+\setcounter{section}{-1}
+\section{Giriş}\hfill\begin{verbatim}PREAMBLE\end{verbatim}
+\label{gfdl-0}
+Bu lisansın amacı, kullanıcı kılavuzları, öğretim belgeleri yada öteki işlevsel de kullanışlı belgeleri ``özgür'' yapmaktır. Buradaki ``özgür'' deyimi, herkesin bu ürün üzerinde özgür bir kullanım payı olduğunu, ürünü değiştirerek yada olduğu gibi dağıtabileceğini, bunu ister parasal ister parasız biçimde yapabileceğini anlatmaktadır. İkincil olarak bu lisans, yazar ile yayıncının, başkalarının yaptığı değişikliklerden sorumlu olmaksızın, ürünlerine tanınırlık sağlanmasının önünü açar.
+
+\begin{ingliz}
+The purpose of this License is to make a manual, textbook,
+or other functional and useful document `free' in
+the sense of freedom: to assure everyone the effective freedom
+to copy and redistribute it, with or without modifying it,
+either commercially or noncommercially. Secondarily, this
+License preserves for the author and publisher a way to get
+credit for their work, while not being considered responsible
+for modifications made by others.
+\end{ingliz}
+
+Bu Lisans bir tür “copyleft” 'tir. Copyleft için ``Ürün Düzenleme Payının Bırakılması'' denilebilir. Dolayısıyla, bu belge üzerinden türetilecek başka belgeler de özdeş usyürütme ile özgür (copyleft) olmalıdır. Bu lisans (GFDL) özgür yazılımlar için tasarlanmış copyleft  lisansı olan GNU General Public License / Genel Kamu Lisansını bütünler.
+
+\begin{ingliz}
+This License is a kind of `copyleft', which
+means that derivative works of the document must themselves be
+free in the same sense.  It complements the GNU General Public
+License, which is a copyleft license designed for free
+software.
+\end{ingliz}
+
+Bu lisans, özgür yazılımların belgelerinde kullanılmak üzere tasarlanmıştır. Çünkü özgür kullanım payı olan yazılım, özgür kullanım payı olan belge gerektirir. Ancak bu lisans, yazılım belgeleri ile sınırlı değildir; belgenin konusundan bağımsız olarak yada basımevinde basılmış bir belge olup olmadığına bakılmaksızın her türde belgeler için kullanılabilir. İlke olarak bu lisans, amacı eğitim yada bilgilendirme olan her tür çalışma için önerilir.
+
+\begin{ingliz}
+We have designed this License in order to use it for
+manuals for free software, because free software needs free
+documentation: a free program should come with manuals
+providing the same freedoms that the software does.  But this
+License is not limited to software manuals; it can be used for
+any textual work, regardless of subject matter or whether it
+is published as a printed book.  We recommend this License
+principally for works whose purpose is instruction or
+reference.
+\end{ingliz}
+
+\section{Uygulanabilirlik ile Tanımlar}\hfill\begin{verbatim}APPLICABILITY AND DEFINITIONS\end{verbatim}%
+Bu lisans, pay iyesince bu lisansın koşulları
+altında dağıtılabileceğini belirten bilgi eklendiği sürece her tür belge yada başka türde çalışmalar için her ortamda geçerlidir. O tür bilgilendirme, eyge çapında geçerli, ürün düzenleme payı olmayan, süre sınırsız bir lisans ile, o çalışmayı burada belirtilen koşullar altında kullanılması olanağını sağlar.
+
+\begin{ingliz}
+This License applies to any manual or other
+work, in any medium, that contains a notice placed by the
+copyright holder saying it can be distributed under the terms
+of this License.  Such a notice grants a world-wide,
+royalty-free license, unlimited in duration, to use that work
+under the conditions stated herein.
+\end{ingliz}
+
+Aşağıda geçen/değinilen 'Belge' (\emph{Document}) o türde bir belge yada çalışma demektir.
+
+\begin{ingliz}
+The `Document', below, refers to any such manual or work.
+\end{ingliz}
+
+Kamunun herhangi bir bireyi lisans iyesi olabilir. Lisans iyesine “Siz” olarak seslenilecektir. Ürün düzenleme pay yasası gereği onay gerektiren bir biçimde ürünü kopyalamışsanız, ürün üzerinde değişiklikler yapıp dağıtımını gerçekleştirmişseniz, bu Lisansı onaylamış sayılırsınız.
+
+\begin{ingliz}
+Any member of the public is a licensee, and is
+addressed as `you'.  You accept the license if
+you copy, modify or distribute the work in a way requiring
+permission under copyright law.
+\end{ingliz}
+
+
+\label{gfdl-mod-ver}%
+
+Belgenin ``Değiştirilmiş Sürümü'' belgenin tümü yada bir bölümünü içeren, birebir kopyalanmış yada değiştirilmiş de/yada bir başka dile çevrilmiş herhangi bir çalışma anlamına gelmektedir.
+
+\begin{ingliz}
+A `Modified Version' of the
+Document means any work containing the Document or a portion
+of it, either copied verbatim, or with modifications and/or
+translated into another language.
+\end{ingliz}
+
+
+\label{gfdl-secnd-sect}%
+“İkincil Bölüm”, belli bir adı olan Ek bölüm (\emph{appendix}) yada Belgenin giriş bölümü olup bir tek yayıncının yada Belge yazarlarının, Belgenin genel konusu ile yada ilintili konularla olan ilişkilerini kapsamakta olup Belgenin doğrudan genel konusuna giren hiçbir öğe içermez. (Bu nedenden dolayı örneğin belge bir matematik öğreti belgesi ise, İkincil Bölüm matematikle ilgili hiçbir nes anlatmayabilir). İlişki, doğrudan konuyla yada bağlantılı konularla ilgili, geçmişler, yasal, parasal, felsefik, sağtöresel yada politik bir konu olabilir.
+
+\begin{ingliz}
+A `Secondary Section' is
+a named appendix or a front-matter section of the Document
+that deals exclusively with the relationship of the publishers
+or authors of the Document to the Document's overall
+subject (or to related matters) and contains nothing that
+could fall directly within that overall subject.  (Thus, if
+the Document is in part a textbook of mathematics, a Secondary
+Section may not explain any mathematics.)  The relationship
+could be a matter of historical connection with the subject or
+with related matters, or of legal, commercial, philosophical,
+ethical or political position regarding them.
+\end{ingliz}
+
+\label{gfdl-inv-sect}%
+“Değişmeyen Bölümler”
+başlıkları belgenin bu Lisansla yayınlandığını belirten
+uyarıda geçen, Değişmeyen Bölümleri olan, belirgin İkincil Bölümlerdir.
+
+Bir bölüm, yukarıdaki İkincil tanımına uymuyorsa, değişmeyen
+olarak adlandırılamaz. Belgede, Değişmeyen Bölüm olmayabilir.
+Belge, herhangi bir Değişmeyen Bölüm tanımı yapmıyorsa,
+Değişmeyen Bölüm yok demektir.
+
+\begin{ingliz}
+The `Invariant Sections'
+are certain Secondary Sections whose titles are designated, as
+being those of Invariant Sections, in the notice that says
+that the Document is released under this License.
+If a section does not fit the above definition of Secondary then it
+is not allowed to be designated as Invariant.  The Document
+may contain zero Invariant Sections.  If the Document does not
+identify any Invariant Sections then there are none.
+\end{ingliz}
+
+
+\label{gfdl-cov-text}%
+“Kapak Yazısı Gövdesi”, Belgenin bu Lisansla bağımsız kılındığını söyleyen uyarıda belirtilmiş de Ön Kapak Yazı Gövdesi yada Arka Kapak Yazı Gövdesi biçiminde listelenmiş kısa yazı parçalarıdır. Bir Ön-Kapak Yazı Gövdesi en çok 5 sözcük, bir Arka-Kapak Yazı Gövdesi en çok 25 sözcük olabilir.
+
+\begin{ingliz}
+The `Cover Texts' are
+certain short passages of text that are listed, as Front-Cover
+texts or Back-Cover Texts, in the notice that says that the
+document is released under this License.  A Front-Cover Text
+may be at most 5 words, and a Back-Cover Text may be at most
+5 words.
+\end{ingliz}
+
+\label{gfdl-transparent}%
+Belgenin “Saydam” kopyası, özellikleri kamu erişimine açık bir formatta, bilgisayarca okunabilir, popüler yazı editörleri yada (piksellerden oluşan imajlar için) popüler boyama programları yada (çizimler için) popüler çizim programları aracılığı ile Belge üzerinde değişiklik yapmaya elverişli, yazı formatlayıcı girdisi olmaya yada otomatik dönüştürme için girdi olmaya uygun bir kopya demektir. (Çevirenin notu: Belgenin ``Saydam'' kopyası => Belgenin markup (\emph{imleme, etiketleme} gibi) kaynak kodlarıdır. Örneğin belgenin PDF formatında görüntülenebilir sürümünü oluşturan Markdown, TeX gibi bir imleme dili ile yazılmış dosyalardır)
+
+\begin{ingliz}
+A `Transparent' copy of the Document means a machine-readable copy, represented in a
+format whose specification is available to the general public, that is suitable for
+revising the document straightforwardly with generic text editors or
+(for images composed of pixels) generic paint programs or (for drawings)
+some widely available drawing editor, and that is suitable for input to text
+formatters or for automatic translation to a variety of formats suitable for
+input to text formatters.
+\end{ingliz}
+
+Normalde Saydam olarak değerlendirilebilecek ancak dosya biçeminde bulunan yada bulunmayan
+özel bir imleme dili (\emph{markup language}), okuyucunun kendisinin sonradan yapmak isteyebileceği değişiklikleri
+engelleyecek yada bezdirecek biçimde düzenlenmiş belge Saydam sayılmaz.
+Benzer biçimde bir imge (\emph{imaj}) biçemi, geniş ölçüde yazının yerine kullanılıyorsa Saydam değildir.
+Saydam olmayan bir kopya \emph{opak} olarak adlandırılır.
+
+\begin{ingliz}
+A copy made in an otherwise Transparent file format
+whose markup, or absence of markup, has been arranged to thwart or discourage
+subsequent modification by readers is not Transparent.
+An image format is not Transparent if used for any substantial amount of text.
+A copy that is not `Transparent' is called `Opaque'.
+\end{ingliz}
+
+Saydam kopyalar olarak: İmleme (\emph{markup}) içermeyen yalın ASCII (dosya uzantıları genelde \texttt{.txt}, \texttt{.md}  olur), Texinfo girdi biçemi (\emph{input format}), \LaTeX\ girdi biçemi, kamuya açık DTD kullanan SGML yada XML, standartlarla uyumlu yalın HTML, kişilerin değişiklik yapmasına uygun Postcript yada PDF örnek verilebilir. Saydam imaj biçemlerine ilişkin PNG, XCF ile JPG uygun örnekler olarak sayılabilir. Opak biçemler olarak: Yalnızca kapalı-kod sözcük işlemcilerce okunabilen, düzenlenebilen kapalı-kod biçemler, DTD (doküman tip tanımı) de/yada işleme araçları genelde bulunmayan SGML yada XML, makina aracılığı ile üretilmiş HTML, kimi sözcük işlemciler aracılığıyla yalnızca çıktı amaçlı üretilmiş Postcript yada PDF belgeleri örnek olarak gösterilebilir.
+
+\begin{ingliz}
+Examples of suitable formats for Transparent copies
+include plain ASCII without markup, Texinfo input format,
+LaTeX input format, SGML or XML using a publicly available
+DTD, and standard-conforming simple HTML\index{HTML@HTML},
+PostScript\index{PostScript} or PDF designed for human
+modification.  Examples of transparent image formats include
+PNG, XCF and JPG. Opaque formats include proprietary formats
+that can be read and edited only by proprietary word
+processors, SGML or XML for which the DTD and/or processing
+tools are not generally available, and the machine-generated
+HTML\index{HTML@HTML}, PostScript\index{PostScript} or PDF produced by
+some word processors for output purposes only.
+\end{ingliz}
+
+
+\label{gfdl-title-page}%
+Basılmış bir belgede “Başlık Yaprağı” demek; başlık yaprağının kendisine ek olarak bu lisansın başlık yaprağında bulunmasını gerektirdiği konuların okunaklı bir biçimde yer aldığı, duruma göre birkaç ek yaprak demektir. Başlık yaprağı olmayan türdeki çalışmalarda “Başlık Yaprağı” denilince; ana betik gövdesinin başlamadan önceki, çalışma başlığının en okunaklı göründüğü yerin yakınındaki betik anlaşılır.
+
+\begin{ingliz}
+The `Title Page' means, for a printed book, the title page itself, plus such following
+pages as are needed to hold, legibly, the material this
+License requires to appear in the title page. For works in
+formats which do not have any title page as such, `Title Page'
+means the text near the most prominent
+appearance of the work's title, preceding the beginning
+of the body of the text.
+\end{ingliz}
+
+\label{gfdl-entitled}%
+“XYZ Başlığı” belgenin bir alt bölümü olup başka dile çevrilmiş betik içerebilir. (Burada XYZ, “Mutsözleri” (\emph{Acknowledgements}), “Armağan Edilenler” (\emph{Dedications}), (Arapça: ``ithaf edilenler''), “Etkin Kişilerin Yorumları”, (\emph{Endorsements}) yada “Belge Geçmişi” (\emph{History}) gibi özel bölüm adlarından biri olabilir. Belgeyi değiştirdiğinizde böyle bir bölümün “Başlığını Korumak” demek, bu tanıma göre, “XYZ Başlığı” taşıyan bir bölüm kalacak demektir.
+
+Belge, bu lisansın, belgeye uygulandığını belirten uyarının yanında Garanti Bırakmaları (\emph{Warranty Disclaimers}) içerebilir. Garanti Bırakmalarının bu lisansın içinde referans olarak bulundukları varsayılsa da bu garantilerin bırakıldığı anlamını taşır: Çıkarılabilecek öteki tüm anlamlar geçersiz olup bu Lisansın anlamı üzerinde hiçbir etkileri yoktur.
+
+\begin{ingliz}
+A section `Entitled XYZ'
+means a named subunit of the Document whose title either is
+precisely XYZ or contains XYZ in parentheses following text
+that translates XYZ in another language. (Here XYZ stands for
+a specific section name mentioned below, such as
+`Acknowledgements', `Dedications',
+`Endorsements', or `History'.)  To
+`Preserve the Title' of such a section when you
+modify the Document means that it remains a section
+`Entitled XYZ' according to this
+definition.
+
+The Document may include Warranty Disclaimers next to the
+notice which states that this License applies to the Document.
+These Warranty Disclaimers are considered to be included by
+reference in this License, but only as regards disclaiming
+warranties: any other implication that these Warranty
+Disclaimers may have is void and has no effect on the meaning
+of this License.
+\end{ingliz}
+
+\section{Birebir Kopyalama}\hfill\begin{verbatim}VERBATIM COPYING\end{verbatim}
+\label{gfdl-2}
+Belgeyi, bu Lisans, ürün düzenleme payları ile bu Lisansın Belgeye uygulandığını belirten uyarı tüm kopyalarda bulunacak biçimde, sizin aracılığınız ile bu Lisansa başka hiçbir koşul eklenmediği sürece, herhangi bir ortamda, parasal yada parasal olmayan anlamda, kopyalayıp dağıtabilirsiniz. Yaptığınız yada dağıttığınız kopyaların okunmasını yada  kopyalanmasını engelleyici yada kontrol edici teknik önlemler alamazsınız. Bununla birlikte, kopyaların karşılığında para alabilirsiniz, kazanbilirsiniz. Yeterince büyük sayıda kopyad ağıtımı yapıyorsanız 3. bölümdeki koşulları da yerine getirmeniz gerekir.
+      
+Yukarıda değinilen koşullar altında kopyaları ödünç verebilir, kiralayabilir yada kamuya açık biçimde sergileyebilirsiniz.
+
+\begin{ingliz}
+You may copy and distribute the Document in any medium,
+either commercially or noncommercially, provided that this
+License, the copyright notices, and the license notice saying
+this License applies to the Document are reproduced in all
+copies, and that you add no other conditions whatsoever to
+those of this License.  You may not use technical measures to
+obstruct or control the reading or further copying of the
+copies you make or distribute.  However, you may accept
+compensation in exchange for copies.  If you distribute a
+large enough number of copies you must also follow the
+conditions in section 3.
+      
+You may also lend copies, under the same conditions stated
+above, and you may publicly display copies.
+\end{ingliz}
+
+\section{Yüksek sayıda kopyalama}\hfill\begin{verbatim}COPYING IN QUANTITY\end{verbatim}\label{gfdl-3}
+Belgenin 100 den çok olmak üzere, basılı kopyalarını yayınlarsanız (yada genellikle basılı kapakları olan bir ortamda kopyalarsanız) buna ek olarak  Belgenin lisans uyarısı, Kapak Yazısı olmasını gerektiriyorsa, kopyaları, tüm bu Kapak Yazılarını açık de okunaklı biçimde gösteren (Ön-Kapak Yazıları ön kapakta, Arka-Kapak Yazıları arka kapakta) kapakların içine almak zorundasınız demektir. Her iki kapak da Sizi, okunaklı de açık bir biçimde, bu kopyaların yayınlayıcısı olarak tanımlamak zorundadır. Ön kapak, başlığı, tüm sözcükleri eşit görünecek biçimde içermelidir. Kapaklarda yazan öteki nesleri de ekleyebilirsiniz. Belgenin başlığını koruyup bu koşulları sağladığı sürece, kapaklardaki değişikliklerle sınırlı kalarak kopyalama yapmak, bir anlamda birebir kopyalama olarak düşünülebilir.
+
+Her iki kapakta bulunan de yazılması gerekli betikler, okunaklı olamayacak derecede çok ise, listelenmiş olanları, sığacak biçimde gerçek kapağa, geri kalanları da izleyen yapraklara alabilirsiniz.
+
+Belgenin, 100 den cok olmak üzere, opak kopyalarını yayınlıyor yada dağıtıyorsanız ya her bir opak kopyaya  makine aracılığıyla da okunabilen Saydam kopya eklemek zorundasınız yada her bir opak kopyada, genel ağı kullanan kamunun giriş yapıp, kamu aracılığınca bilinen standart ağ protokoller kullanarak, belgenin ek öğe içermeyen Saydam bir kopyasını indirebileceği bir bilgisayar ağı adresi eklemek zorundasınız.
+
+İkinci yolu yeğlerseniz, opak kopyaların dağıtımına başladığınızda, bu Saydam kopyanın belirtilen yerde de opak kopyaların kamuya en son dağıtımından en az bir yıl sonra bile (ya doğrudan, ya sizin sözcüleriniz ya da anlaşmalı satıcılarınız üzerinden) ulaşılabilir olarak kalacağını sağlamak üzere önlemli adımlar atmalısınız.
+
+Kesin koşul olmasa da, yapılması beklenir: Büyük sayıda kopyaların dağıtımını yapmadan önce, Belgenin yazarlarıyla iletişime geçmeniz, onlara Belgenin daha yeni bir sürümünü Size verme şansını tanıması açısından uygun bir eylem olur.
+
+\begin{ingliz}
+If you publish printed copies (or copies in media that
+commonly have printed covers) of the Document, numbering more
+than 100, and the Document's license notice requires
+Cover Texts, you must enclose the copies in covers that carry,
+clearly and legibly, all these Cover Texts: Front-Cover Texts
+on the front cover, and Back-Cover Texts on the back cover.
+Both covers must also clearly and legibly identify you as the
+publisher of these copies.  The front cover must present the
+full title with all words of the title equally prominent and
+visible.  You may add other material on the covers in
+addition.  Copying with changes limited to the covers, as long
+as they preserve the title of the Document and satisfy these
+conditions, can be treated as verbatim copying in other
+respects.
+
+If the required texts for either cover are too voluminous
+to fit legibly, you should put the first ones listed (as many
+as fit reasonably) on the actual cover, and continue the rest
+onto adjacent pages.
+
+If you publish or distribute Opaque copies of the Document
+numbering more than 100, you must either include a
+machine-readable Transparent copy along with each Opaque copy,
+or state in or with each Opaque copy a computer-network
+location from which the general network-using public has
+access to download using public-standard network protocols a
+complete Transparent copy of the Document, free of added
+material.  If you use the latter option, you must take
+reasonably prudent steps, when you begin distribution of
+Opaque copies in quantity, to ensure that this Transparent
+copy will remain thus accessible at the stated location until
+at least one year after the last time you distribute an Opaque
+copy (directly or through your agents or retailers) of that
+edition to the public.
+
+It is requested, but not required, that you contact the
+authors of the Document well before redistributing any large
+number of copies, to give them a chance to provide you with an
+updated version of the Document.
+\end{ingliz}
+
+\section{Düzenlemeler}\hfill\begin{verbatim}MODIFICATIONS\end{verbatim}
+\label{gfdl-4}
+
+Değiştirilmiş Sürümü bu Lisans altında yayınladığınız sürece, yukarıdaki 2. ile 3. bölümdeki koşullar altında Belgenin, Değiştirilmiş Sürümünü çoğaltabilir (\emph{kopyalayabilir}) de dağıtabilirsiniz. Bu bağlamda Değiştirilmiş Sürüm, Belgenin rolünü üstlenir; böylelikle Değiştirilmiş Sürümün dağıtım ile değiştirme lisansını dokümanın kopyasını elinde bulunduran her kim ise ona vermiş olursunuz. Bunlara ek olarak Değiştirilmiş Sürümde aşağıdakileri de yapmak zorundasınız:
+
+\begin{ingliz}
+You may copy and distribute a Modified Version of the
+Document under the conditions of sections 2 and 3 above,
+provided that you release the Modified Version under precisely
+this License, with the Modified Version filling the role of
+the Document, thus licensing distribution and modification of
+the Modified Version to whoever possesses a copy of it.  In
+addition, you must do these things in the Modified
+Version:
+\end{ingliz}
+
+\begin{enumerate}\renewcommand{\theenumi}{\Alph{enumi}}
+% \renewcommand{\arraystretch}{1.2}
+\item Başlık yaprağında (varsa ek olarak kapaklarda) belgedekinden de önceki sürümlerdekinden (ki varsa Belgenin geçmiş bölümünde listelenmiş olmalıdır) ayrık bir başlık kullanınız. Bir önceki sürümün orijinal yayımcısı onayladığı sürece önceki sürümün başlığının özdeşini de kullanabilirsiniz. 
+\begin{ingliz}
+Use in the Title Page (and on the covers,
+if any) a title distinct from that of the Document, and
+from those of previous versions (which should, if there
+were any, be listed in the History section of the
+Document).  You may use the same title as a previous
+version if the original publisher of that version gives
+permission.
+\end{ingliz}
+
+\item Başlık yaprağında, Değiştirilmiş Sürümdeki değişikliklerden sorumlu olan bir yada daha çok sayıda kişi yada kimliğin adını, sizi bu zorunluluktan ayrı tutmamışlarsa belgenin asıl yazarlarından en az beşinin (beşten azsa tümünün) adıyla birlikte, yazar(lar) olarak listeleyiniz. 
+\begin{ingliz}
+List on the Title Page, as authors, one or
+more persons or entities responsible for authorship of the
+modifications in the Modified Version, together with at
+least five of the principal authors of the Document (all
+of its principal authors, if it has fewer than five),
+unless they release you from this requirement.
+\end{ingliz}
+
+\item Başlık yaprağında, Değiştirilmiş Sürümün yayımcısının adını, yayımcı olarak belirtiniz.
+\begin{ingliz}
+State on the Title page the name of the
+publisher of the Modified Version, as the
+publisher.
+\end{ingliz}
+%  Ürün Düzenleme Payı \copyright\ 2022 \yazar {GNU Özgür Dokümantasyon Lisansı} Versiyon 1.2 kapsamında bu belgeyi kopyalama, dağıtma de/yada düzenleme onayı verilmiştir.
+
+\item Belgenin tüm Ürün Düzenleme Payı uyarılarını koruma altına alınız.
+\begin{ingliz}Preserve all the copyright notices of the Document.\end{ingliz}          
+
+\item Öteki Ürün Düzenleme Payı uyarılarının hemen yanına gelecek biçimde, kendi değişiklikleriniz için uygun bir Ürün Düzenleme Payı uyarısı ekleyiniz. 
+\begin{ingliz}Add an appropriate copyright notice for
+your modifications adjacent to the other copyright notices.\end{ingliz}          
+
+\item Ürün Düzenleme Payı uyarılarının hemen ardından gelecek biçimde de kamuya, Değiştirilmiş Sürümü, bu Lisansın koşulları altında kullanma onayı veren de formu aşağıdaki ekte görülen bir lisans uyarısı ekleyiniz. (\S\thinspace\ref{gfdl-addendum}) (Addendum)
+\begin{ingliz}Include, immediately after the copyright
+notices, a license notice giving the public permission to
+use the Modified Version under the terms of this License,
+in the form shown in the Addendum (\S\thinspace\ref{gfdl-addendum}) below.\end{ingliz}
+
+\item Söz konusu lisans uyarısında, Belgenin lisans uyarısında verilen, Değişmeyen Bölümlerin de gerekli Kapak Yazılarının eksiksiz bir listesini koruma altına alınız. 
+\begin{ingliz}Preserve in that license notice the full
+lists of Invariant Sections and required Cover Texts given
+in the Document's license notice.\end{ingliz}
+
+\item Bu Lisansın, değiştirilmemiş bir kopyasını ekleyiniz.
+\begin{ingliz}Include an unaltered copy of this License.\end{ingliz}          
+
+\item “Belge Geçmişi” adlı bölümü de Başlığını koruma altına alınız de buna Değiştirilmiş Sürümün (Başlık Yaprağında verildiği gibi) en azından başlığını, yılını, yeni yazarları de yayımcısını belirten bir öğe ekleyiniz. “Belge Geçmişi” adlı bir bölüm yoksa, Başlık Yaprağında verildiği gibi, başlığını, yılını, yazarlarını, de Belgenin yayımcısını belirten bir tane oluşturup bir önceki tümcede belirtildiği gibi Değiştirilmiş Sürümü tanımlayan bir öğe ekleyiniz. 
+
+\begin{ingliz}Preserve the section Entitled
+`History', Preserve its Title, and add to it
+an item stating at least the title, year, new authors, and
+publisher of the Modified Version as given on the Title
+Page.  If there is no section Entitled
+`History' in the Document, create one stating
+the title, year, authors, and publisher of the Document as
+given on its Title Page, then add an item describing the
+Modified Version as stated in the previous sentence.\end{ingliz}
+
+\item Varsa, Belgede belirtilen de Belgenin Saydam kopyasına ulaşmayı de
+yine benzer biçimde Belgenin esas alındığı önceki sürümlere ulaşmayı sağlayan ağ konumunu koruma altına alınız. Bunlar “Geçmiş” bölümüne yerleştirilebilir. Belgenin kendisinden en az dört yıl önce basılmış bir çalışmanın yada
+% atıf: yöneltme, çevirme, gönderme, alıntı, alıntılama, ilintili bulma
+alıntılama yaptığı sürümün orijinal yayımcısı onay vermişse, ağ konumunu gözardı edebilirsiniz.
+
+\begin{ingliz}Preserve the network location, if any,
+given in the Document for public access to a Transparent
+copy of the Document, and likewise the network locations
+given in the Document for previous versions it was based
+on.  These may be placed in the `History'
+section.  You may omit a network location for a work that
+was published at least four years before the Document
+itself, or if the original publisher of the version it
+refers to gives permission.\end{ingliz}
+
+\item % “Mutsözleri” \emph{Acknowledgements}, “Armağan Edilenler” \emph{Dedications}, “Etkin Kişilerin Yorumları”, \emph{Endorsements} yada “Belge Geçmişi” \emph{History}
+“Mutsözleri” (\emph{Acknowledgements}) yada “Armağan Edilenler” (\emph{Dedications} başlığını taşıyan bölümler için, bölümlerin Başlıklarını koruma altına alınız de bu bölümde katkıda bulunan kişilerin her birinin mutluluk iletme sözlerini de/yada çalışmalarını armağan ettikleri kişileri, verildiği gibi koruma altına alınız.
+
+\begin{ingliz}For any section Entitled
+`Acknowledgements' or
+`Dedications', Preserve the Title of the
+section, and preserve in the section all the substance and
+tone of each of the contributor acknowledgements and/or
+dedications given therein.\end{ingliz}
+
+\item Belgenin tüm Değişmeyen Bölümlerini, betik ile başlıklarının değiştirilmemiş durumlarını koruma altına alınız. Bölüm numaraları yada eşdeğerleri, bölüm başlığı sayılmaz. 
+
+\begin{ingliz}Preserve all the Invariant Sections of the
+Document, unaltered in their text and in their titles.
+Section numbers or the equivalent are not considered part
+of the section titles.\end{ingliz}        
+
+\item “Onay” başlıklı tüm bölümleri siliniz. Böyle bir bölüm, Değiştirilmiş sürüm içinde olmaz.
+\begin{ingliz}Delete any section Entitled
+`Endorsements'. Such a section may not be
+included in the Modified Version.\end{ingliz}
+
+\item Güncel herhangi bir bölümü, başlığı “Onay” olacak biçimde, yada herhangi bir Değişmeyen Bölüm ile başlık konusunda çelişecek biçimde yeniden adlandırmayınız. 
+\begin{ingliz} Do not retitle any existing section to be
+Entitled `Endorsements' or to conflict in
+title with any Invariant Section.\end{ingliz}
+
+\item Tüm Garanti Bıraklamalarını koruma altına alınız.
+\begin{ingliz}Preserve any Warranty Disclaimers.\end{ingliz}
+\end{enumerate}
+
+Değiştirilmiş Sürüm, yeni ön öğeler yada İkincil Bölümler olarak nitelendirilebilecek ekler içeriyor de Belgeden kopyalanmış hiçbir materyal içermiyorsa, bu bölümlerin tümünü yada bir bölümünü değişmeyen olarak adlandırmak tümüyle size bırakılmıştır. Bu amaçla bunların başlıklarını, Değiştirilmiş Sürümün lisans uyarısındaki Değişmeyen Bölümler listesine ekleyiniz. Bu başlıklar öteki bölüm başlıklarından değişik olmalıdır.
+
+\begin{ingliz}If the Modified Version includes new front-matter sections
+or appendices that qualify as Secondary Sections and contain
+no material copied from the Document, you may at your option
+designate some or all of these sections as invariant.  To do
+this, add their titles to the list of Invariant Sections in
+the Modified Version's license notice. These titles must
+be distinct from any other section titles.\end{ingliz}
+
+Değiştirilmiş Sürümünüze “Onay” başlıklı bir bölüm ekleyebilirsiniz ancak bu bölüm değişik gruplarca yazılmış --örneğin, arkadaşlarınızın inceleme tümceleri, yada içerdiği yazı gövdesinin bir kuruluş aracılığıyla, bir standard olarak onaylanmasından başka bir nes içermemelidir.
+
+\begin{ingliz}You may add a section Entitled
+``Endorsements'', provided it contains nothing but
+endorsements of your Modified Version by various parties--for
+example, statements of peer review or that the text has been
+approved by an organization as the authoritative definition of
+a standard.\end{ingliz}
+
+Değiştirilmiş Sürümdeki Kapak Yazıları listesinin sonuna gelecek biçimde, Ön Kapak Yazısı olarak 5, Arka Kapak Yazısı olarak  25 sözcüğü geçmeyecek biçimde birer paragraf ekleyebilirsiniz. Her bir kişi başına (yada yapılan düzenlemelere göre değişecek biçimce), Ön Kapak Yazısından yalnızca bir, Arka Kapak Yazılarından da yalnızca bir paragraf eklenebilir. Belge, güncel haliyle, özdeş kapak için, ya siz yada simgelediğiniz kişilerce daha önceden eklenmiş bir kapak yazısı içeriyorsa bir başkasını ekleyemezsiniz, ancak önceki yayımcı araclığı ile eklenmiş eskisini, kendisinden açık onay alarak değiştirebilirsiniz.
+
+\begin{ingliz}You may add a passage of up to five words as a Front-Cover
+Text, and a passage of up to 25 words as a Back-Cover Text, to
+the end of the list of Cover Texts in the Modified Version.
+Only one passage of Front-Cover Text and one of Back-Cover
+Text may be added by (or through arrangements made by) any one
+entity.  If the Document already includes a cover text for the
+same cover, previously added by you or by arrangement made by
+the same entity you are acting on behalf of, you may not add
+another; but you may replace the old one, on explicit
+permission from the previous publisher that added the old one.\end{ingliz}
+
+Belgenin yazar(ları) ile yayımcı(ları), bu Lisansla, adlarının, herhangi bir Değiştirilmiş Sürümün reklamı, savunulması yada onaylanması amacına yönelik olarak kullanımına onay vermiş olmazlar.
+\begin{ingliz}The author(s) and publisher(s) of the Document do not by
+this License give permission to use their names for publicity
+for or to assert or imply endorsement of any Modified Version.\end{ingliz}
+
+\section{Belgeleri Birleştirmek}\hfill\begin{verbatim}COMBINING DOCUMENTS\end{verbatim}\label{gfdl-5}
+Belgeyi, bu Lisans ile değiştirilmiş sürümler için yukarıda 4. bölümde (\S\thinspace\ref{gfdl-4}) tanımlanan koşullar altında yayınlanan öteki belgelerle (tüm orijinal belgelerin Değişmeyen Bölümlerini değiştirmeksizin bir araya getirip, birleşik çalışmanızın lisans uyarısında; Değişmeyen Bölümler olarak listelediğiniz de tümünün Garanti Bırakmalarını olduğu gibi korumanız durumunda) birleştirebilirsiniz.
+\begin{ingliz}You may combine the Document with other documents released
+under this License, under the terms defined in section 4 (\S\thinspace\ref{gfdl-4}) above for modified
+versions, provided that you include in the combination all of
+the Invariant Sections of all of the original documents,
+unmodified, and list them all as Invariant Sections of your
+combined work in its license notice, and that you preserve all
+their Warranty Disclaimers.
+\end{ingliz}
+
+Birleşik çalışmada bu Lisansın bir kopyasının bulunması yeterli olup çok sayıda olan özdeş Değişmeyen Bölümler, tek bir kopya ile değiştirilebilir. Özdeş adı olan ancak değişik içerikli çok sayıda Değişmeyen Bölüm varsa, her bir bölümü (başlığının sonunda parantez içinde olmak üzere, bilinmesi durumunda o bölümün orijinal yazarının yada basımını yapanın adını yazarak yada özel bir numara vererek) özelleştiriniz. Özdeş ayarlamaları, birleşik çalışmanın lisans uyarısının içinde yer alan Değişmeyen Bölümler listesindeki bölüm başlıklarına da yapınız.
+\begin{ingliz}he combined work need only contain one copy of this
+License, and multiple identical Invariant Sections may be
+replaced with a single copy.  If there are multiple Invariant
+Sections with the same name but different contents, make the
+title of each such section unique by adding at the end of it,
+in parentheses, the name of the original author or publisher
+of that section if known, or else a unique number.  Make the
+same adjustment to the section titles in the list of Invariant
+Sections in the license notice of the combined work.
+\end{ingliz}
+% “Mutsözleri” (\emph{Acknowledgements}),
+% “Armağan Edilenler” (\emph{Dedications}, arapça: ``ithaf edilenler''),
+Birleşik çalışmada, değişik orijinal belgelerde geçen “Belge Geçmişi” adı altındaki tüm bölümleri birleştirip yeniden bir “Belge Geçmişi” bölümü oluşturunuz. Benzer biçimde, ``Mutsözleri'' ile ``Armağan Edilenler'' bölümlerini de ayrı ayrı ``Mutsözleri'' ile ``Armağan Edilenler'' bölümleri altında toplayınız. Tüm “Onay” bölümlerini silmek zorundasınız.
+\begin{ingliz}In the combination, you must combine any sections Entitled
+`History' in the various original documents,
+forming one section Entitled `History'; likewise
+combine any sections Entitled `Acknowledgements',
+and any sections Entitled `Dedications'.  You
+must delete all sections Entitled `Endorsements'.
+\end{ingliz}
+
+\section{Belgelerin Toplanması}\hfill\begin{verbatim}COLLECTIONS OF DOCUMENTS\end{verbatim}\label{gfdl-6}
+Belgelerin de bu Lisans altında serbest bırakılan öteki belgelerin koleksiyonunu yapabilir de belgeler için birebir kopyalama kurallarını izlediğiniz sürece, bu Lisansın değişik belgelerdeki bireysel kopyalarını, koleksiyondaki tek bir kopya ile değiştirebilirsiniz.
+\begin{ingliz}You may make a collection consisting of the Document and
+other documents released under this License, and replace the
+individual copies of this License in the various documents
+with a single copy that is included in the collection,
+provided that you follow the rules of this License for
+verbatim copying of each of the documents in all other respects.\end{ingliz}
+
+Bu koleksiyondan tek bir belge çıkarabilir, bu Lisansın bir kopyasını çıkarılan belgeye koyarak bu Lisansta yer alan birebir kopyalama ile ilgili tüm öteki kurallara uymak koşuluyla % riayet etmek kaydıyla
+bu Lisans altında tek başına dağıtabilirsiniz.
+\begin{ingliz}You may extract a single document from such a collection,
+and distribute it individually under this License, provided
+you insert a copy of this License into the extracted document,
+and follow this License in all other respects regarding
+verbatim copying of that document.\end{ingliz}
+
+\section{Bağımsız İşlerle Birleştirme}\hfill\begin{verbatim}AGGREGATION WITH INDEPENDENT WORKS\end{verbatim}\label{gfdl-7}
+
+Belgenin yada türevlerinin, öteki bağımsız belge ile çalışmalarla biraraya getirilerek bir depolama yada dağıtım ortamında derlenmesi, bu derlemeden doğacak ürün düzenleme yapı, bu derlemenin kullanıcılarının yasal paylarını, bireysel çalışmaların onadığı sınırın ötesinde kısıtlamak için kullanılmıyorsa, küme (ing: aggregate', türkçe: toplam) % arapça: yekûn, türkçe toplam)
+olarak adlandırılır. Belge bir küme içinde düşünülüyorsa % dahil ediliyorsa,
+bu Lisans, kümede olup ta bu Belgenin türevi olmayan öteki çalışamalara uygulanamaz.
+\begin{ingliz}A compilation of the Document or its derivatives with
+other separate and independent documents or works, in or on a
+volume of a storage or distribution medium, is called an
+`aggregate' if the copyright resulting from the
+compilation is not used to limit the legal rights of the
+compilation's users beyond what the individual works
+permit.  When the Document is included an aggregate, this
+License does not apply to the other works in the aggregate
+which are not themselves derivative works of the Document.\end{ingliz}
+
+3. bölümdeki Kapak Yazısı zorunluluğu, Belgenin bu kopyalarına uygulanabiliyorsa de Belge, tüm kümenin üçte birinden daha azsa, Belgenin Kapak Yazıları, Belgeyi kümenin içinde düşünülen kapaklara, yada bu kapakların elektronik eşdeğerlerine (Belge elektronik formda ise) yerleştirilebilir. Tersi durumda %aksi takdirde
+tüm kümeyi içeren basılı kapaklarda görünmeleri zorunludur.
+\begin{ingliz}If the Cover Text requirement of section 3 is applicable
+to these copies of the Document, then if the Document is less
+than one half of the entire aggregate, the Document's
+Cover Texts may be placed on covers that bracket the Document
+within the aggregate, or the electronic equivalent of covers
+if the Document is in electronic form.  Otherwise they must
+appear on printed covers that bracket the whole aggregate.
+\end{ingliz}
+
+\section{Çeviri}\hfill\begin{verbatim}TRANSLATION\end{verbatim}\label{gfdl-8}
+
+Belge çevirisi (kısaca çeviri') belgeyi değiştirme (modifikasyon) olarak düşünülür dolayısıyla Belgenin çevirilerini 4.üncü bölümdeki koşullara uygun olarak dağıtabilirsiniz. Değişmeyen Bölümleri, çevirilerle değiştirmek için ürün düzenleme pay iyelerinden  özel onay almayı gerektirir ancak Değişmeyen Bölümlerin tümünün yada bir bölümünün çevirilerini bu Değişmeyen Bölümlerin orijinal sürümlerine ekleyebilirsiniz.
+Bu Lisansın, Belgedeki tüm lisans uyarıları ile Garanti Bırakmalarının çevirisini; bu Lisansın, uyarıların de bırakmaların orijinal İngilizce sürümlerini eklemek koşuluyla yapabilirsiniz. Bu Lisansın, uyarıların yada bırakmaların çevirileriyle orijinalleri arasında anlaşmazlık olması durumunda orijinal sürümler esas alınır.
+\begin{ingliz}Translation is considered a kind of modification, so you
+may distribute translations of the Document under the terms of
+section 4. Replacing Invariant Sections with translations
+requires special permission from their copyright holders, but
+you may include translations of some or all Invariant Sections
+in addition to the original versions of these Invariant
+Sections.  You may include a translation of this License, and
+all the license notices in the Document, and any Warranty
+Disclaimers, provided that you also include the original
+English version of this License and the original versions of
+those notices and disclaimers.  In case of a disagreement
+between the translation and the original version of this
+License or a notice or disclaimer, the original version will
+prevail\end{ingliz}
+
+Belge içindeki bölümün adı ``Mutsözleri'', ``Armağan Edilenler''  yada ``Belge Geçmişi'' ise, Başlığın Korunması (1. bölüm) zorunluluğundan (4. bölüm) dolayı gerçek başlığın değişmesi gerekecektir.
+\begin{ingliz}If a section in the Document is Entitled
+`Acknowledgements', `Dedications',
+or `History', the requirement (section 4) to
+Preserve its Title (section 1) will typically require changing
+the actual title.
+\end{ingliz}
+
+\section{Sonuç}\hfill\begin{verbatim}TERMINATION\end{verbatim}\label{gfdl-9}
+
+Bu Lisansta açıkça belirtilmediği sürece, Belgeyi kopyalayamaz, değiştiremez, alt lisans yapamaz, yada dağıtamazsınız. Bunun dışında Belgeyi kopyalama, değiştirme, alt lisans yapma yada dağıtma gibi her tür girişim yasal olarak boş olup bu Lisans altındaki tüm paylarınızınz sona ermesine neden olacaktır. Ancak Sizden bu Lisans altında kopyaları yada ürün düzenleme payları almış olan grupların Lisansları, bu gruplar eksiksiz bir uyum içinde oldukları sürece sona ermez.
+\begin{ingliz}You may not copy, modify, sublicense, or distribute the
+Document except as expressly provided for under this License.
+Any other attempt to copy, modify, sublicense or distribute
+the Document is void, and will automatically terminate your
+rights under this License.  However, parties who have received
+copies, or rights, from you under this License will not have
+their licenses terminated so long as such parties remain in
+full compliance.\end{ingliz}
+
+\section{Bu lisansın gelecekteki düzenlemeleri}\hfill\begin{verbatim}FUTURE REVISIONS OF THIS LICENSE\end{verbatim}\label{gfdl-10}
+Özgür Yazılım Derneği, kimileyin GNU Özgür Belgeleme Lisansının yeni de gözden geçirilmiş sürümlerini yayınlayabilir. Bu tür yeni sürümler, esas olarak % itibarıy-la
+güncel % mevcut
+sürüme benzer olmalarına karşın, % rağmen,
+yeni problem ile sorunlara yönelik olarak detayda değişiklik gösterebilirler % arz edebilirler.
+Bkz: http://www.gnu\centerdot org/copyleft
+
+\begin{ingliz}The Free Software Foundation may publish new, revised
+versions of the GNU Free Documentation License from time to
+time.  Such new versions will be similar in spirit to the
+present version, but may differ in detail to address new
+problems or concerns.  See
+http://www.gnu\centerdot org/copyleft\end{ingliz}
+
+Lisansın her bir sürümüne, belirgin bir sürüm numarası verilir. Belgede, bu Lisansın belli bir numarası olan sürümünün (yada daha yeni sürümünün) uygulandığı açıkça belirtiliyorsa, Sizin de, ya bu belli numaralı sürümün, yada Özgür Yazılım Derneği'nce basılmış (taslak değil) daha yeni sürümün koşullarına uyma seçeneğiniz var demektir. Belgede bu Lisansın sürüm numarası açıkça belirtilmiyorsa, Özgür Yazılım Derneği'ince herhangi bir günde basılmış herhangi bir sürümü seçebilirsiniz.
+
+\begin{ingliz}Each version of the License is given a distinguishing
+version number.  If the Document specifies that a particular
+numbered version of this License `or any later version'
+applies to it, you have the option of
+following the terms and conditions either of that specified
+version or of any later version that has been published (not
+as a draft) by the Free Software Foundation.  If the Document
+does not specify a version number of this License, you may
+choose any version ever published (not as a draft) by the Free
+Software Foundation.\end{ingliz}
+
+\section{Bu Lisansı Belgelerinizde Ne Biçimde Kullanırsınız?}\hfill\begin{verbatim}ADDENDUM: How to use this License
+\end{verbatim}\label{gfdl-addendum} % nesas => ne esas ?
+
+Bu lisansı yazdığınız belgenin içinde kullanabilmek için, bir kopyasını belgeye ekleyip  aşağıdaki ürün düzenleme payı ile lisans uyarılarını, kapak yaprağından hemen sonra gelecek biçimde yerleştirin:
+
+\begin{ingliz}To use this License in a document you have written,
+include a copy of the License in the document and put the
+following copyright and license notices just after the title
+page:\end{ingliz}
+
+\begin{quotation}\small\begingroup 
+
+Ürün Düzenleme Payı (c)  YIL  ADINIZ.
+Bu belgenin, GNU Özgür Belgeleme Lisansı, Sürüm 1.2 yada Özgür
+Özgür Yazılım Derneği'nce yayımlanmış daha yeni sürümlerindeki koşullara uygun biçimce; değişmeyen bölümler, ön kapak ve arka kapak yazısı olmaksızın, kopyalanması, dağıtılması de/yada değiştirilmesine izin verilmiştir.
+
+Lisansın bir kopyası “GNU Özgür Belgeleme Lisansı” adlı bölüme eklenmiştir.
+
+\begin{ingliz}Copyright (c)  YEAR  YOUR NAME. Permission is granted to
+copy, distribute and/or modify this document under the terms
+of the GNU Free Documentation License, Version 1.2 or any
+later version published by the Free Software Foundation;
+with no Invariant Sections, no Front-Cover Texts, and no
+Back-Cover Texts. A copy of the license is included in the
+section entitled `GNU Free Documentation License'.\end{ingliz}
+
+\par\endgroup\smallskip\footnotesize\noindent \end{quotation}
+
+Belgenizde değişmeyen bölümler, ön kapak ve arka kapak yazıları varsa, “değişmeyen.......olmaksızın,” tümcesini aşağıdaki gibi değiştirin:
+\begin{ingliz}If you have Invariant Sections, Front-Cover Texts and
+Back-Cover Texts, replace the
+`with\dots Texts.' line with this:\end{ingliz}
+
+\begin{quotation}\small\begingroup 
+
+...değişmeyen bölümleri, BAŞLIKLARIN LİSTESİ, ön kapak yazıları, İLGİLİ LİSTE ile arka kapak yazılarını, İLGİLİ LİSTE olmak üzere...
+\begin{ingliz}with the Invariant Sections being LIST THEIR TITLES, with
+the Front-Cover Texts being LIST, and with the Back-Cover
+Texts being LIST.
+\end{ingliz}
+
+\par\endgroup\smallskip\footnotesize\noindent
+\end{quotation}
+
+Belgenizde kapak yazıları yok ancak değişmeyen bölümler varsa yada bu üç durumun herhangi bir biçince bir arada olması söz konusu ise, duruma uygun olacak biçimde bu iki alternatifi birleştirin.
+\begin{ingliz}If you have Invariant Sections without Cover Texts, or
+some other combination of the three, merge those two
+alternatives to suit the situation.
+\end{ingliz}
+
+Belgeniz azımsanmayacak ölçüde program kod örnekleri içeriyorsa, özgür yazılım lisansı seçeneğinize paralel olarak, GNU Genel Kamu Lisansındaki gibi özgür yazılım içinde kullanılmalarını sağlamak amacıyla bu örneklerdeki payınızı bırakmanızı öneririz.
+\begin{ingliz}If your document contains nontrivial examples of program
+code, we recommend releasing these examples in parallel under
+your choice of free software license, such as the GNU General
+Public License, to permit their use in free software.\end{ingliz}
+
+\end{multicols}
+% 04.April.2005
