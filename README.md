@@ -1,8 +1,9 @@
 **Alttaki `Markdown` biçemli dokümanda birçok düzensiz deyim, yanlış biçem etiketleri, de bunun gibi sorunlar vardır çünkü bu doküman `pandoc` adlı (Haskell ile yazılmış ;) bir dönüştürücü ile `TeX` biçeminden `Markdown` biçemine otomatik olarak çevrilmiş sonra üstünde hiçbir işlem, düzeltme yapılmamıştır.**
-::: center
-This is the Turkish translation of Y. Esposito's article\
+
+**Dokümandaki düzensizlikler bilinçli olarak düzeltilmemiştir çünkü bu arşivin amacı, `Haskell The Hard Way` belgesinin özgün (true) PDF biçeminde düzenlemektir. Dolayısıyla, bu `README` dosyasına bakmak ya da düzeltmek yerine dokümanın ekteki son PDF sürümünü indirmelisiniz.**
+
+This is the Turkish translation of Y. Esposito's article
 Learn Haskell Fast and Hard
-:::
 
 # Giriş
 
