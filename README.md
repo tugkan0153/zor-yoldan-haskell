@@ -1,3 +1,4 @@
+**Alttaki `Markdown` biçemli dokümanda birçok düzensiz deyim, yanlış biçem etiketleri, de bunun gibi sorunlar vardır çünkü bu doküman `pandoc` adlı (Haskell ile yazılmış ;) bir dönüştürücü ile `TeX` biçeminden `Markdown` biçemine otomatik olarak çevrilmiş sonra üstünde hiçbir işlem, düzeltme yapılmamıştır.**
 ::: center
 This is the Turkish translation of Y. Esposito's article\
 Learn Haskell Fast and Hard
