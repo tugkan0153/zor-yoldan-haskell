@@ -1,1938 +1,2116 @@
-> This is the Turkish translation of Yann Esposito's article [Learn Haskell Fast and Hard](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/).
+::: center
+This is the Turkish translation of Y. Esposito's article\
+Learn Haskell Fast and Hard
+:::
 
-> Yann Esposito'nun [Learn Haskell Fast and Hard](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/) başlıklı yazısının Türkçe çevirisidir.
+# Giriş
 
-# Zor Yoldan Haskell
+\[ Bu belge, Yann Esposito'nun Learn Haskell Fast and Hard başlıklı blog
+gönderisinden (*blogpost*) Türkçe'ye çevirilmiştir. Yann
+Esposito`yannespositocom/about-me.html` yaprağında Fransa'da yaşadığını,
+Amerika'daki Cisco firmasında Clojure programlama dili ile uzaktan
+çalıştığını, hafta sonları ise Haskell ile Purescript ayrıca şunları
+kullandığını belirtmektedir:\
 
-> TL, DR (Çok uzundu okumadım): Haskell öğrenmek için kısa ve yoğun bir rehber.
+[Yazılım araçları]{.underline}:\
+macOS üzerinde "nix with home-manager", yadm\
+(Eski VIM kullanıcısı ayrıca Spacemacs kullanmış biri olarak)\
+Emacs üzerinde doom-emacs, org-mode, org-journal, org-roam\
+magit, forge, github-review, weechat, wee-slack\
 
-#### İçindekiler:
-* [Giriş](#1-giri%C5%9F)
-    * [Kurulum](#11-kurulum)
-    * [Korkmayın](#12-korkmay%C4%B1n)
-    * [Haskell'e Giriş](#13-haskelle-giri%C5%9F)
-        * [Fonksiyon tanımı](#131-fonksiyon-tan%C4%B1m%C4%B1)
-        * [Tip örneği](#132-tip-%C3%B6rne%C4%9Fi)
-* [Temel Haskell](#2-temel-haskell)
-    * [Notasyon](#21-notasyon)
-        * [Aritmetik](#aritmetik)
-        * [Mantıksal](#mant%C4%B1ksal)
-        * [Üslü Sayılar](#%C3%9Csl%C3%BC-say%C4%B1lar)
-        * [Listeler](#listeler)
-        * [Karakter Dizileri](#karakter-dizileri)
-        * [Demetler *(Tuple)*](#demetler-tuple)
-        * [Parantezlerle Baş Etmek](#parantezlerle-ba%C5%9Fa-%C3%87%C4%B1kmak)
-    * [Fonksiyonlar için Faydalı Notasyonlar](#22-fonksiyonlar-i%C3%A7in-faydal%C4%B1-notasyonlar)
-* [Zor Kısım](#3-zor-k%C4%B1s%C4%B1m)
-    * [Fonksiyonel Stil](#31-fonksiyonel-stil)
-        * [Üst Derece Fonksiyonlar](#311-%C3%9Cst-derece-fonksiyonlar)
-    * [Tipler](#32-tipler)
-        * [Tip Çıkarımı](#321-tip-%C3%87%C4%B1kar%C4%B1m%C4%B1)
-        * [Tip Oluşturma](#322-tip-olu%C5%9Fturma)
-        * [Özyinelemeli Tipler *(Recursive types)*](#323-%C3%96zyinelemeli-tipler-recursive-types)
-        * [Ağaçlar](#324-a%C4%9Fa%C3%A7lar)
-    * [Sonsuz Yapılar](#33-sonsuz-yap%C4%B1lar)
-* [Çok Zor Kısım](#4-%C3%87ok-zor-k%C4%B1s%C4%B1m)
-    * [IO ile Baş Etmek](#41-io-ile-ba%C5%9F-etmek)
-    * [IO'nun Püf Noktası](#42-ionun-p%C3%BCf-noktas%C4%B1)
-    * [Monad](#43-monad)
-        * [Maybe Monad'ı](#431-maybe-monad%C4%B1)
-        * [Liste Monad'ı](#432-liste-monad%C4%B1)
-* [Ekler](#5-ekler)
-    * [Sonsuz Ağaçlar Hakkında](#51-sonsuz-a%C4%9Fa%C3%A7lar-hakk%C4%B1nda)
+[Bilgi siteleri]{.underline}:\
+Laarc `www.laarcio`\
+Lobsters `lobsters`\
+Discover Dev `www.discoverdevio`\
+Hacker News `news.ycombinatorcom` \]
 
-***
+### Kendimize Bir Ünite Yapalım
 
-Tüm geliştiricilerin Haskell öğrenmesi gerektiğine inanıyorum. Herkesin süper Haskell ninjası olması gerektiğini düşünmüyorum, ama herkes Haskell'in sahip olduğu farklı yönleri görmeli; Haskell öğrenmek zihninizi acar.
+TL, DR[^1] Haskell öğrenmek için kısa, yoğun bir belge.
 
-Anaakım diller aynı temelleri paylaşırlar:
-* değişkenler
-* döngüler
-* işaretçiler *(pointer)* [^fn-1]
-* veri yapıları, nesneler ve sınıflar (genellikle)
+Tüm geliştiricilerin Haskell öğrenmesi gerektiğine inanıyorum. Herkesin
+süper Haskell ninjası olması gerektiğini düşünmüyorum ancak herkes
+Haskell'in egemen olduğu değişik yönlerini görmeli. Haskell öğrenmek
+belleğinizi açar.
 
-Ama Haskell çok farklıdır. Bu dil daha önceden hiç duymamış olduğum bir sürü kavram kullanıyor. Bu kavramların çoğu daha iyi bir programcı olmanızda yardımcı olacaktır.
+Anaakım diller eş temelleri paylaşırlar:
 
-Haskell öğrenmek zor olabilir, benim için öyleydi. Bu yazıda ben öğrenirken eksik olan şeyleri size sunmaya çalışacağım.
+-   değişken
 
-Bu yazıyı takip etmek zor olacak ve bunu bilerek yapıyorum; Haskell öğrenmenin kısayolu yoktur, zordur ve çaba ister. Ama bunun iyi bir şey olduğuna inanıyorum; Haskell, zor olduğu için ilginç.
+-   döngü
 
-Haskell öğrenmenin klasik yolu şu iki kitabı okumaktır. İlk önce ["Learn You a Haskell"](http://learnyouahaskell.com/) (Haskell Öğrenin) ve sonrasında da ["Real World Haskell"](http://www.realworldhaskell.org/) (Gerçek Dünyada Haskell). Ben de bunun doğru yol olduğuna inanıyorum. Haskell'in doğru düzgün öğrenmek için, bu kitapları ayrıntılı şekilde okumalısınız.
+-   gösterici (*pointer*[^2])
 
-Tersi şekilde, bu yazı Haskell'in ana konularının oldukça kısa ve yoğun bir özeti. Kendim Haskell öğrenirken ihtiyaç duyup bulamadığım bazı bilgileri de ekledim.
+-   veri yapıları, nesneler ile klaslar (genellikle)
+
+Ancak Haskell çok değişiktir. Bu dil daha önceden hiç duymamış olduğum
+bir sürü kavram kullanıyor. Bu kavramların çoğu daha iyi bir programcı
+olmanıza yardım edecektir.
+
+Haskell öğrenmek zor olabilir, benim için öyleydi. Bu yazıda benim
+öğrenme sürecimde eksik olan nesleri size sunmaya çalışacağım.
+
+Bu yazıyı izlemek zor olacak bunu bilerek yapıyorum; Haskell öğrenmenin
+kısayolu yoktur, zor olup çaba ister. Ancak bunun iyi bir nes olduğuna
+inanıyorum; Haskell, zor olduğu için ilginç.
+
+Haskell öğrenmenin klasik yolu şu iki belgeyi okumaktır. İlk önce Learn
+You a Haskell For Greater Good[^3] (İyiliğiniz İçin Bir Haskell Öğrenin)
+sonra da Real World Haskell, O'Reilly [^4] (Gerçek Yaşamda Haskell). Ben
+de bunun doğru yol olduğuna inanıyorum. Haskell'i doğru düzgün öğrenmek
+için bu belgeleri ayrıntılı biçimde okumalısınız.
+
+Tersi biçimde, bu yazı Haskell'in ana konularının oldukça kısa, yoğun
+bir özeti. Kendim Haskell öğrenirken gereksinim duyup bulamadığım kimi
+bilgileri de ekledim.
 
 Bu yazının beş bölümü var:
-* Giriş: Haskell'in insancıl olabildiğini göstermek için bir kısa örnek.
-* Temel Haskell: Haskell söz dizimi ve bazı temel kavramlar.
-* Zor Bölüm:
-    * Fonksiyonel stil; imperatif stilden fonksiyonel stile kademeli bir örnek.
-    * Tipler; tipler ve standard bir ikili ağaç *(binary tree)* örneği.
-    * Sonsuz Yapılar; sonsuz bir ikili ağacı işleyin.
-* Çok Zor Bölüm:
-    * IO ile baş edin; minimal bir örnek.
-    * IO hileleri açıklaması, IO'yu anlamak için ihtiyaç duyduğum gizli detay
-    * Monad'ler, inanılmaz genellenebilirlikleri
-* Ek:
-    * Sonsuz ağaçlar hakkında matematik tabanlı bir tartışma.
 
-> Her `.lhs` ile biten bir dosya isimli ayırıcı gördüğünüzde, dosyaya ulaşmak için tıklayabilirsiniz. Dosyayı `dosyaismi.lhs` diye kaydederseniz, `runhaskell dosyaismi.lhs` komutuyla çalıştırabilirsiniz. Bazıları çalışmayabilir ama çoğu çalışacaktır. Aşağıda bir link görebilirsiniz.
-[01_basic/10_Introduction/00_hello_world.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/00_hello_world.lhs)
-(Çevirmen notu: Kodlardaki karakter dizileri Türkçeleştirilmiş, ancak değişken isimleri aynı bırakılmıştır. İndirilen kodlar İngilizce kaynaktan olup Türkçeleştirilmemiş olacaktır.)
+-   Giriş: Haskell'in ince yürekli olabildiğini göstermek için bir kısa
+    örnek.
 
-# 1. Giriş
+-   Temel Haskell: Haskell söz dizimi ile kimi temel kavramlar.
 
-## 1.1. Kurulum
-![Haskell](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/Haskell-logo.png)
+-   Zor Bölüm
 
-Araçlar:
-* `ghc`: `C`'deki gcc gibi bir derleyici.
-* `ghci`: İnteraktif Haskell yorumlayıcısı. (REPL)
-* `runhaskell`: Bir programı derlemeden çalıştırmak için kullanılır. Kolaydır, ama derlenen programlara göre çok yavaştır.
+    -   Fonksiyonel stil; imperatif stilden fonksiyonel stile adım adım
+        ilerleyen bir örnek.
 
-## 1.2. Korkmayın
-![Scream](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/munch_TheScream.jpg)
+    -   Tipler; tipler ile standard bir ikili ağaç *(binary tree)*
+        örneği.
 
-Haskell hakkındaki pek çok kitap/makale az bilinen bir formülü (quick sort, Fibonacci, vs.) yazmakla başlıyor, bense tam tersini yapacağım. İlk önce size Haskell'in süper güçlerini göstermeyeceğim. Haskell ve diğer programlama dilleri arasındaki benzerliklerle başlayacağım. Zorunlu "Merhaba Dünya" programıyla başlayalım.
-```haskell
-main = putStrLn "Merhaba Dünya!"
+    -   Sonsuz Yapılar; sonsuz bir ikili ağacı işleyin.
+
+-   Çok Zor Bölüm
+
+    -   IO ile baş edin; minimal bir örnek.
+
+    -   IO çalımları *tricks* açıklaması, IO'yu anlamak için gereksinim
+        duyduğum gizli detay
+
+    -   Monad'ler, inanılmaz genellenebilirlikleri
+
+-   Ek:
+
+    -   Sonsuz ağaçlara ilişkin matematik temelinde bir tartışma.
+
+Sonu `.lhs` ile biten bir dosya adını her gördüğünüzde, dosyaya ulaşmak
+için üstüne tıklayabilirsiniz (PDF doküman için geçerli değil) Dosyayı
+`dosyaismi.lhs` diye saklarsanız, `runhaskell dosyaadi.lhs` komutuyla
+çalıştırabilirsiniz.
+
+Kimileri çalışmayabilir ancak çoğu çalışacaktır. Aşağıda linki
+görebilirsiniz[^5]
+
+(Çevirmen notu: Kodlardaki karakter dizileri Türkçeleştirilmiş, ancak
+değişken adları olduğu gibi bırakılmıştır. İndirilen kodlar İngilizce
+kaynaktan olup Türkçeleştirilmemiş olacaktır.)
+
+### Giriş {#giriux15f}
+
+#### Kurulum için gerekli araçlar: {#kurulum}
+
+-   `ghc`: `C`'deki gcc gibi bir derleyici.
+
+-   `ghci`: Etkileşimli (*interaktif*) Haskell yorumlayıcısı. (REPL,
+    Read Evaluate, Print Loop)
+
+-   `runhaskell`: Bir programı derlemeden çalıştırmak için kullanılır.
+
+#### Korkmayın {#korkmayux131n}
+
+![Scream](img/munch_scream.jpg){width="0.4\\linewidth"}
+
+Haskell üzerine pek çok belge/anlatı az bilinen bir formülü (quick sort,
+Fibonacci, de bunun gibi) yazmakla başlar, ben bunun direkt tersini
+yapacağım. İlk önce size Haskell'in süper güçlerini göstermeyeceğim.
+Haskell ile öteki programlama dilleri arasındaki benzerliklerle
+başlayacağım. Zorunlu "İyi Günler Eyge" programıyla başlayalım.
+
+``` {.haskell language="Haskell"}
+main = putStrLn "Iyi Gunler Eyge!"
 ```
-Çalıştırmak için, kodu `merhaba.hs` olarak kaydedip şu komutları kullanabilirsiniz:
+
+Çalıştırmak için, kodu `iyigun.hs` olarak saklayıp şu komutları
+kullanabilirsiniz:
+
+``` {.shell language="shell" numbers="none" nolol=""}
+~ runhaskell ./iyigun.hs
+  Iyi Gunler Eyge!
 ```
-~ runhaskell ./merhaba.hs
-Merhaba Dünya!
-```
-Doğrudan kaynak kodunu da indirebilirsiniz. Aşağıdaki komutların hemen altında linki görüp, `00_hello_world.lhs` olarak kaydedip bu komutlarla çalıştırabilirsiniz:
-```
+
+Doğrudan kaynak kodunu da indirebilirsiniz. Aşağıdaki komutların hemen
+altında linki görüp, `00_hello_world.lhs` olarak saklayıp bu komutlarla
+çalıştırabilirsiniz:
+
+``` {.shell language="shell" numbers="none" nolol=""}
 ~ runhaskell 00_hello_world.lhs
-Hello World!
+  Hello World!
 ```
-[01_basic/10_Introduction/00_hello_world.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/00_hello_world.lhs)
 
-***
+Şimdi, adınızı sorup aldığı yanıtla size "Iyi Gunler" diyen bir program
+yazalım:
 
-[01_basic/10_Introduction/10_hello_you.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/10_hello_you.lhs)
-Şimdi, adınızı soran ve aldığı cevapla size "Merhaba" diyen bir program yazalım:
-```haskell
+``` {.haskell language="Haskell"}
 main = do
-    print "Adiniz nedir?"
-    name <- getLine
-    print ("Merhaba " ++ name ++ "!")
+print "Adiniz nedir?"
+name <- getLine
+print ("Iyi gunler, " ++ name ++ "!")
 ```
-Öncelikle, bunu birkaç imperatif dildeki benzer programlarla karşılaştıralım:
-```python
-# Python
+
+``` {.shell language="shell" numbers="none" nolol=""}
+user>> ghc -o hello_you hello.hs
+user>> ./hello_you Erkan
+ Iyi günler, Erkan!
+```
+
+Öncelikle, bunu birkaç imperatif dildeki benzer programlarla
+karşılaştıralım:
+
+``` {.python language="Python"}
+# Python (2?)
 print "Adiniz nedir?"
 name = raw_input()
-print "Merhaba %s!" % name
+print "Iyi Gunler %s!" % name
 ```
 
-```ruby
+``` {.ruby language="Ruby"}
 # Ruby
 puts "Adiniz nedir?"
 name = gets.chomp
-puts "Merhaba #{name}!"
+puts "Iyi Gunler #{name}!"
 ```
 
-```c
-// In C
+``` {.[ANSI]C language="[ANSI]C" tabsize="2" escapeinside="||"}
+// C
 #include <stdio.h>
 int main (int argc, char **argv) {
-    char name[666]; // <- musibetli sayi!
-    // Adim 665 karakterden fazlaysa ne olacak?
-    printf("Adiniz nedir?\n");
-    scanf("%s", name);
-    printf("Merhaba %s!\n", name);
-    return 0;
+  char name[666]; // <- zorlu sayi!
+  // Adim 665 karakterden çoksa ne olacak?
+  printf("Adiniz nedir?\n");
+  scanf("%s", name);
+  printf("Iyi Gunler %s!\n", name);
+  return 0;
 }
 ```
 
-Yapı aynı, ama söz dizimsel farklılıklar var. Bu yazının ana kısmı bu farkların sebebini açıklamak üzerine olacak.
+Yapı özdeş ancak söz dizimsel değişiklikler var. Bu yazının ana kousu bu
+değişikliklerin nedenini açıklamak üzerine olacak.
 
-Haskell'de bir `main` fonksiyonu vardır ve her nesnenin bir tipi vardır. `main`'in tipi `IO ()`'dur. Bu, `main` yan etkilerde bulunacak demektir.
+Haskell'de bir `main` fonksiyonu var olup her nesnenin bir tipi vardır.
+`main`'in tipi `IO ()`'dur. Bu, `main` yan etkilerde bulunacak demektir.
 
-Şimdilik, Haskell'in anaakım imperatif dillere benzer görünebileceğini hatırlamanız yeterli.
+Şimdilik, Haskell'in anaakım imperatif dillere benzer görünebileceğini
+anımsamanız yeterli.
 
-[01_basic/10_Introduction/10_hello_you.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/10_hello_you.lhs)
+#### Haskell'e Giriş {#haskelle-giriux15f}
 
-***
-[01_basic/10_Introduction/20_very_basic.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/20_very_basic.lhs)
+![Very Basic](img/picasso_owl.jpg)
 
-## 1.3. Haskell'e Giriş
-![Very Basic](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/picasso_owl.jpg)
+İlerlemeden önce, Haskell'in kimi temel özelliklerinin bilincine
+varmanız gerekiyor.
 
-Devam etmeden önce, Haskell'in bazı temel özelliklerinin farkına varmanız gerekiyor.
+###### Fonksiyonel
 
-#### Fonksiyonel
-Haskell fonksiyonel bir dildir. Eğer imperatif bir dilde geçmişiniz varsa, yeni bir sürü şey öğrenmeniz gerekiyor. Umarım bu yeni kavramlar size imperatif dillerde program yazarken bile yardımcı olur.
+[]{#fonksiyonel label="fonksiyonel"}
 
-#### Akıllı Statik Tip Sistemi
+Haskell fonksiyonel bir dildir. İmperatif bir dil geçmişiniz varsa, bir
+sürü yeni nes öğrenmeniz gerekiyor. Umarım bu yeni kavramlar size
+imperatif dillerde program yazarken bile yardımcı olur.
 
-Tip sistemi, `C`'de, `C++`'ta, `Java`'da olduğu gibi sizi engellemek yerine, size yardım etmek için var.
+###### Akıllı Statik Tip Sistemi
 
-#### Saflık
-Genellikle fonksiyonlarınız dış dünyada bir şeyi değiştirmeyecekler. Bu demek oluyor ki, bir değişkenin değerini değiştiremeyecekler, kullanıcıdan girdi alamayacaklar, ekrana yazı yazamayacaklar, veya bir füzeyi ateşleyemeyecekler. Diğer yandan, paralellik sağlamak çok kolay olacak. Haskell nerede yan etkilerin olduğunun ve nerede kodunuzun saf olduğunun ayrımını çok açık bir şekilde yapar. Ayrıca, programınız hakkında mantık yürütmek de çok daha kolay olur. Çoğu hata, kodunuzun saf kısmında engellecektir.
+[]{#akux131llux131-statik-tip-sistemi
+label="akux131llux131-statik-tip-sistemi"}
 
-Daha da ötesi, Haskell'de saf fonksiyonlar temel bir kural izlerler:
-> Bir fonksiyona aynı parametreleri vermek her zaman aynı değerleri döndürür.
+Tip sistemi, `C`'de, `C++`'ta, `Java`'da olduğu gibi sizi engellemek
+yerine size yardım etmek için vardır.
 
-#### Tembellik
-Tembellik, genelde alışılmadık bir dil tasarım tercihidir. Haskell'de varsayılan olarak her şey sadece ihtiyaç olduğunda hesaplanır / işlenir. Bunun sonuçlarından biri de sonsuz yapıları işlemek için çok mükemmel bir yol sunmasıdır.
+###### Arılık
 
-Son uyarı da Haskell kodunu nasıl okumanız gerektiğiyle ilgili. Benim için, bilimsel makaleleri okumak gibi. Bazı kısımları çok açık, ama bir formül gördünüzde odaklanın ve yavaşça okuyun. Ayrıca, Haskell öğrenirken, garip söz dizimsel detayları anlamamanız *gerçekten* önemli değil. Ama eğer `>>=`, `<$>`, `<-` v.b. herhangi bir garip sembol görürseniz, görmezden gelin ve kodun akışını takip edin.
+[]{#saflux131k label="saflux131k"}
 
-### 1.3.1. Fonksiyon tanımı
-Şu şekilde fonksiyon tanımlamaya alışmış olabilirsiniz:
+Genellikle fonksiyonlarınız dış ortamda bir nesi değiştirmeyecekler. Bu
+demek oluyor ki, bir değişkenin değerini değiştiremeyecekler,
+kullanıcıdan girdi alamayacaklar, ekrana yazı yazamayacaklar, yada bir
+füzeyi ateşleyemeyecekler. Öte yandan, paralellik sağlamak çok kolay
+olacak. Haskell kodunuzun nerede yan etkileri olduğunun, nerede arı
+olduğunun ayrımını çok açık bir biçimde yapar. Ayrıca, programınız
+üzerine us yürütmek de çok daha kolay olur. Çoğu yanıl, kodunuzun yalın
+bölümünde engellecektir. (Most bugs will be prevented in the pure parts
+of your program.) Daha da ötesi, Haskell'de saf fonksiyonlar temel bir
+kural izlerler: Bir fonksiyona özdeş parametreler vermek hep özdeş
+değerler döndürür.
 
-C'de:
-```c
+###### Üşengeçlik
+
+[]{#üsengeclik label="üsengeclik"}
+
+Üşengeçlik, genelde alışılmadık bir dil tasarım seçimidir. Haskell'de
+varsayılan işlem olarak her nes yalnızca gereksinim olduğunca işlenir.
+Bunun sonuçlarından biri, sonsuz yapıları işlemek için çok kusursuz bir
+yol sunmasıdır.
+
+Son uyarı da Haskell kodunu hangi yöntemle okumanız gerektiği üzerine.
+Benim için, bilimsel anlatıları okumak gibi. Kimi bölümleri çok açık
+ancak bir formül gördünüzde odaklanarak yavaşça okuyun. Ayrıca, Haskell
+öğrenirken, sıradışı söz dizimsel (*syntactical*) detayları anlamamanız
+*gerçekten* önemli değil. Ancak `>>=`, `<$>`, `<-` de bunun gibi
+herhangi bir değişik sembol görürseniz, görmezden gelip kodun akışını
+izleyin.
+
+##### Fonksiyon tanımı {#fonksiyon-tanux131mux131}
+
+Şu biçimde fonksiyon tanımlamaya alışmış olabilirsiniz:
+
+C:
+
+``` {.[ANSI]C language="[ANSI]C" tabsize="2" escapeinside="||"}
 int f(int x, int y) {
     return x*x + y*y;
-}
+  }
 ```
 
-JavaScript'te:
-```javascript
+JavaScript:
+
+``` {.Javascript language="Javascript"}
 function f(x,y) {
     return x*x + y*y;
-}
+  }
 ```
 
-Python'da:
-```python
+Python:
+
+``` {.python language="Python"}
 def f(x,y):
-    return x*x + y*y
+  return x*x + y*y
 ```
 
-Ruby'de:
-```ruby
+Ruby:
+
+``` {.ruby language="Ruby"}
 def f(x,y)
     x*x + y*y
-end
+  end
 ```
 
-Scheme'de:
-```scheme
+Scheme:
+
+``` {.Scheme language="Scheme"}
 (define (f x y)
     (+ (* x x) (* y y)))
 ```
 
 Son olarak, Haskell yolu da budur:
-```haskell
+
+``` {.haskell language="Haskell"}
 f x y = x*x + y*y
 ```
 
-Tertemiz. Parantez yok, `def` yok.
+Yalın. Parantez yok, `def` yok.
 
-Unutmayın, Haskell fonksiyonları ve tipleri sıkça kullanır. Bu yüzden, onları tanımlamak oldukça kolaydır. Söz dizimi, özellikle öyle düşünülmüştür.
+Unutmayın, Haskell fonksiyonlar ile tipleri sıkça kullanır. Bu yüzden,
+onları tanımlamak oldukça kolaydır. Söz dizimi, gereklilik nedeniyle
+özellikle öyle düşünülmüştür.
 
-### 1.3.2. Tip örneği
+##### Tip örneği {#tip-uxf6rneux11fi}
 
-Zorunlu olmamasına rağmen, fonksiyonlar için tip bilgisi genellikle ayrıca girilir. Zorunlu değildir, çünkü derleyici sizin için çıkarım yapacak kadar akıllıdır. Yine de tipleri yazmak iyi bir fikirdir, çünkü kodun anlaşılmasına yardımcı olur.
+Zorunlu olmasa da, fonksiyonlar için tip bilgisi genellikle ayrıca
+girilir. Zorunlu değildir, çünkü derleyici sizin için çıkarım yapacak
+kadar soybağdır. Yine de tipleri yazmak iyi bir düşüncedir, çünkü kodun
+anlaşılmasına yardımcı olur.
 
-Bakalım nasıl oluyormuş:
+Bakalım ne yolla oluyormuş:
 
-```haskell
--- Tipleri belirtmek icin :: isaretini kullaniyoruz
-f :: Int -> Int -> Int
-f x y = x*x + y*y
-
-main = print (f 2 3)
+``` {.haskell language="Haskell"}
+-- Tipleri belirtmek icin :: imini kullaniyoruz
+  f :: Int -> Int -> Int
+  f x y = x*x + y*y
+  main = print (f 2 3)
 ```
 
-```
+``` {.shell language="shell" numbers="none" nolol=""}
 ~ runhaskell 20_very_basic.lhs
-13
+  13
 ```
-[01_basic/10_Introduction/20_very_basic.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/20_very_basic.lhs)
-
-***
-[01_basic/10_Introduction/21_very_basic.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/21_very_basic.lhs)
 
 Şimdi bunu deneyelim:
 
-```haskell
+``` {.haskell language="Haskell"}
 f :: Int -> Int -> Int
-f x y = x*x + y*y
-
-main = print (f 2.3 4.2)
+  f x y = x*x + y*y
+  main = print (f 2.3 4.2)
 ```
 
-Şu hatayı almış olmalısınız:
+Şu yanılı almış olmalısınız:
 
-```
+``` {.shell language="shell" numbers="none" nolol=""}
 21_very_basic.lhs:6:23:
-    No instance for (Fractional Int)
-      arising from the literal `4.2'
-    Possible fix: add an instance declaration for (Fractional Int)
-    In the second argument of `f', namely `4.2'
-    In the first argument of `print', namely `(f 2.3 4.2)'
-    In the expression: print (f 2.3 4.2)
+  No instance for (Fractional Int)
+  arising from the literal `4.2'
+  Possible fix: add an instance declaration for (Fractional Int)
+  In the second argument of `f', namely `4.2'
+  In the first argument of `print', namely `(f 2.3 4.2)'
+  In the expression: print (f 2.3 4.2)
 ```
-Sorun şu: `4.2` bir tam sayı (Int) değil.
 
-[01_basic/10_Introduction/21_very_basic.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/21_very_basic.lhs)
+Sorun şu ki `4.2` bir tüm sayı (Int) değil. Çözümü ise: `f` fonksiyonu
+için şimdilik bir tip belirtmeyerek, tip çıkarımını Haskell'e bırakmak.
 
-***
-
-[01_basic/10_Introduction/22_very_basic.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/22_very_basic.lhs)
-
-Çözümü de şu: `f` fonksiyonu için şimdilik bir tip belirtmeyelim ve Haskell'in tip çıkarımı yapmasına izin verelim.
-
-```haskell
+``` {.haskell language="Haskell"}
 f x y = x*x + y*y
-
-main = print (f 2.3 4.2)
+  main = print (f 2.3 4.2)
 ```
 
-Çalışıyor! Ne şanslıyız ki, her tip için yeni bir fonksiyon tanımlamak zorunda değiliz. Örneğin `C`'de, `int` için, `float` için, `long` için, `double` için vs. ayrı ayrı fonksiyon tanımlamak zorundayız.
+Çalışıyor! Ne şanslıyız ki, her tip için yeni bir fonksiyon tanımlamak
+zorunda değiliz. Örneğin `C`'de, `int` için, `float` için, `long` için,
+`double` için de bunun gibi ayrı ayrı fonksiyon tanımlamak zorundayız.
 
-Peki hangi tipi belirtmeliydik? Haskell'in bizim için bulduğu tipi görmek için `ghci`'yi başlatın:
+Peki hangi tipi belirtmeliydik? Haskell'in bizim için bulduğu tipi
+görmek için `ghci`'yi başlatın:
 
-```
-% ghci
+``` {.shell language="shell" numbers="none" nolol=""}
 GHCi, version 7.0.4: http://www.haskell.org/ghc/  :? for help
-Loading package ghc-prim ... linking ... done.
-Loading package integer-gmp ... linking ... done.
-Loading package base ... linking ... done.
-Loading package ffi-1.0 ... linking ... done.
-Prelude> let f x y = x*x + y*y
-Prelude> :type f
-f :: Num a => a -> a -> a
+  Loading package ghc-prim ... linking ... done.
+  Loading package integer-gmp ... linking ... done.
+  Loading package base ... linking ... done.
+  Loading package ffi-1.0 ... linking ... done.
+  Prelude> let f x y = x*x + y*y
+  Prelude> :type f
+  f :: Num a => a -> a -> a
 ```
 
-Hi? Bu garip tip de neyin nesi?
+Ne? Bu değişik tip de neyin nesi?
 
-```
+``` {.haskell language="Haskell"}
 Num a => a -> a -> a
 ```
 
-İlk önce, sağdaki `a -> a -> a` kısmına bakalım. Anlamak için kademeli olarak şu örnekleri inceleyelim:
+İlk önce, sağdaki `a -> a -> a` bölgesine bakalım. Anlamak için adım
+adım ilerleyerek şu örnekleri inceleyelim:
 
-| Yazılı Tip   | Anlamı                                                                  |
-| ------------ | ----------------------------------------------------------------------- |
-| Int          | Int tipi                                                                |
-| Int -> Int   | Int'ten Int'e olan fonksiyon tipi                                       |
-| Float -> Int | Float'tan Int'e olan fonksiyon tipi                                     |
-| a -> Int     | herhangi bir tipten Int'e olan fonksiyon tipi                           |
-| a -> a       | herhangi bir a tipinden aynı a tipine olan fonksiyon tipi               |
-| a -> a -> a  | herhangi bir a tipinden iki argümanın aynı a tipine olan fonksiyon tipi |
+  Yazılı Tip      Anlamı
+  --------------- --------------------------------------------------------------------------
+  Int             Int tipi
+  Int -\> Int     Int'ten Int'e olan fonksiyon tipi
+  Float -\> Int   Float'tan Int'e olan fonksiyon tipi
+  a -\> Int       herhangi bir tipten Int'e olan fonksiyon tipi
+  a -\> a         herhangi bir a tipinden özdeş a tipine olan fonksiyon tipi
+  a -\> a -\> a   herhangi bir a tipinden iki argümanın özdeş a tipine olan fonksiyon tipi
 
-`a -> a -> a` tipinde, `a` harfine tip değişkeni diyoruz. *(type variable)*. Bu `f`'nin iki argümanı olduğu, ve girilen argümanlar ve fonksiyon sonucunun aynı tipten olduğu anlamına geliyor. Tip değişkeni `a`, başka bir sürü değer alabilir. Örneğin `Int`, `Integer`, `Float`...
+`a -> a -> a` 'da `a` imine tip değişkeni diyoruz. *(type variable)*. Bu
+`f`'nin iki argümanı olduğu, girilen argümanlar ile fonksiyon sonucunun
+özdeş tipten olduğu anlamına geliyor. Tip değişkeni `a`, başka bir sürü
+değer alabilir. Örneğin `Int`, `Integer`, `Float`...
 
-Yani `C`'deki gibi zorunlu olarak bir fonksiyon için `int`, `long`, `float`, `double` vs. gibi tip belirtmek yerine, herhangi bir dinamik tip sistemli dil gibi sadece bir fonksiyon tanımlıyoruz.
+Dolayısıyla `C` 'deki gibi zorunlu olarak bir fonksiyon için `int`,
+`long`, `float`, `double` de bunun gibi tip belirtmek yerine, herhangi
+bir dinamik tip tabanlı dilde olduğu gibi yalnızca bir fonksiyon
+tanımlıyoruz.
 
-Buna bazen parametrik çokşekillilik *(parametric polymorphism)* de deniyor. Hayatta her istediğinizin olması gibi bir şey.
+Buna kimileyin parametrik çokbiçimlilik *(parametric polymorphism)* de
+deniyor. Yaşamda her istediğinizin olması gibi bir nes.
 
-Genellikle `a` herhangi bir tip olabilir, örneğin `String` veya `Int`, ama `Trees` gibi daha karışık tipler, başka fonksiyonlar da olabilir. Ama buradaki tipimiz `Num a =>` ile başlıyor.
+Genellikle `a` herhangi bir tip olabilir, örneğin `String` yada `Int`,
+ancak `Trees` gibi daha karışık tipler, başka fonksiyonlar da olabilir.
+Ancak buradaki tipimiz `Num a =>` ile başlıyor.
 
-`Num` bir tip sınıfı. *(type class)*. Tip sınıfları tip grupları gibi düşünülebilir. `Num` sınıfı sadece sayı gibi davranan tipleri içerir. Daha doğrusu, `Num`, belli bir fonksiyon listesinin, özellikle `(+)` ve `(*)` fonksiyonlarının, etki ettiği sınıftır.
+`Num` bir tip klası. *(type class)*. Tip klasları tip grupları gibi
+düşünülebilir. `Num` klası yalnızca sayı gibi davranan tipleri içerir.
+Daha doğrusu, `Num`, belli bir fonksiyon listesinin, özellikle `(+)` ve
+`(*)` fonksiyonlarının, etki ettiği klastır.
 
-Tip sınıfları güçlü bir dil yapısıdır. Onlarla inanılmaz güçlü şeyler yapabiliriz. Buna daha sonra tekrar değineceğiz.
+Tip sınıfları güçlü bir dil yapısıdır. Onlarla inanılmaz güçlü nesler
+yapabiliriz. Buna daha sonra yine değineceğiz.
 
 Sonuç olarak, `Num a => a -> a -> a` şu demek oluyor:
 
-Diyelim ki `a`, `Num` tip sınıfına ait bir tip. Bu da `a` tipinden `a -> a` tipine bir fonksiyon.
+Diyelim ki `a`, `Num` tip klasına ait bir tip. Bu da `a` tipinden
+`a -> a` tipine bir fonksiyon.
 
-Evet, garip. Aslında Haskell'de hiçbir fonksiyonun gerçekten iki argümanı yoktur. Onun yerine, her fonksiyonun sadece bir argümanı vardır. Ama hatırlamalıyız ki iki argüman almakla, bir argüman alıp ikinci argümanı bir parametre olarak alan bir fonksiyon döndürmek denk şeylerdir.
+Evet, beklenenden değişik. Esasında Haskell'de hiçbir fonksiyonun
+gerçekten iki argümanı yoktur. Onun yerine, her fonksiyonun yalnızca bir
+argümanı vardır. Ancak anımsamalıyız ki iki argüman almakla, bir argüman
+alıp ikinci argümanı bir parametre olarak alan bir fonksiyon döndürmek
+denk şeylerdir.
 
-Daha açık olmak gerekirse, `f 3 4`, `(f 3) 4`'e denktir. `f 3`'un de bir fonksiyon olduğuna dikkat edin:
+Daha açık olmak gerekirse, `f 3 4`, `(f 3) 4`'e denktir. `f 3`'un de bir
+fonksiyon olduğunu gözlemleyin:
 
-```haskell
+``` {.haskell language="Haskell"}
 f :: Num a => a -> a -> a
 
-g :: Num a => a -> a
-g = f 3
+  g :: Num a => a -> a
+  g = f 3
 
-g y ⇔ 3*3 + y*y
+  g y ⇔ 3*3 + y*y
 ```
 
-Fonksiyonlar için bir notasyon daha var. Lambda notasyonu isimsiz fonksiyonlar yaratmamıza olanak sağlar. Bunlara anonim fonksiyonlar diyoruz. Aynı şeyi lambda notasyonuyla şöyle de yazabilirdik:
+Fonksiyonlar için bir notasyon daha var. Lambda notasyonu adsız
+fonksiyonlar yaratmamıza olanak sağlar. Bunlara anonim fonksiyonlar
+diyoruz. Özdeş nesi lambda notasyonu (gösterimi) ile şöyle de
+yazabilirdik:
 
-```haskell
+``` {.haskell language="Haskell"}
 g = \y -> 3*3 + y*y
 ```
 
-Burada `\` kullanılıyor, çünkü `λ` (lambda) harfine benziyor, ve aynı zamanda ASCII dizisine dahil.
+Burada \\ kullanılıyor, çünkü λ (lambda) imine benzemekte olup ayrıca
+ASCII dizisinin içindedir.
 
-Eğer fonksiyonel programlamaya alışık değilseniz beyniniz yanmaya başlamış olmalı. Artık gerçek bir uygulama yazma zamanı.
+Fonksiyonel programlamaya alışık değilseniz beyniniz yanmaya başlamış
+olmalı. Artık gerçek bir uygulama yazma anı.
 
-[01_basic/10_Introduction/22_very_basic.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/22_very_basic.lhs)
+Ancak ondan önce, tip sisteminin beklediğimiz gibi çalıştığını
+doğrulayalım:
 
-***
-
-[01_basic/10_Introduction/23_very_basic.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/23_very_basic.lhs)
-
-Ama ondan önce, tip sisteminin beklediğimiz gibi çalıştığını doğrulayalım:
-
-```haskell
+``` {.haskell language="Haskell"}
 f :: Num a => a -> a -> a
-f x y = x*x + y*y
+  f x y = x*x + y*y
 
-main = print (f 3 2.4)
+  main = print (f 3 2.4)
 ```
 
-Çalışıyor, çünkü `3` hem `Float` gibi kesirli *(Fractional)* sayılar için, hem de `Integer` (tam sayı tipi) için geçerli bir gösterim. `2.4` kesirli bir sayı olduğu için `3` de kesirli bir sayı olarak yorumlanıyor.
+Çalışıyor, çünkü `3` hem `Float` gibi rasyonel *(Fractional)* sayılar
+için, hem de `Integer` (tüm sayı tipi) için geçerli bir gösterim. `2.4`
+rasyonel bir sayı olduğu için `3` de rasyonel bir sayı olarak
+yorumlanıyor.
 
-[01_basic/10_Introduction/23_very_basic.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/23_very_basic.lhs)
+Fonksiyonumuzu birbirinden değişik tiplerle çalışmaya zorlarsak, yanıl
+verecektir:
 
-***
-
-[01_basic/10_Introduction/24_very_basic.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/24_very_basic.lhs)
-
-Eğer fonksiyonumuzu farklı tiplerle çalışmaya zorlarsak, hata verecektir:
-
-```haskell
+``` {.haskell language="Haskell"}
 f :: Num a => a -> a -> a
-f x y = x*x + y*y
+  f x y = x*x + y*y
 
-x :: Int
-x = 3
-y :: Float
-y = 2.4
-main = print (f x y) -- calismayacak, cunku tip x ≠ tip y
+  x :: Int
+  x = 3
+  y :: Float
+  y = 2.4
+  main = print (f x y) -- calismayacak, cunku tip x ≠ tip y
 ```
 
-Derleyici hata veriyor. İki parametre de aynı tipten olmak zorunda.
+Derleyici yanıl veriyor. İki parametre de özdeş tipten olmak zorunda.
 
-Eğer bunun kötü bir fikir olduğunu ve derleyicinin sizin için bir tipten diğerine dönüşümü yapması gerektiğini düşünüyorsanız, bu müthiş (ve komik) videoyu mutlaka izlemelisiniz: [WAT](https://www.destroyallsoftware.com/talks/wat)
+Bunun kötü bir düşünce olduğunu, derleyicinin sizin için bir tipten
+ötekine dönüşümü yapması gerektiğini düşünüyorsanız, WAT[^6] adlı
+korkunç ayrıca komik videoyu kesinlikle izlemelisiniz:
 
-[01_basic/10_Introduction/24_very_basic.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/24_very_basic.lhs)
+### Temel Haskell
 
+![Essential](img/kandinsky_gugg.jpg){width="0.6\\linewidth"}
 
-# 2. Temel Haskell
+Bu bölüme yalnızca göz gezdirmenizi öneriyorum. Her an yararlanacağınız
+bir kaynak gibi düşünün. Haskell'in birçok özelliği vardır. Burada da
+pek çoğu eksik. Notasyon alışılmadık gelirse yine buraya dönün.
 
-![Essential](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/kandinsky_gugg.jpg)
+İki deyimin denk olduğunu belirtmek için $\Leftrightarrow$ imini
+kullanıyorum. Bu yapma notasyon: $\Leftrightarrow$ Haskell'de yoktur.
+Özdeş biçimde, bir deyimin kalküle edilen değerinin ne olduğunu
+belirtmek için de $\Rightarrow$ imini kullanacağım.
 
-Bu kısma yalnızca göz gezdirmenizi tavsiye ediyorum. Her zaman yararlanacağınız bir kaynak gibi düşünün. Haskell'in birçok özelliği vardır. Burada da pek çoğu eksik. Eğer notasyon garip gelirse tekrar buraya dönün.
+#### Notasyon
 
-İki ifadenin denk olduğunu belirtmek için `⇔` işaretini kullanıyorum. Bu sahte bir notasyon, `⇔` Haskell'de mevcut değil. Aynı şekilde, bir ifadenin hesaplanan değerinin ne olduğunu belirtmek için de `⇒` işaretini kullanacağım.
+##### Aritmetik Notasyon {#aritmetik}
 
-## 2.1. Notasyon
+$$3 + 2 * 6 / 3 \Leftrightarrow 3 + ((2*6)/3)$$
 
-### Aritmetik
+##### Usbilimsel Notasyon {#mantux131ksal}
 
-``` haskell
-3 + 2 * 6 / 3 ⇔ 3 + ((2*6)/3)
-```
+$$\Palatino
+\begin{aligned}
+True\, ||\,   False   &\Rightarrow True\\
+True\, \&\&\, False   &\Rightarrow False\\
+True\, ==\,   False   &\Rightarrow False\\
+True\, /=\,   False   &\Rightarrow True\, (/=)\, esit\, degil\, operatorudur
+\end{aligned}$$
 
-### Mantıksal
+##### Üslü Sayılar {#uxfcsluxfc-sayux131lar}
 
-```haskell
-True || False ⇒ True
-True && False ⇒ False
-True == False ⇒ False
-True /= False ⇒ True  (/=) esit degildir operatorudur
-```
-
-### Üslü Sayılar
-
-```haskell
-x^n     herhangi bir n integral tipi icin (Int veya Integer olarak anlayin)
-x**y    herhangi bir y sayi tipi icin (ornegin Float)
+``` {.haskell language="Haskell"}
+x^n     herhangi bir n integral tipi icin (Int yada Integer olarak anlayin)
+  x**y    herhangi bir y sayi tipi icin (ornegin Float)
 ```
 
 `Integer`'ın bilgisayarınızın kapasitesi dışında bir sınırı yoktur.
 
-```
+``` {.shell language="shell" numbers="none" nolol=""}
 4^103
-102844034832575377634685573909834406561420991602098741459288064
+  102844034832575377634685573909834406561420991602098741459288064
 ```
 
-Evet! Ayrıca rasyonel sayılar da var! Ama önce `Data.Ratio` modülünü içeri aktarmanız gerekiyor:
+Evet! Ayrıca rasyonel sayılar da var! Yine de önce `Data.Ratio` modülünü
+içeri aktarmanız gerekiyor:
 
-```
+``` {.shell language="shell" numbers="none" nolol=""}
 $ ghci
-....
-Prelude> :m Data.Ratio
-Data.Ratio> (11 % 15) * (5 % 3)
-11 % 9
+  ....
+  Prelude> :m Data.Ratio
+  Data.Ratio> (11 \% 15) * (5 % 3)
+  11 % 9
 ```
 
-### Listeler
+##### Listeler
 
-```
+``` {.shell language="shell" numbers="none" nolol=""}
 []                      ⇔ bos liste
-[1,2,3]                 ⇔ integral listesi
-["foo","bar","baz"]     ⇔ String listesi
-1:[2,3]                 ⇔ [1,2,3], (:) bir elemani one ekleme
-1:2:[]                  ⇔ [1,2]
-[1,2] ++ [3,4]          ⇔ [1,2,3,4], (++) birlestirme
-[1,2,3] ++ ["foo"]      ⇔ HATA String ≠ Integral
-[1..4]                  ⇔ [1,2,3,4]
-[1,3..10]               ⇔ [1,3,5,7,9]
-[2,3,5,7,11..100]       ⇔ HATA! O kadar da akilli degilim!
-[10,9..1]               ⇔ [10,9,8,7,6,5,4,3,2,1]
+  [1,2,3]                 ⇔ integral listesi
+  ["foo","bar","baz"]     ⇔ String listesi
+  1:[2,3]                 ⇔ [1,2,3], (:) bir elemani one ekleme
+  1:2:[]                  ⇔ [1,2]
+  [1,2] ++ [3,4]          ⇔ [1,2,3,4], (++) birlestirme
+  [1,2,3] ++ ["foo"]      ⇔ YANIL! String ≠ Integral
+  [1..4]                  ⇔ [1,2,3,4]
+  [1,3..10]               ⇔ [1,3,5,7,9]
+  [2,3,5,7,11..100]       ⇔ YANIL! O denli soybağ degilim!
+  [10,9..1]               ⇔ [10,9,8,7,6,5,4,3,2,1]
 ```
 
-### Karakter Dizileri
+##### Karakter Dizileri
 
 Haskell'de `String` tipi, `Char` tipinden oluşmuş listeye denktir.
 
-```
-'a' :: Char
-"a" :: [Char]
-""    ⇔ []
-"ab"  ⇔ ['a','b'] ⇔  'a':"b" ⇔ 'a':['b'] ⇔ 'a':'b':[]
-"abc" ⇔ "ab"++"c"
-```
+      'a' :: Char
+      "a" :: [Char]
+      ""    ⇔ []
+      "ab"  ⇔ ['a','b'] ⇔  'a':"b" ⇔ 'a':['b'] ⇔ 'a':'b':[]
+      "abc" ⇔ "ab"++"c"
 
-> Dikkat: Gerçek kodda, yazıyı temsil etmek için `Char` listesi kullanmamalısınız. Genel olarak `Data.Text` kullanmalısınız. Eğer ASCİİ karakter akımını *(stream)* temsil etmek istiyorsanız, onun için de `Data.ByteString` kullanmalısınız.
+ÖNEMLİ: Gerçek kodda, yazıyı simgelemek üzere `Char` listesi
+kullanmamalısınız. Genel olarak `Data.Text` kullanmalısınız. ASCII
+karakter akımını *(stream)* simgelemek istiyorsanız, onun için de
+`Data.ByteString` kullanmalısınız.
 
-### Demetler *(Tuple)*
+##### Demetler *(Tuple)*
 
-Bir ikili demetin tipi `(a,b)`'dir. Demetlerdeki elemanlar farklı tipte olabilirler.
+Bir ikili demetin tipi `(a,b)`'dir. Demetlerdeki elemanlar birbirinden
+değişik tipte olabilirler.
 
-```haskell
+``` {.haskell language="Haskell"}
 -- Tum bu demetler gecerlidir
-(2,"foo")
-(3,'a',[2,3])
-((2,"a"),"c",3)
+  (2,"foo")
+  (3,'a',[2,3])
+  ((2,"a"),"c",3)
 
-fst (x,y)       ⇒  x
-snd (x,y)       ⇒  y
+  fst (x,y)       ⇒  x
+  snd (x,y)       ⇒  y
 
-fst (x,y,z)     ⇒  HATA: fst :: (a,b) -> a
-snd (x,y,z)     ⇒  HATA: snd :: (a,b) -> b
+  fst (x,y,z)     ⇒  YANIL: fst :: (a,b) -> a
+  snd (x,y,z)     ⇒  YANIL: snd :: (a,b) -> b
 ```
 
-### Parantezlerle Başa Çıkmak
+##### Parantezlerle Başa Çıkmak {#parantezlerle-baux15fa-uxe7ux131kmak}
 
-Bazı parantezlerden kurtulmak için `($)` ve `(.)` fonksiyonlarını kullanabilirsiniz.
+Parantezlerin kimisinden kurtulmak için `($)` ile `(.)` fonksiyonlarını
+kullanabilirsiniz.
 
-```haskell
--- Aslinda:
-f g h x         ⇔  (((f g) h) x)
+``` {.haskell language="Haskell"}
+-- Esasinda:
+  f g h x         ⇔  (((f g) h) x)
 
--- $ isareti kendisinden ifadenin sonuna
--- kadar olan parantezin yerine gecer
-f g $ h x       ⇔  f g (h x) ⇔ (f g) (h x)
-f $ g h x       ⇔  f (g h x) ⇔ f ((g h) x)
-f $ g $ h x     ⇔  f (g (h x))
+  -- $ imi kendisinden deyimin sonuna
+  -- dek olan parantezin yerine gecer
+  f g $ h x       ⇔  f g (h x) ⇔ (f g) (h x)
+  f $ g h x       ⇔  f (g h x) ⇔ f ((g h) x)
+  f $ g $ h x     ⇔  f (g (h x))
 
--- (.) kompozisyon fonksiyonu
-(f . g) x       ⇔  f (g x)
-(f . g . h) x   ⇔  f (g (h x))
+  -- (.) kompozisyon fonksiyonu
+  (f . g) x       ⇔  f (g x)
+  (f . g . h) x   ⇔  f (g (h x))
 ```
 
-***
+#### Fonksiyonlar için Yararlı Notasyonlar {#fonksiyonlar-iuxe7in-yararlux131-notasyonlar}
 
-[01_basic/20_Essential_Haskell/10a_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/20_Essential_Haskell/10a_Functions.lhs)
+Anımsatma:
 
-## 2.2. Fonksiyonlar için Faydalı Notasyonlar
-
-Hatırlatma:
-
-```haskell
+``` {.haskell language="Haskell"}
 x :: Int            ⇔ x Int tipinde herhangi bir deger alabilir
-x :: a              ⇔ x herhangi bir tip olabilir
-x :: Num a => a     ⇔ x Num tip sinifina dahil olan
-                         herhangi bir a tipi olabilir
-f :: a -> b         ⇔ f a'dan b'ye bir fonksiyondur
-f :: a -> b -> c    ⇔ f a'dan (b→c)'ye bir fonksiyondur
-f :: (a -> b) -> c  ⇔ f (a→b)'den c'ye bir fonksiyondur
+  x :: a              ⇔ x herhangi bir tip olabilir
+  x :: Num a => a     ⇔ x Num tip klasi kapsamında olan
+  herhangi bir a tipi olabilir
+  f :: a -> b         ⇔ f a'dan b'ye bir fonksiyondur
+  f :: a -> b -> c    ⇔ f a'dan (b→c)'ye bir fonksiyondur
+  f :: (a -> b) -> c  ⇔ f (a→b)'den c'ye bir fonksiyondur
 ```
 
-Hatırlayın ki bir fonksiyonu tanımlamadan önce tipini belirtmek zorunlu değil. Haskell genelde tip çıkarımını sizin için kendisi yapar. Ama genelde tipleri belirtmek iyi uygulama olarak görülür.
+Bir fonksiyonu tanımlamadan önce tipini belirtmenin zorunlu olmadığını
+anımsayın. Haskell genelde tip çıkarımını sizin için kendisi yapar.
+Ancak genelde tipleri belirtmek iyi bir pratik olarak görülür.
 
-#### Orta notasyon
+###### Orta notasyon
 
-```haskell
+[]{#orta-notasyon label="orta-notasyon"}
+
+``` {.haskell language="Haskell"}
 square :: Num a => a -> a
-square x = x^2
+  square x = x^2
 ```
 
-`^` işaretinin orta notasyon kullandığına dikkat edin. Her orta notasyon için bir başta notasyon vardır. Sadece parantez içine koymak durumundasınız.
+`^` iminin iç notasyon (*infix notation*) kullandığını özellikle
+gözlemleyin. Her iç notasyona bağlı bir ön notasyon (*prefix notation*)
+vardır. O durumda, onu parantez içine koymalısınız.
 
-```haskell
+``` {.haskell language="Haskell"}
 square' x = (^) x 2
 
-square'' x = (^2) x
+  square'' x = (^2) x
 ```
 
-Soldaki ve sağdaki `x`'leri silebiliriz. Buna η (eta) sadeleştirmesi deniyor.
+Soldaki ile sağdaki `x`'leri silebiliriz. Buna $η$ (eta) indirgemesi
+deniyor.
 
-```haskell
+``` {.haskell language="Haskell"}
 square''' = (^2)
 ```
 
-Değişken isimlerinde `'` kullanabildiğimize dikkat edin.
+Değişken adlarında `'` kullanabildiğimize özel ilgi gösterin
 
-> `square` ⇔ `square'` ⇔ `square''` ⇔ `square'''`
+`square` ⇔ `square'` ⇔ `square''` ⇔ `square'''`
 
-### Testler
+##### Testler
 
-Mutlak değer fonksiyonu yazalım:
+Salt değer (*absolute value*) fonksiyonu yazalım:
 
-```haskell
+``` {.haskell language="Haskell"}
 absolute :: (Ord a, Num a) => a -> a
-absolute x = ıf x >= 0 then x else -x
+  absolute x = ıf x >= 0 then x else -x
 ```
 
-Dikkat edin ki Haskell'deki `if .. then .. else` notasyonu, C'deki `¤?¤:¤` operatörüne çokça benziyor. `else` kısmını unutmanız mümkün değil.
+Özellikle ilgi gösterin ki Haskell'deki `if .. then .. else` notasyonu,
+C'deki `¤?¤:¤` operatörüne bayağı benzer. `else` bölümünü unutmanız
+olası değil.
 
-Denk başka bir versiyonu:
+Başka bir denk versiyonu:
 
-```haskell
+``` {.haskell language="Haskell"}
 absolute' x
-    | x >= 0 = x
-    | otherwise = -x
+  | x >= 0 = x
+  | otherwise = -x
 ```
 
-> Haskell'de paragraf başı / boşluklar önemlidir. Python'daki gibi, kötü boşluklar kodunuzu bozabilir.
+Haskell'de paragraf başı ile boşluklar önemlidir. Python'daki gibi, kötü
+boşluklar kodunuzu bozabilir.
 
-[01_basic/20_Essential_Haskell/10a_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/20_Essential_Haskell/10a_Functions.lhs)
+# Zor Bölüm
 
-# 3. Zor Kısım
+\[Zor bölüm şimdi başlıyor.\][]{#zor-kux131sux131m
+label="zor-kux131sux131m"}
 
-Zor kısım şimdi başlıyor.
+### Fonksiyonel Stil
 
-## 3.1. Fonksiyonel Stil
+![Functional](img/hr_giger_biomechanical_landscape_500.jpg)
 
-![Functional](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/hr_giger_biomechanicallandscape_500.jpg)
-
-Bu bölümde, Haskell'in etkileyici yeniden yapılandırma *(refactoring)* yeteneklerini göreceğiz. Bir problem seçip önce standart imperatif yolla çözeceğiz. Daha sonra kodun evrimini göreceğiz, son hali çok daha zarif ve kolay anlaşılabilir olacak.
+Bu bölümde, Haskell'in etkileyici yeniden yapılandırma *(refactoring)*
+yeteneklerini göreceğiz. Bir problem seçip önce standart imperatif yolla
+çözeceğiz. Daha sonra kodu evrimleştireceğiz. Son durum hem çok daha
+elegant hem de kolay anlaşılabilir olacak.
 
 Aşağıdaki problemi çözelim:
 
-> Verilen bir tam sayı listesindeki çift sayıların toplamını alın.
-> Örnek: `[1,2,3,4,5] ⇒ 2 + 4 ⇒ 6`
+Verilen bir tüm sayı listesindeki düz (*ikiyle kalansız bölünebilen*)
+sayıların toplamını alın. Örnek: `[1,2,3,4,5] ⇒ 2 + 4 ⇒ 6`
 
-Fonksiyonel ve imperatif yaklaşımların arasındaki farkı göstermek için, imperatif çözümü göstererek başlayacağım: (JavaScript'te)
+Fonksiyonel ile imperatif yaklaşımların arasındaki ayrımı göstermek
+üzere, imperatif çözümü göstererek başlayacağım: (JavaScript'te)
 
-```javascript
+``` {.Javascript language="Javascript"}
 function evenSum(list) {
     var result = 0;
     for (var i=0; i< list.length ; i++) {
-        if (list[i] % 2 ==0) {
-            result += list[i];
-        }
+      if (list[i] % 2 ==0) {
+      result += list[i];
     }
-    return result;
-}
+  }
+  return result;
+  }
 ```
 
-Haskell'de, farklı olarak, değişkenler veya `for` döngüleri yoktur. Döngüler olmaksızın aynı sonucu elde etmenin bir yolu özyinelemedir. *(recursion)*
+Haskell'de, öteki dillerden ayrık olarak, değişkenler yada `for`
+döngüleri yoktur. Döngüler olmaksızın özdeş sonucu elde etmenin bir yolu
+özyinel (*recursion*)'dir
 
-> Dikkat: Özyineleme imperatif dillerde genellikle yavaş olarak algılanır. Fonksiyonel programlamada genellikle durum bu değildir. Çoğu zaman Haskell özyinelemeli fonksiyonları verimli şekilde işler.
+Önemli: Özyinel, imperatif dillerde genellikle yavaş olarak algılanır.
+Fonksiyonel programlamada genellikle durum bu değildir. Çoğu kez Haskell
+özyinel fonksiyonları verimli biçimde işler.
 
-İşte özyinelemeli fonksiyonun C versiyonu. Basitlik için tam sayı listesinin ilk `0` değeri ile bittiğini varsaydığıma dikkat edin.
+İşte özyinel fonksiyonun C versiyonu. Kolaylık için tüm sayı listesinin
+ilk `0` değeri ile bittiğini varsaydığımı özellikle gözlemleyin.
 
-```c
+``` {.[ANSI]C language="[ANSI]C" tabsize="2" escapeinside="||"}
 int evenSum(int *list) {
-    return accumSum(0,list);
-}
-
-int accumSum(int n, int *list) {
-    int x;
-    int *xs;
-    if (*list == 0) { // eger liste bossa
-        return n;
-    } else {
-        x = list[0]; // x listenin ilk elemani olsun
-        xs = list+1; // xs listenin ilk elemani haric geri kalani olsun
-        if ( 0 == (x%2) ) { // eger x ciftse
-            return accumSum(n+x, xs);
-        } else {
-            return accumSum(n, xs);
-        }
+    return accumSum(0,list) ;
+  }
+  int accumSum(int n, int *list) {
+  int x;
+  int *xs;
+  if (*list == 0) { // liste bos ise
+    return n;
+  }
+  else {
+    x = list[0]; // x listenin ilk elemani olsun
+    xs = list+1; // xs listenin ilk elemani dışında geri kalani olsun
+    if ( 0 == (x\%2) ) { // x duz ise
+      return accumSum(n+x, xs);
     }
-}
+    else {
+      return accumSum(n, xs); // Burada sorun var ?
+    }
+  }
+  }
 ```
 
-Bu kodu aklınızda tutun. Şimdi onu Haskell'e çevireceğiz. Ama ilk önce, size burada kullanacağımız üç basit ama kullanışlı fonksiyonu tanıtmam gerekiyor:
+Bu kodu belleğinizde tutun. Şimdi onu Haskell'e çevireceğiz. Ancak ilk
+önce, size burada kullanacağımız üç yalın ancak kullanışlı fonksiyonu
+tanıtmam gerekiyor:
 
-```haskell
+``` {.haskell language="Haskell"}
 even :: Integral a => a -> Bool
-head :: [a] -> a
-tail :: [a] -> [a]
+  head :: [a] -> a
+  tail :: [a] -> [a]
 ```
 
-`even` bir sayının çift olduğunu doğrular.
+`even` bir sayının düz (*ikiyle kalansız bölünebilen*) olduğunu
+doğrular.
 
-```haskell
+``` {.haskell language="Haskell"}
 even :: Integral a => a -> Bool
-even 3  ⇒ False
-even 2  ⇒ True
+  even 3  ⇒ False
+  even 2  ⇒ True
 ```
 
 `head` bir listenin ilk elemanını döndürür.
 
-```haskell
+``` {.haskell language="Haskell"}
 head :: [a] -> a
-head [1,2,3] ⇒ 1
-head []      ⇒ HATA
+  head [1,2,3] ⇒ 1
+  head []      ⇒ HATA
 ```
 
-`tail` bir listenin ilk elemanı hariç tüm elemanlarını döndürür.
+`tail` bir listenin ilk elemanı dışında tüm elemanlarını döndürür.
 
-```haskell
+``` {.haskell language="Haskell"}
 tail :: [a] -> [a]
-tail [1,2,3] ⇒ [2,3]
-tail [3]     ⇒ []
-tail []      ⇒ HATA
+  tail [1,2,3] ⇒ [2,3]
+  tail [3]     ⇒ []
+  tail []      ⇒ HATA
 ```
 
-Görebileceğiniz üzere, herhangi bir boş olmayan `l` listesi için, `l ⇔ (head l):(tail l)`
+Görebileceğiniz gibi, herhangi bir boş olmayan `l` listesi için,
+`l ⇔ (head l):(tail l)`
 
-***
+İlk Haskell çözümümüz. `evenSum` fonksiyonu bir listedeki tüm düz
+sayıların toplamını döndürür.
 
-[02_Hard_Part/11_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/11_Functions.lhs)
-
-
-İlk Haskell çözümümüz. `evenSum` fonksiyonu bir listedeki tüm çift sayıların toplamını döndürür.
-
-```haskell
+``` {.haskell language="Haskell"}
 -- Versiyon 1
-evenSum :: [Integer] -> Integer
+  evenSum :: [Integer] -> Integer
 
-evenSum l = accumSum 0 l
+  evenSum l = accumSum 0 l
 
-accumSum n l = if l == []
-                  then n
-                  else let x = head l
-                           xs = tail l
-                       in if even x
-                              then accumSum (n+x) xs
-                              else accumSum n xs
+  accumSum n l = if l == []
+  then n
+  else let x = head l
+  xs = tail l
+  in if even x
+  then accumSum (n+x) xs
+  else accumSum n xs
 ```
 
 Fonksiyonu denemek için `ghci`'ı kullanabilirsiniz.
 
-```
-% ghci
-GHCi, version 7.0.3: http://www.haskell.org/ghc/  :? for help
-Loading package ghc-prim ... linking ... done.
-Loading package integer-gmp ... linking ... done.
-Loading package base ... linking ... done.
-Prelude> :load 11_Functions.lhs
-[1 of 1] Compiling Main             ( 11_Functions.lhs, interpreted )
-Ok, modules loaded: Main.
-*Main> evenSum [1..5]
-6
-```
+      % ghci
+      GHCi, version 7.0.3: http://www.haskell.org/ghc/  :? for help
+      Loading package ghc-prim ... linking ... done.
+      Loading package integer-gmp ... linking ... done.
+      Loading package base ... linking ... done.
+      Prelude> :load 11_Functions.lhs
+      [1 of 1] Compiling Main             ( 11_Functions.lhs, interpreted )
+      Ok, modules loaded: Main.
+      *Main> evenSum [1..5]
+      6
 
-Burada çalıştırılma örneğini görebilirsiniz: [^fn-2]
+Burada çalıştırılma örneğini görebilirsiniz: [^7]
 
-```
-*Main> evenSum [1..5]
-accumSum 0 [1,2,3,4,5]
-1 is odd
-accumSum 0 [2,3,4,5]
-2 is even
-accumSum (0+2) [3,4,5]
-3 is odd
-accumSum (0+2) [4,5]
-4 is even
-accumSum (0+2+4) [5]
-5 is odd
-accumSum (0+2+4) []
-l == []
-0+2+4
-0+6
-6
-```
+      *Main> evenSum [1..5]
+      accumSum 0 [1,2,3,4,5]
+      1 is odd
+      accumSum 0 [2,3,4,5]
+      2 is even
+      accumSum (0+2) [3,4,5]
+      3 is odd
+      accumSum (0+2) [4,5]
+      4 is even
+      accumSum (0+2+4) [5]
+      5 is odd
+      accumSum (0+2+4) []
+      l == []
+      0+2+4
+      0+6
+      6
 
-İmperatif bir dilden geliyorsanız her şey doğru gözüküyor olmalı. Aslında burada pek çok şey geliştirilebilir. Öncelikle, tipi genelleyebiliriz.
+İmperatif bir dilden geliyorsanız her nes doğru gözüküyor olmalı.
+Esasında buradaki pek çok nes geliştirilebilir. Öncelikle, tipi
+genelleyebiliriz.
 
-```haskell
+``` {.haskell language="Haskell"}
 evenSum :: Integral a => [a] -> a
 ```
 
-[02_Hard_Part/11_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/11_Functions.lhs)
+Daha sonra, `where` yada `let` kullanarak alt fonksiyonlar
+tanımlayabiliriz. Bu biçimde `accumSum` fonksiyonu modülümüzün üst düzey
+ad uzayını *(namespace)* kirletmemiş olur.
 
-***
-
-[02_Hard_Part/12_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/12_Functions.lhs)
-
-Daha sonra, `where` veya `let` kullanarak alt fonksiyonlar tanımlayabiliriz. Bu şekilde `accumSum` fonksiyonu modülümüzün üst seviye isim uzayını *(namespace)* kirletmemiş olur.
-
-```haskell
+``` {.haskell language="Haskell"}
 -- Versiyon 2
-evenSum :: Integral a => [a] -> a
+  evenSum :: Integral a => [a] -> a
 
-evenSum l = accumSum 0 l
-    where accumSum n l =
-            if l == []
-                then n
-                else let x = head l
-                         xs = tail l
-                     in if even x
-                            then accumSum (n+x) xs
-                            else accumSum n xs
+  evenSum l = accumSum 0 l
+  where accumSum n l =
+  if l == []
+  then n
+  else let x = head l
+  xs = tail l
+  in if even x
+  then accumSum (n+x) xs
+  else accumSum n xs
 ```
 
-[02_Hard_Part/12_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/12_Functions.lhs)
+Sonra, örüntü eşleme *(pattern matching)* kullanabiliriz.
 
-***
-
-[02_Hard_Part/13_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/13_Functions.lhs)
-
-Sonra, örüntülü eşleme *(pattern matching)* kullanabiliriz.
-
-```haskell
+``` {.haskell language="Haskell"}
 -- Versiyon 3
-evenSum l = accumSum 0 l
-    where
-        accumSum n [] = n
-        accumSum n (x:xs) =
-             if even x
-                then accumSum (n+x) xs
-                else accumSum n xs
+  evenSum l = accumSum 0 l
+  where
+  accumSum n [] = n
+  accumSum n (x:xs) =
+  if even x
+  then accumSum (n+x) xs
+  else accumSum n xs
 ```
 
-Peki örüntülü eşleme nedir? Genel parametre isimleri yerine değerlerin kendisini kullanın. [^fn-3]
+Peki örüntü eşleme nedir? Genel parametre adları yerine değerlerin
+kendisini kullanın. [^8]
 
-`foo l = if l == [] then <x> else <y>` demek yerine, basitçe şöyle diyorsunuz:
+`foo l = if l == [] then <x> else <y>` demek yerine, yalnızca şöyle
+diyorsunuz:
 
-```haskell
+``` {.haskell language="Haskell"}
 foo [] =  <x>
-foo l  =  <y>
+  foo l  =  <y>
 ```
 
-Ama örüntülü eşleme bundan daha fazlası. Aynı zamanda karmaşık bir değerin iç verişini takip etmenin bir yolu. Şu kodun yerine:
+Ancak örüntü eşleme bundan daha ötesidir. Ek olarak karışık bir değerin
+iç verisini (*inner data*) yoklamanın bir yoludur Şu kodun yerine:
 
-```haskell
+``` {.haskell language="Haskell"}
 foo l =  let x  = head l
-             xs = tail l
-         in if even x
-             then foo (n+x) xs
-             else foo n xs
+  xs = tail l
+  in if even x
+  then foo (n+x) xs
+  else foo n xs
 ```
 
 şunu yazabiliriz:
 
-```haskell
+``` {.haskell language="Haskell"}
 foo (x:xs) = if even x
-                 then foo (n+x) xs
-                 else foo n xs
+  then foo (n+x) xs
+  else foo n xs
 ```
 
-Bu çok kullanışlı bir özellik. Aynı zamanda kodumuzu daha kısa ve okunaklı kılıyor.
+Bu çok kullanışlı bir özellik. Ek olarak kodumuzu daha kısa de okunaklı
+kılıyor.
 
-[02_Hard_Part/13_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/13_Functions.lhs)
+Haskell'de $η$-indirgeyerek fonksiyonları yalınlaştırabilirsiniz.
+Örneğin, şunu yazmak yerine:
 
-***
-
-[02_Hard_Part/14_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/14_Functions.lhs)
-
-Haskell'de η sadeleştirmesi yaparak fonksiyonları basitleştirebilirsiniz. Örneğin, şunu yazmak yerine:
-
-```
-f x = (some expression) x
-```
+      f x = (some expression) x
 
 basitçe şunu yazabilirsiniz:
 
-```
-f = some expression
-```
+      f = some expression
 
 Bu metodu `l`'yi kaldirmak icin kullanalim:
 
-```haskell
+``` {.haskell language="Haskell"}
 -- Version 4
-evenSum :: Integral a => [a] -> a
+  evenSum :: Integral a => [a] -> a
 
-evenSum = accumSum 0
-    where
-        accumSum n [] = n
-        accumSum n (x:xs) =
-             if even x
-                then accumSum (n+x) xs
-                else accumSum n xs
+  evenSum = accumSum 0
+  where
+  accumSum n [] = n
+  accumSum n (x:xs) =
+  if even x
+  then accumSum (n+x) xs
+  else accumSum n xs
 ```
 
-[02_Hard_Part/14_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/14_Functions.lhs)
+##### Üst Derece Fonksiyonlar {#uxfcst-derece-fonksiyonlar}
 
-***
+![Higher Order](img/escher_polygon.jpg){width="0.5\\linewidth"}
 
-[02_Hard_Part/15_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/15_Functions.lhs)
+Her şeyi daha da iyi yapmak için, üst derece fonksiyonları
+kullanmalıyız. Peki bu canavarlar nelerdir? Üst derece fonksiyonlar,
+başka fonksiyonları parametre olarak alan fonksiyonlardır.
 
-### 3.1.1. Üst Derece Fonksiyonlar
+Kimi örnekleri şöyledir:
 
-![Higher Order](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/escher_polygon.png)
-
-Her şeyi daha da iyi yapmak için, üst derece fonksiyonları kullanmalıyız. Peki bu canavarlar nelerdir? Üst derece fonksiyonlarlar, başka fonksiyonları parametre olarak alan fonksiyonlardır.
-
-Bazı örnekleri şöyledir:
-
-```haskell
+``` {.haskell language="Haskell"}
 filter :: (a -> Bool) -> [a] -> [a]
-map :: (a -> b) -> [a] -> [b]
-foldl :: (a -> b -> a) -> a -> [b] -> a
+  map :: (a -> b) -> [a] -> [b]
+  foldl :: (a -> b -> a) -> a -> [b] -> a
 ```
 
 Ufak adımlarla ilerleyelim.
 
-```haskell
+``` {.haskell language="Haskell"}
 -- Version 5
-evenSum l = mysum 0 (filter even l)
-    where
-      mysum n [] = n
-      mysum n (x:xs) = mysum (n+x) xs
+  evenSum l = mysum 0 (filter even l)
+  where
+  mysum n [] = n
+  mysum n (x:xs) = mysum (n+x) xs
 ```
 
 ki burada,
 
-```haskell
+``` {.haskell language="Haskell"}
 filter even [1..10] ⇔  [2,4,6,8,10]
 ```
 
-`filter` fonksiyonu `a -> Bool` tipinde bir fonksiyonu  ve `[a]` tipinde bir listeyi argüman olarak alır. Bu listeden sadece bu fonksiyon çalıştırıldığında `True` dönen elemanları dondurur.
+`filter` fonksiyonu `a -> Bool` tipinde bir fonksiyon ile `[a]` tipinde
+bir listeyi argüman olarak alır. Bu listeden yalnızca bu fonksiyon
+çalıştırıldığında `True` dönen elemanları döndürür.
 
-Sonraki adımımız, döngüye benzer bir şeyi başarmak. `foldl` fonksiyonunu listede adım adım ilerlerken yanda bir değer biriktirmek için kullanacağız. `foldl` fonksiyonu aslında şu kalıbı alıp:
+Sonraki adımımız, döngüye benzer bir işlemi başarmak. `foldl`
+fonksiyonunu listede adım adım ilerlerken yanda bir değer biriktirmek
+için kullanacağız. `foldl` fonksiyonu esasında şu master yapıyı alıp:
 
-```haskell
+``` {.haskell language="Haskell"}
 myfunc list = foo initialValue list
-    foo accumulated []     = accumulated
-    foo tmpValue    (x:xs) = foo (bar tmpValue x) xs
+  foo accumulated []     = accumulated
+  foo tmpValue    (x:xs) = foo (bar tmpValue x) xs
 ```
 
-Şu hale çevirir:
+Şu duruma çevirir:
 
-```haskell
+``` {.haskell language="Haskell"}
 myfunc list = foldl bar initialValue list
 ```
 
-Eğer gerçekten bu sihirli şeyin nasıl çalıştığını görmek istiyorsanız, `foldl`'in tanımı şöyledir:
+Bu gizemli nesnenin gerçekte ne yolla çalıştığını görmek istiyorsanız,
+`foldl`'in tanımı şöyledir:
 
-```haskell
+``` {.haskell language="Haskell"}
 foldl f z [] = z
-foldl f z (x:xs) = foldl f (f z x) xs
+  foldl f z (x:xs) = foldl f (f z x) xs
 ```
 
-```haskell
+``` {.haskell language="Haskell"}
 foldl f z [x1,...xn]
-⇔  f (... (f (f z x1) x2) ...) xn
+  ⇔  f (... (f (f z x1) x2) ...) xn
 ```
 
-Ama Haskell tembel olduğu için `(f z x)`'in değerini hesaplamaz ve sadece yığının üstüne koyar. Bu yüzden genelde `foldl` yerine `foldl'` kullanırız; `foldl'`, `foldl` fonksiyonunun tembel olmayan versiyonudur. Eğer tembel ve tembel olmayan kavramlarını anlamıyorsanız, tasalanmayın, kodu `foldl` ve `foldl'` aynı şeylermiş gibi takip edin.
+Ancak Haskell üşengeç olduğu için `(f z x)`'in değerini bulmadan
+yalnızca yığının üstüne koyar. Bu yüzden genelde `foldl` yerine `foldl'`
+kullanırız; `foldl'`, `foldl` fonksiyonunun üşengeç olmayan
+versiyonudur. Üşengeç ile naüşengeç kavramlarını anlamıyorsanız,
+tasalanmayın, kodu `foldl` ile `foldl'` eşit neslermiş gibi izleyin.
 
-Şimdi `evenSum` fonksiyonumuzun yeni hali şöyle oldu:
+Şimdi `evenSum` fonksiyonumuzun yeni durumu şöyle oldu:
 
-```haskell
+``` {.haskell language="Haskell"}
 -- Versiyon 6
--- foldl' dogrudan erisilebilir
--- erismek icin once Data.List modulunu iceri almamiz gerekiyor
-import Data.List
-evenSum l = foldl' mysum 0 (filter even l)
+  -- foldl' dogrudan erisilebilir
+  -- erismek icin once Data.List modulunu iceri almamiz gerekiyor
+  import Data.List
+  evenSum l = foldl' mysum 0 (filter even l)
   where mysum acc value = acc + value
 ```
 
-Doğrudan lambda notasyonu kullanarak daha da basitleştirebiliriz. Böylece `mysum` isminde geçici bir fonksiyon yaratmak zorunda kalmayız.
+Doğrudan lambda notasyonu kullanarak daha da yalınlaştırabiliriz.
+Böylece `mysum` adında geçici bir fonksiyon yaratmak zorunda kalmayız.
 
-```haskell
+``` {.haskell language="Haskell"}
 -- Versiyon 7
--- Genelde sadece ihtiyac duydugunuz fonksiyonlari
--- iceri almak daha iyi bir yontemdir
-import Data.List (foldl')
-evenSum l = foldl' (\x y -> x+y) 0 (filter even l)
+  -- Genelde yalnızca gerek duydugunuz fonksiyonlari
+  -- iceri almak daha iyi bir yontemdir
+  import Data.List (foldl')
+  evenSum l = foldl' (\x y -> x+y) 0 (filter even l)
 ```
 
-Ve tabii ki, dikkat edelim ki:
+Sonra doğal olarak, özen gösterelim ki:
 
-```haskell
+``` {.haskell language="Haskell"}
 (\x y -> x+y) ⇔ (+)
 ```
 
-[02_Hard_Part/15_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/15_Functions.lhs)
-
-***
-
-[02_Hard_Part/16_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/16_Functions.lhs)
-
 Son olarak,
 
-```haskell
+``` {.haskell language="Haskell"}
 -- Versiyon 8
-import Data.List (foldl')
-evenSum :: Integral a => [a] -> a
-evenSum l = foldl' (+) 0 (filter even l)
+  import Data.List (foldl')
+  evenSum :: Integral a => [a] -> a
+  evenSum l = foldl' (+) 0 (filter even l)
 ```
 
-`foldl'` anlaması kolay bir fonksiyon sayılmaz. Eğer alışık değilseniz, üzerinde biraz çalışmalısınız.
+`foldl'` çok kolay bir fonksiyon sayılmaz. Alışık değilseniz, üzerinde
+biraz çalışmalısınız.
 
-Burada ne olduğunu anlamanız için adım adım neler olduğuna bakalım:
+Burada ne olup bittiğini görebilmek için adım adım ilerleyelim:
 
-```haskell
-  evenSum [1,2,3,4]
-⇒ foldl' (+) 0 (filter even [1,2,3,4])
-⇒ foldl' (+) 0 [2,4]
-⇒ foldl' (+) (0+2) [4]
-⇒ foldl' (+) 2 [4]
-⇒ foldl' (+) (2+4) []
-⇒ foldl' (+) 6 []
-⇒ 6
+``` {.haskell language="Haskell"}
+evenSum [1,2,3,4]
+  ⇒ foldl' (+) 0 (filter even [1,2,3,4])
+  ⇒ foldl' (+) 0 [2,4]
+  ⇒ foldl' (+) (0+2) [4]
+  ⇒ foldl' (+) 2 [4]
+  ⇒ foldl' (+) (2+4) []
+  ⇒ foldl' (+) 6 []
+  ⇒ 6
 ```
 
-Başka bir kullanışlı üst derece fonksiyon da `(.)` fonksiyonudur. `(.)` fonksiyonu matematiksel bileşimi *(composition)* ifade eder.
+Başka bir kullanışlı üst derece fonksiyon da `(.)` fonksiyonudur. `(.)`
+fonksiyonu matematiksel bileşimi *(composition)* anlatır.
 
-```haskell
+``` {.haskell language="Haskell"}
 (f . g . h) x ⇔  f ( g (h x))
 ```
 
-Bu operatörden fonksiyonumuzda η sadeleştirmesi yapmak için faydanalabiliriz:
+Bu operatörden fonksiyonumuzda $η$ indirgemesi yapmak için
+yararlanabiliriz.
 
-```haskell
+``` {.haskell language="Haskell"}
 -- Versiyon 9
-import Data.List (foldl')
-evenSum :: Integral a => [a] -> a
-evenSum = (foldl' (+) 0) . (filter even)
+  import Data.List (foldl')
+  evenSum :: Integral a => [a] -> a
+  evenSum = (foldl' (+) 0) . (filter even)
 ```
 
-Ayrıca, bazı kısımları daha iyi açıklamak için yeniden isimlendirebiliriz:
+Ayrıca, kimi bölümleri daha iyi açıklamak için yeniden adlandırabiliriz:
 
-```haskell
+``` {.haskell language="Haskell"}
 -- Versiyon 10
-import Data.List (foldl')
-sum' :: (Num a) => [a] -> a
-sum' = foldl' (+) 0
-evenSum :: Integral a => [a] -> a
-evenSum = sum' . (filter even)
+  import Data.List (foldl')
+  sum' :: (Num a) => [a] -> a
+  sum' = foldl' (+) 0
+  evenSum :: Integral a => [a] -> a
+  evenSum = sum' . (filter even)
 ```
 
-Şimdi bu fonksiyonel ifadelerle kodumuzun ne yöne doğru gittiğini tartışalım. Üst derece fonksiyonları kullanmak bize ne kazandırdı?
+Şimdi bu fonksiyonel deyimlerle kodumuzun ne yöne doğru gittiğini
+tartışalım. Üst derece fonksiyonları kullanmak bize ne kazandırdı?
 
-İlk önce, düşünebilirsiniz ki temel fark kısalık. Ama aslında, fark daha çok doğru düşünmeyle ilgili. Fonksiyonumuzu biraz değiştirmek istediğimizi varsayalım, örneğin bir listedeki tüm elemanların karesini alıp o çift kareleri toplamak istediğimizi.
+İlk önce, düşünebilirsiniz ki temel ayrım kısalık. Ancak esasta, ayrım
+daha çok doğru düşünmeyle ilgili. Fonksiyonumuzu biraz değiştirmek
+istediğimizi varsayalım, örneğin bir listedeki tüm elemanların karesini
+alıp o düz kareleri toplamak istediğimizi.
 
-```
-[1,2,3,4] ▷ [1,4,9,16] ▷ [4,16] ▷ 20
-```
+      [1,2,3,4] ▷ [1,4,9,16] ▷ [4,16] ▷ 20
 
 Versiyon 10'u değiştirmek oldukça kolay:
 
-```haskell
+``` {.haskell language="Haskell"}
 squareEvenSum = sum' . (filter even) . (map (^2))
-squareEvenSum' = evenSum . (map (^2))
-squareEvenSum'' = sum' . (map (^2)) . (filter even)
+  squareEvenSum' = evenSum . (map (^2))
+  squareEvenSum'' = sum' . (map (^2)) . (filter even)
 ```
 
-Sadece bir tane daha transformasyon fonksiyonu ekledik, o kadar. [^fn-4]
+Yalnızca bir tane daha transformasyon fonksiyonu ekledik, hepsi bu. [^9]
 
-```haskell
+``` {.haskell language="Haskell"}
 map (^2) [1,2,3,4] ⇔ [1,4,9,16]
 ```
 
-`map` fonksiyonu basitçe bir listenin tüm elemanlarını etkiler.
+`map` fonksiyonu açıkça bir listenin tüm elemanlarını etkiler.
 
-Fonksiyon tanımının *içinde* herhangi bir şey değiştirmek zorunda kalmadık. Ama ek olarak, fonksiyonunuz hakkında daha matematiksel olarak akıl yürütebiliyorsunuz. Ayrıca fonksiyonunuzu diğerleriyle değişmeli de kullanabiliyorsunuz. Yani, yeni fonksiyonunuzu kullanarak `compose`, `map`, `fold`, `filter` işlemlerini yapabilirsiniz.
+Fonksiyon tanımının *içinde* herhangi bir nes değiştirmek zorunda
+kalmadık. Ancak ek olarak, fonksiyonunuz üzerine daha matematiksel
+olarak us yürütebiliyorsunuz. Ayrıca fonksiyonunuzu ötekileriyle
+değişmeli kullanabiliyorsunuz. Dolayısıyla, yeni fonksiyonunuzu
+kullanarak `compose`, `map`, `fold`, `filter` işlemlerini
+yapabilirsiniz.
 
-Versiyon 1'i değiştirmek de okura bir alıştırma olarak kalsın. ☺.
+Versiyon 1'i değiştirmek de okura bir alıştırma olarak kalsın
 
-Eğer genellemenin sonuna geldiğimizi düşünüyorsanız, oldukça yanılıyorsunuz. Örneğin, bunu sadece liste değil başka herhangi bir özyinelemeli türde kullanmanın yolları var. Eğer nasıl olduğunu bilmek istiyorsanız, size şu eğlenceli makaleyi okumanızı öneriyorum: [Muz, Mercek, Zarf ve Dikenli Tellerle Fonksiyonel Programlama - Meijer, Fokkinga ve Paterson.](http://eprints.eemcs.utwente.nl/7281/01/db-utwente-40501F46.pdf)
+Genellemenin sonuna geldiğimizi düşünüyorsanız, oldukça yanılıyorsunuz.
+Örneğin, bunu yalnızca liste değil başka herhangi bir özyinelemeli türde
+kullanmanın yolları var. Ne yolla olduğunu bilmek istiyorsanız, size şu
+eğlenceli anlatıyı okumanızı öneririm: Muz, Mercek, Zarf, Dikenli
+Tellerle Fonksiyonel Programlama - Meijer, Fokkinga, Paterson [^10]
 
-Bu örnek size saf fonksiyonel programlamanın ne kadar güzel olduğunu göstermeli. Ne yazık ki, saf fonksiyonel programlama her kullanıma tam uygun değil. Ya da en azından öyle bir programlama dili henüz mevcut değil.
+Bu örnek size arı fonksiyonel programlamanın ne denli güzel olduğunu
+göstermeli. Ne yazık ki, arı fonksiyonel programlama her kullanıma tam
+uygun değil. Ya da en azından öyle bir programlama dili şu ana dek yok.
 
-Haskell'in büyük güçlerinden biri de alana özel dil *(domain specific language)* yaratma yeteneğidir, böylece programlama paradigmasını değiştirebilirsiniz.
+Haskell'in büyük güçlerinden biri de alana özel dil *(domain specific
+language)* yaratma yeteneğidir, böylece programlama paradigmasını
+(*yaklaşımını*) değiştirebilirsiniz.
 
-Aslında, Haskell imperatif stilde program yazmak istediğinizde de güzeldir. İlk Haskell öğrenmeye başladığımda bunu anlamak oldukça zor olmuştu. Genelde herkes fonksiyonel yaklaşımın üstünlüğünü anlatmaya çalışır. Daha sonra Haskell'le imperatif stil kullanmaya başlayınca, nasıl ve ne zaman öyle olacağını anlamak zor olabiliyor.
+Esasında, Haskell imperatif stilde program yazmak istediğinizde de
+güzeldir. İlk Haskell öğrenmeye başladığımda bunu anlamak oldukça zor
+olmuştu. Genelde herkes fonksiyonel yaklaşımın üstünlüğünü anlatmaya
+çalışır. Daha sonra Haskell'le imperatif stil kullanmaya başlayınca, ne
+yolla, hangi anda öyle olacağını anlamak zor olabiliyor.
 
-Bu Haskell süper gücüyle ilgili konuşmadan önce, Haskell'in başka bir temel yönünden bahsetmeliyiz: Tipler.
+Bu Haskell süper gücüyle ilgili konuşmadan önce, Haskell'in başka bir
+temel yönün e değinmeliyiz: Tipler.
 
-[02_Hard_Part/16_Functions.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/16_Functions.lhs)
+### Tipler
 
-## 3.2. Tipler
+![Types](img/salvador-dali-the-madonna-of-port-lligat.jpg)
 
-![Types](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/salvador-dali-the-madonna-of-port-lligat.jpg)
+TL, DR (Çok uzundu okumadım):
 
-> TL, DR (Çok uzundu okumadım):
-> * `type Ad = BaskaTip` sadece bir takma addir ve derleyici `Ad` ve `BaskaTip` arasında bir fark gözetmez.
-> * `data Ad = AdYapısı BaskaTip` yapısında fark vardır.
-> * `data` anahtar kelimesi özyinelemeli yapılar yaratabilir.
-> * `deriving` sihirlidir ve sizin için fonksiyonlar yaratır.
+-   `type Ad = BaskaTip` yalnızca bir takma ad olup derleyici `Ad` ile
+    `BaskaTip` arasında bir ayrım gözetmez.
 
-Haskell'de tipler güçlü ve statiktir.
+-   `data Ad = AdYapısı BaskaTip` yapısında ayrım vardır.
 
-Peki bu neden önemli? Çünkü bu, hatalardan kaçınmanıza *yüksek derecede* yardımcı olur. Haskell'de hataların çoğu henüz derleme aşamasında yakalanır. Bunun asıl sebebi de tip çıkarımının derleme sırasında yapılmasıdır. Örneğin tip çıkarımı nerede yanlış parametreyi yanlış yerde kullandığınızı yakalar.
+-   `data` anahtar sözcüğü özyinelemeli yapılar yaratabilir.
 
-### 3.2.1. Tip Çıkarımı
+-   `deriving` gizemlidir, sizin için fonksiyonlar yaratır.
 
-Statik tip sistemi hızlı çalıştırma için genelde önemlidir. Ama çoğu statik tip sistemli diller kavramları genellemede kötüdür. Haskell'in kurtarıcı lütfü, tipleri kendi kendine *çıkarım* yaparak bulabilmesidir.
+Haskell'de tipler hem güçlü hem statiktir.
 
-Basit bir örnekle başlayalım, Haskell'deki `square` fonksiyonu:
+Peki bu neden önemli? Çünkü bu, yanıllardan kaçınmanıza *yüksek
+derecede* yardımcı olur. Haskell'de yanılların çoğu derleme aşamasında
+yakalanır. Bunun asıl nedeni de tip çıkarımının derleme sırasında
+yapılmasıdır. Örneğin tip çıkarımı hangi yanlış parametreyi hangi yerde
+kullandığınızı yakalar.
 
-```haskell
+##### Tip Çıkarımı {#tip-uxe7ux131karux131mux131}
+
+Statik tip sistemi hızlı çalıştırma için genelde önemlidir. Ancak çoğu
+statik tip sistemli diller kavramları genellemede kötüdür. Haskell'in
+kurtarıcı yanı, tipleri kendi kendine *çıkarım* yaparak bulabilmesidir.
+
+Yalın bir örnekle başlayalım, Haskell'deki `square` fonksiyonu:
+
+``` {.haskell language="Haskell"}
 square x = x * x
 ```
 
-`square` fonksiyonu Haskell'deki herhangi bir sayısal değerin karesini alabilir. `square` fonksiyonuna parametre olarak `Int`, `Integer`, `Float`, `Fractional`, hatta `Complex` tipinde veri bile verebilirsiniz. Örnekle kanıtlayalım:
+`square` fonksiyonu Haskell'deki herhangi bir sayısal değerin karesini
+alabilir. `square` fonksiyonuna parametre olarak `Int`, `Integer`,
+`Float`, `Fractional`, hatta `Complex` tipinde veri bile verebilirsiniz.
+Örnekle kanıtlayalım:
 
-```
-% ghci
-GHCi, version 7.0.4:
-...
-Prelude> let square x = x*x
-Prelude> square 2
-4
-Prelude> square 2.1
-4.41
-Prelude> -- load the Data.Complex module
-Prelude> :m Data.Complex
-Prelude Data.Complex> square (2 :+ 1)
-3.0 :+ 4.0
-```
+      % ghci
+      GHCi, version 7.0.4:
+      ...
+      Prelude> let square x = x*x
+      Prelude> square 2
+      4
+      Prelude> square 2.1
+      4.41
+      Prelude> -- load the Data.Complex module
+      Prelude> :m Data.Complex
+      Prelude Data.Complex> square (2 :+ 1)
+      3.0 :+ 4.0
 
 `x :+ y` kompleks sayıların gösteriminde kullanılır. (x + iy)
 
-Şimdi C'deki gerekli kod miktarıyla karşılaştıralım:
+Şimdi C'deki gerekli kod niceliği ile karşılaştıralım:
 
-```c
-int     int_square(int x) { return x*x; }
-
-float   float_square(float x) {return x*x; }
-
-complex complex_square (complex z) {
+``` {.[ANSI]C language="[ANSI]C" tabsize="2" escapeinside="||"}
+int int\_square(int x) { return x * x; }
+  float float\_square(float x) {return x * x; }
+  complex complex\_square (complex z) {
     complex tmp;
     tmp.real = z.real * z.real - z.img * z.img;
     tmp.img = 2 * z.img * z.real;
-}
-
-complex x,y;
-y = complex_square(x);
+  }
+  complex x,y;
+  y = complex\_square(x);
 ```
 
-C'de her tip için yeni bir fonksiyon yazmanız gerekiyor. Bunu aşmanın tek yolu ön-işlemciyi kullanarak üst-programlama hilelerine başvurmak. C++'ta daha iyi bir yol var, C++ şablonları:
+C'de her tip için yeni bir fonksiyon yazmanız gerekiyor. Bunu aşmanın
+tek yolu ön-işlemciyi (*pre-processor*) kullanarak üst-programlama
+yöntemlerine başvurmak. C++'ta daha iyi bir yol var, C++ şablonları:
 
-```cpp
+``` {.[ANSI]C++ language="[ANSI]C++" tabsize="2" escapeinside="||"}
 #include <iostream>
-#include <complex>
-using namespace std;
+  #include <complex>
+  using namespace std;
 
-template<typename T>
-T square(T x)
-{
+  template<typename T>
+  T square(T x)
+  {
     return x*x;
-}
+  }
 
-int main() {
+  int main() {
     // int
-    int sqr_of_five = square(5);
-    cout << sqr_of_five << endl;
+    int sqr\_of\_five = square(5);
+    cout << sqr\_of\_five << endl;
     // double
     cout << (double)square(5.3) << endl;
     // complex
-    cout << square( complex<double>(5,3) )
-         << endl;
+    cout << square(complex<double>(5,3) )
+    << endl;
     return 0;
-}
+  }
 ```
 
-C++ bu yönden C'den çok daha iyi iş çıkartıyor. Ama daha karmaşık fonksiyonlar için söz dizimini takip etmek biraz daha zor olabilir: örnek için [bu makaleye](http://bartoszmilewski.com/2009/10/21/what-does-haskell-have-to-do-with-c/) bakabilirsiniz.
+C++ bu yönden C'den çok daha iyi iş çıkartıyor. Ancak daha karmaşık
+fonksiyonlar için söz dizimini izlemek biraz daha zor olabilir: örnek
+için what does haskell have to do with c[^11] bakabilirsiniz.
 
-C++'ta bir fonksiyonun farklı tiplerle çalışması için ayrıca belirtmelisiniz. Haskell'de durum tam tersi. Fonksiyon varsayılan olarak olabildiğince genel tanımlanır.
+C++'ta bir fonksiyonun değişik tiplerle çalışacağını ayrıca
+belirtmelisiniz. Haskell'de durum tam tersi. Fonksiyon varsayılan olarak
+olabildiğince genel tanımlanır.
 
-Tip çıkarımı Haskell'de dinamik tip sistemli dillerin yarattığı özgürlük hissini yaratır. Ama dinamik tip sistemli dillerden farklı olarak çoğu hata çalışma zamanından önce yakalanır. Genelde Haskell kodu
-> derleniyorsa, mutlaka kastettiğiniz şeyi yapıyordur.
+Tip çıkarımı Haskell'de dinamik tip sistemli dillerin yarattığı özgürlük
+duygusunu yaratır. Ancak dinamik tip sistemli dillerden ayrı olarak çoğu
+yanıl, çalışma anından önce yakalanır. Genelde Haskell kodu \>
+derleniyorsa, salt amaçladığınız işi yapıyordur.
 
-***
+##### Tip Oluşturma *Type construction* {#tip-oluux15fturma}
 
-[02_Hard_Part/21_Types.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/21_Types.lhs)
+Kendi tiplerinizi oluşturabilirsiniz. İlk önce takma adlarla
+(*aliases*), dolayısıyla tip eşanlamlılarıyla (*synonyms*) başlayalım.
 
-### 3.2.2. Tip Oluşturma
+*You can construct your own types. First, you can use aliases or type
+synonyms.*
 
-Kendi tiplerinizi oluşturabilirsiniz. İlk önce takma adlarla, yani tip eşanlamlılarıyla başlayalım.
-
-```haskell
+``` {.haskell language="Haskell"}
 type Name   = String
-type Color  = String
+  type Color  = String
 
-showInfos :: Name ->  Color -> String
-showInfos name color =  "Isim: " ++ name
-                        ++ ", Renk: " ++ color
-name :: Name
-name = "Ahmet"
-color :: Color
-color = "Mavi"
-main = putStrLn $ showInfos name color
+  showInfos :: Name ->  Color -> String
+  showInfos name color =  "Ad: " ++ name
+  ++ ", Renk: " ++ color
+  name :: Name
+  name = "Erkan"
+  color :: Color
+  color = "Mavi"
+  main = putStrLn $ showInfos name color
 ```
 
-[02_Hard_Part/21_Types.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/21_Types.lhs)
+Ancak bu yeterli koruma sağlamıyor. `showInfos` fonksiyonuna verdiğiniz
+parametrelerin yerini değiştirip çalıştırmayı deneyin:
 
-***
+      putStrLn $ showInfos color name
 
-[02_Hard_Part/22_Types.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/22_Types.lhs)
+Derlenecek , çalışacak. Esasında, `Name`, `Color` ile `String` tiplerini
+birbiriyle değiştirebilirsiniz, bir ayrım yaratmayacak. Derleyici
+hepsine eşitmiş gibi davranacak.
 
-Ancak bu çok fazla koruma yaratmıyor. `showInfos` fonksiyonuna verdiğiniz parametrelerin yerini değiştirip çalıştırmayı deneyin:
-```
-putStrLn $ showInfos color name
-```
+Başka bir yöntem de `data` anahtar sözcüğünü kullanarak kendi
+tiplerinizi yaratmak.
 
-Derlenecek ve çalışacak. Aslında, `Name`, `Color` ve `String` tiplerini birbiriyle değiştirebilirsiniz, bir fark yaratmayacak. Derleyici hepsine aynıymış gibi muamele edecek.
+``` {.haskell language="Haskell"}
+data Name   = NameConstr String --NameConstr : ad yapici
+  data Color  = ColorConstr String --ColorConstr : renk yapici
 
-Diğer bir yöntem de `data` anahtar kelimesini kullanarak kendi tiplerinizi yaratmak.
+  showInfos :: Name ->  Color -> String
+  showInfos (NameConstr name) (ColorConstr color) =
+  "Name: " ++ name ++ ", Color: " ++ color
 
-```haskell
-data Name   = NameConstr String --NameConstr : isim yapicisi
-data Color  = ColorConstr String --ColorConstr : renk yapicisi
-
-showInfos :: Name ->  Color -> String
-showInfos (NameConstr name) (ColorConstr color) =
-      "Name: " ++ name ++ ", Color: " ++ color
-
-name  = NameConstr "Ahmet"
-color = ColorConstr "Mavi"
-main = putStrLn $ showInfos name color
+  name  = NameConstr "Erkan"
+  color = ColorConstr "Mavi"
+  main = putStrLn $ showInfos name color
 ```
 
-Ama şimdi `showInfos` için parametrelerin yerlerini değiştirirseniz, derleyici hata verecek! Yani bu bir daha yapmayacağınız muhtemel bir hata, ve kaçınmak için tek yapmanız gereken biraz daha uzun yazmak.
+Ancak şimdi `showInfos` için parametrelerin yerlerini değiştirirseniz,
+derleyici yanıl verecek! Dolayısıyla bu bir daha yapmayacağınız olası
+bir hata olup kaçınmak için tek yapmanız gereken biraz daha uzun yazmak.
 
-Yapıcıların da birer fonksiyon olduğuna dikkat edin:
+Yapıcıların da birer fonksiyon olduğuna özellikle bakın:
 
-```haskell
+``` {.haskell language="Haskell"}
 NameConstr  :: String -> Name
-ColorConstr :: String -> Color
+  ColorConstr :: String -> Color
 ```
 
-`data` anahtar kelimesinin genel söz dizimi de şöyledir:
+`data` anahtar sözcüğünün genel söz dizimi de şöyledir:
 
-```haskell
+``` {.haskell language="Haskell"}
 data TipAdi =   YapiciAdi  [tipler]
-                | YapiciAdi2 [tipler]
-                | ...
+  | YapiciAdi2 [tipler]
+  | ...
 ```
 
-Genel kullanım tip adının ve yapıcı adının aynı olması yönündedir.
+Genel kullanım tip adı ile yapıcı adının özdeş olması yönündedir.
 
 Örnek:
 
-```haskell
+``` {.haskell language="Haskell"}
 data Complex = Num a => Complex a a
 ```
 
-Kayıt *(record)* söz dizimini de kullanabilirsiniz:
+Kütük *(record)* söz dizimini de kullanabilirsiniz:
 
-```haskell
+``` {.haskell language="Haskell"}
 data VeriTipiAdi = VeriYapicisi {
-                      alan_1 :: [alan_1 tipi]
-                    , alan_2 :: [alan_2 tipi]
-                    ...
-                    , alan_n :: [alan_n tipi] }
+    alan_1 :: [alan_1 tipi]
+    , alan_2 :: [alan_2 tipi]
+    ...
+    , alan_n :: [alan_n tipi] }
 ```
 
-Daha da iyisi, alanlara erişim sağlayan fonksiyonlar sizin için oluşturuluyor. Ayrıca bu tipte bir veri oluştururken alanların sırasını da kullanabilirsiniz.
+Daha da iyisi, alanlara erişim sağlayan fonksiyonlar sizin için
+oluşturuluyor. Ayrıca bu tipte bir veri oluştururken alanların sırasını
+da kullanabilirsiniz.
 
 Örnek:
 
-```haskell
+``` {.haskell language="Haskell"}
 data Complex = Num a => Complex { real :: a, img :: a}
-c = Complex 1.0 2.0
-z = Complex { real = 3, img = 4 }
-real c ⇒ 1.0
-img z ⇒ 4
+  c = Complex 1.0 2.0
+  z = Complex { real = 3, img = 4 }
+  real c ⇒ 1.0
+  img z ⇒ 4
 ```
 
-[02_Hard_Part/22_Types.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/22_Types.lhs)
+##### Özyinelemeli Tipler *(Recursive types)* {#uxf6zyinelemeli-tipler-recursive-types}
 
-***
+Daha önce özyinelemeli bir tiple karşılaşmıştık: listeler. Liste tipini
+-biraz daha uzun bir söz dizimiyle de olsa- kendimiz de oluşturabiliriz:
 
-[02_Hard_Part/23_Types.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/23_Types.lhs)
-
-### 3.2.3. Özyinelemeli Tipler *(Recursive types)*
-
-Daha önce özyinelemeli bir tiple karşılaşmıştık: listeler. Liste tipini -biraz daha uzun bir söz dizimiyle de olsa- kendimiz de oluşturabiliriz:
-
-```haskell
+``` {.haskell language="Haskell"}
 data List a = Empty | Cons a (List a)
 ```
 
-Eğer daha kolay bir söz dizimi yaratmak istiyorsanız, yapıcılar için iç notasyon *(infix)* tanımlayabilirsiniz.
+Daha kolay bir söz dizimi yaratmak istiyorsanız, yapıcılar için iç
+notasyon *(infix)* tanımlayabilirsiniz.
 
-```haskell
+``` {.haskell language="Haskell"}
 infixr 5 :::
-data List a = Nil | a ::: (List a)
+  data List a = Nil | a ::: (List a)
 ```
 
 `infixr`'dan sonraki sayı önceliği belirtiyor.
 
-Eğer bu veri tipini ekrana yazdırmak (`Show`), karakter dizisinden çevirmek (`Read`), eşitliğini test etmek (`Eq`) ve karşılaştırmak (`Ord`) istiyorsanız, Haskell'e sizin için gerekli fonksiyonları oluşturmasını söyleyebilirsiniz.
+Bu veri tipini ekrana yazdırmak (`Show`), karakter dizisinden çevirmek
+(`Read`), eşitliğini test edip (`Eq`) karşılaştırmak (`Ord`)
+istiyorsanız, Haskell'e sizin için gerekli fonksiyonları oluşturmasını
+söyleyebilirsiniz.
 
-```haskell
+``` {.haskell language="Haskell"}
 infixr 5 :::
-data List a = Nil | a ::: (List a)
-              deriving (Show,Read,Eq,Ord)
+  data List a = Nil | a ::: (List a)
+  deriving (Show,Read,Eq,Ord)
 ```
 
-Veri tipi tanımınıza `deriving (Show)`'u eklediğinizde, Haskell sizin için bir `show` fonksiyonu yaratır. (*(deriving)* İngilizce'de türeme demektir.) Yakında kendi `show` fonksiyonunuzu nasıl kullanabileceğinizi göreceğiz.
+Veri tipi tanımınıza `deriving (Show)`'u eklediğinizde, Haskell sizin
+için bir `show` fonksiyonu yaratır. (*(deriving)* İngilizce'de *türetme*
+demektir.) Yakında kendi `show` fonksiyonunuzu ne biçimde
+kullanabileceğinizi göreceğiz.
 
-```haskell
+``` {.haskell language="Haskell"}
 convertList [] = Nil
-convertList (x:xs) = x ::: convertList xs
+  convertList (x:xs) = x ::: convertList xs
 
-main = do
-      print (0 ::: 1 ::: Nil)
-      print (convertList [0,1])
+  main = do
+  print (0 ::: 1 ::: Nil)
+  print (convertList [0,1])
 ```
 
 Bu şu çıktıyı verir:
 
-```
-0 ::: (1 ::: Nil)
-0 ::: (1 ::: Nil)
-```
+      0 ::: (1 ::: Nil)
+      0 ::: (1 ::: Nil)
 
-[02_Hard_Part/23_Types.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/23_Types.lhs)
+##### Ağaçlar {#aux11fauxe7lar}
 
-***
-
-[02_Hard_Part/30_Trees.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/30_Trees.lhs)
-
-### 3.2.4. Ağaçlar
-
-![Trees](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/magritte-l-arbre.jpg)
+![Trees](img/magritte-l-arbre.jpg){width="0.5\\linewidth"}
 
 Başka bir standart örnek verelim: ikili ağaçlar.
 
-```haskell
+``` {.haskell language="Haskell"}
 import Data.List
 
-data BinTree a = Empty
-                 | Node a (BinTree a) (BinTree a)
-                              deriving (Show)
+  data BinTree a = Empty
+  | Node a (BinTree a) (BinTree a)
+  deriving (Show)
 ```
 
-Şimdi de bir listeyi sıralı bir ikili ağaca dönüştüren bir fonksiyon yazalım:
+Şimdi de bir listeyi sıralı bir ikili ağaca dönüştüren bir fonksiyon
+yazalım:
 
-```haskell
+``` {.haskell language="Haskell"}
 treeFromList :: (Ord a) => [a] -> BinTree a
-treeFromList [] = Empty
-treeFromList (x:xs) = Node x (treeFromList (filter (<x) xs))
-                             (treeFromList (filter (>x) xs))
+  treeFromList [] = Empty
+  treeFromList (x:xs) = Node x (treeFromList (filter (<x) xs))
+  (treeFromList (filter (>x) xs))
 ```
 
-Fonksiyonun ne kadar okunaklı olduğunu görebiliyor musunuz? Düz Türkçe olarak yazarsak:
-* boş liste, boş ağaca çevrilir.
-* bir liste `(x:xs)`, bir ağaca çevrilir ki,
-    * kok `x`'tır.
-    * sol alt ağaç, `xs`'in `x`'ten kesin olarak küçük elemanlarından oluşturulur.
-    * sağ alt ağaç, `xs`'in `x`'ten kesin olarak büyük elemanlarından oluşturulur.
+Fonksiyonun ne denli okunaklı olduğunu görebiliyor musunuz? Düz Türkçe
+olarak yazarsak: \* boş liste, boş ağaca çevrilir. \* bir liste
+`(x:xs)`, bir ağaca çevrilir ki, \* kok `x`'tır. \* sol alt ağaç,
+`xs`'in `x`'ten kesin olarak küçük elemanlarından oluşturulur. \* sağ
+alt ağaç, `xs`'in `x`'ten kesin olarak büyük elemanlarından oluşturulur.
 
-```haskell
+``` {.haskell language="Haskell"}
 main = print $ treeFromList [7,2,4,8]
 ```
 
 Şu sonucu alıyor olmalısınız:
 
-```haskell
-Node 7 (Node 2 Empty (Node 4 Empty Empty)) (Node 8 Empty Empty)
+``` {.haskell language="Haskell"}
+Node 7 (Node 2 Empty (Node 4 Empty Empty))\\
+  (Node 8 Empty Empty)
 ```
 
-Bu ağacımızın düzgün ama zor anlaşılır bir temsili notasyonu.
+Bu ağacımızın düzgün ancak zor anlaşılır bir sembolik notasyonu.
 
-[02_Hard_Part/30_Trees.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/30_Trees.lhs)
+Ağacımız için daha iyi bir gösterim kodu, öylesine yazalım. Ben genel
+olarak ağaçları daha iyi göstermek için bir fonksiyon yazarken eğlendim,
+bu bölümü izlemeyi zor buluyorsanız atlayabilirsiniz, bir sorun olmaz.
 
-***
+Değiştirmemiz gereken kimi nesler var. `BinTree` tipımizden
+`deriving (Show)` bölümünü kaldırıyoruz. Ayrıca, BinTree tipimizi (`Eq`
+ve `Ord`)'un klaslarından türetmek, eşitlik de karşılaştırma testleri
+yapmamızı sağlayacaktır.
 
-[02_Hard_Part/31_Trees.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/31_Trees.lhs)
-
-Öylesine, ağacımız için daha iyi bir gösterim kodu yazalım. Ben genel olarak ağaçları daha iyi göstermek için bir fonksiyon yazarken eğlendim, eğer bu kısmı takip etmeyi zor buluyorsanız atlayabilirsiniz, bir sorun olmaz.
-
-Değiştirmemiz gereken bazı şeyler var. `BinTree` tipımizden `deriving (Show)` kısmını kaldırıyoruz. Ayrıca, BinTree tipimizi (`Eq` ve `Ord`)'un sınıflarından türetmek de eşitlik ve karşılaştırma testleri yapmamızı sağlayacaktır.
-
-```haskell
+``` {.haskell language="Haskell"}
 data BinTree a = Empty
-                 | Node a (BinTree a) (BinTree a)
-                  deriving (Eq,Ord)
+  | Node a (BinTree a) (BinTree a)
+  deriving (Eq,Ord)
 ```
 
-`deriving (Show)` kısmı olmadan Haskell sizin için bir `show` metodu yaratmaz. Biz `show` metodu için kendi versiyonumuzu yazacağız. Bunu başarmak için, yeni yarattığımız `BinTree a`'nin `Show` tip sınıfının bir üyesi olduğunu belirtmemiz gerekiyor. Bunun için genel söz dizimi şöyle:
+`deriving (Show)` bölümü olmadan Haskell sizin için bir `show` metodu
+oluşturma. Biz `show` metodu için kendi versiyonumuzu yazacağız. Bunu
+başarmak için, yeni oluşturduğumuz `BinTree a`'nin `Show` tip klasının
+bir üyesi olduğunu belirtmemiz gerekiyor. Bunun için genel söz dizimi
+şöyle:
 
-```haskell
+``` {.haskell language="Haskell"}
 instance Show (BinTree a) where
-   show t = ... -- burada kendi fonksiyonunuzu tanimliyorsunuz
+  show t = ... -- burada kendi fonksiyonunuzu tanimliyorsunuz
 ```
 
-Benim bir ikili ağacı göstermek için yazdığım versiyon aşağıda. Karmaşıkmış gibi görünüyor ama endişelenmeyin. Daha garip nesneleri de göstermesi için bazı iyileştirmeler yaptım.
+Benim bir ikili ağacı göstermek için yazdığım versiyon aşağıda.
+Karmaşıkmış gibi görünüyor ancak kaygılanmayın. Daha sıradışı nesneleri
+de göstermesi için birkaç iyileştirme yaptım.
 
-```haskell
--- BinTree'a nin Show tip sinifina uye oldugunu belirtin
-instance (Show a) => Show (BinTree a) where
+``` {.haskell language="Haskell"}
+-- BinTree'a nin Show tip klasına uye oldugunu belirtin
+  instance (Show a) => Show (BinTree a) where
   -- kokten once bir '<' ile baslayacagiz
   -- satir basina da : koyacagiz
   show t = "< " ++ replace '\n' "\n: " (treeshow "" t)
-    where
-    -- treeshow pref Tree
-    --   bu fonksiyon her satira pref ile baslayarak bir agaci gosterecek
-    -- Bos agaci gostermeyecek
-    treeshow pref Empty = ""
-    -- Yaprak
-    treeshow pref (Node x Empty Empty) =
-                  (pshow pref x)
+  where
+  -- treeshow pref Tree
+  --   bu fonksiyon her kod sırasına pref ile baslayarak
+  bir agaci gosterecek
+  -- Bos agaci gostermeyecek
+  treeshow pref Empty = ""
+  -- Yaprak
+  treeshow pref (Node x Empty Empty) =
+  (pshow pref x)
 
-    -- Sag alt agac bos
-    treeshow pref (Node x left Empty) =
-                  (pshow pref x) ++ "\n" ++
-                  (showSon pref "`--" "   " left)
+  -- Sag alt agac bos
+  treeshow pref (Node x left Empty) =
+  (pshow pref x) ++ "\n" ++
+  (showSon pref "`--" "   " left)
 
-    -- Sol alt agac bos
-    treeshow pref (Node x Empty right) =
-                  (pshow pref x) ++ "\n" ++
-                  (showSon pref "`--" "   " right)
+  -- Sol alt agac bos
+  treeshow pref (Node x Empty right) =
+  (pshow pref x) ++ "\n" ++
+  (showSon pref "`--" "   " right)
 
-    -- Sol ve sag alt agaclari bos olmayan agac
-    treeshow pref (Node x left right) =
-                  (pshow pref x) ++ "\n" ++
-                  (showSon pref "|--" "|  " left) ++ "\n" ++
-                  (showSon pref "`--" "   " right)
+  -- Sol ile sag alt agaclari bos olmayan agac
+  treeshow pref (Node x left right) =
+  (pshow pref x) ++ "\n" ++
+  (showSon pref "|--" "|  " left) ++ "\n" ++
+  (showSon pref "`--" "   " right)
 
-    -- Agaci guzel gostermek icin on ekler kullan
-    showSon pref before next t =
-                  pref ++ before ++ treeshow (pref ++ next) t
+  -- Agaci guzel gostermek icin on ekler kullan
+  showSon pref before next t =
+  pref ++ before ++ treeshow (pref ++ next) t
 
-    -- pshow "\n"'i' "\n"++pref ile degistiriyor
-    pshow pref x = replace '\n' ("\n"++pref) (show x)
+  -- pshow "\n"'i' "\n"++pref ile degistiriyor
+  pshow pref x = replace '\n' ("\n"++pref) (show x)
 
-    -- bir karakteri diger karakter dizisi ile degistiriyor
-    replace c new string =
-      concatMap (change c new) string
-      where
-          change c new x
-              | x == c = new
-              | otherwise = x:[] -- "x"
+  -- bir karakteri öteki karakter dizisi ile degistiriyor
+  replace c new string =
+  concatMap (change c new) string
+  where
+  change c new x
+  | x == c = new
+  | otherwise = x:[] -- "x"
 ```
 
-`treeFromList` metodu tamamen aynı kalıyor.
+`treeFromList` metodu hiç değişmeden kalıyor.
 
-Şimdi, görelim nasıl oluyormuş:
+Şimdi, görelim ne yolla oluyormuş:
 
-```haskell
+``` {.haskell language="Haskell"}
 main = do
-  putStrLn "Tam sayi ikili agaci:"
+  putStrLn "Tum sayi ikili agaci:"
   print $ treeFromList [7,2,4,8,1,3,6,21,12,23]
 ```
 
-```
-Tam sayi ikili agaci:
-< 7
-: |--2
-: |  |--1
-: |  `--4
-: |     |--3
-: |     `--6
-: `--8
-:    `--21
-:       |--12
-:       `--23
-```
+      Tum sayi ikili agaci:
+      < 7
+      : |--2
+      : |  |--1
+      : |  `--4
+      : |     |--3
+      : |     `--6
+      : `--8
+      :    `--21
+      :       |--12
+      :       `--23
 
-Çok daha iyi, değil mi? Ağacın kökü `<` karakteriyle başlayan satırda gösteriliyor. Takip eden her satır `:` işareti ile başlıyor. Ağacımızda başka tiplerde veri de kullanabilirdik.
+Çok daha iyi değil mi? Ağacın kökü `<` karakteriyle başlayan kod
+sırasında gösteriliyor. İzleyen her kod `:` imi ile başlıyor. Ağacımızda
+başka tiplerde veri de kullanabilirdik.
 
-```haskell
-  putStrLn "\nKarakter dizisi ikili agaci:"
+``` {.haskell language="Haskell"}
+putStrLn "\nKarakter dizisi ikili agaci:"
   print $ treeFromList ["foo","bar","baz","gor","yog"]
 ```
 
-```
-Karakter dizisi ikili agaci:
-< "foo"
-: |--"bar"
-: |  `--"baz"
-: `--"gor"
-:    `--"yog"
-```
+      Karakter dizisi ikili agaci:
+      < "foo"
+      : |--"bar"
+      : |  `--"baz"
+      : `--"gor"
+      :    `--"yog"
 
-Ağaçların eşitliğini ve büyük/küçüklüğünü test edebildiğimiz için, ağaçlardan ağaç da yapabiliriz!
+Ağaçların eşitliği ile büyük/küçüklüğünü test edebildiğimiz için,
+ağaçlardan ağaç da yapabiliriz!
 
-```haskell
-  putStrLn "\nKarakter ikili agaclarinin ikili agaci:"
+``` {.haskell language="Haskell"}
+putStrLn "\nKarakter ikili agaclarinin ikili agaci:"
   print ( treeFromList
-           (map treeFromList ["baz","zara","bar"]))
+  (map treeFromList ["baz","zara","bar"]))
 ```
 
-```
-Karakter ikili agaclarinin ikili agaci:
-< < 'b'
-: : |--'a'
-: : `--'z'
-: |--< 'b'
-: |  : |--'a'
-: |  : `--'r'
-: `--< 'z'
-:    : `--'a'
-:    :    `--'r'
-```
+      Karakter ikili agaclarinin ikili agaci:
+      < < 'b'
+      : : |--'a'
+      : : `--'z'
+      : |--< 'b'
+      : |  : |--'a'
+      : |  : `--'r'
+      : `--< 'z'
+      :    : `--'a'
+      :    :    `--'r'
 
-Ağacın her satırını bu yüzden `:` ile başlatmıştım. (kök hariç)
+Ağacın her kod sırasını bu yüzden `:` ile başlatmıştım. (kök dışında)
 
-![Yo](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/yo_dawg_tree.jpg)
+![Yo](img/yo_dawg_tree.jpg)
 
-```haskell
-  putStrLn "\nKarakter ikili agaclarinin ikili agaci:"
+``` {.haskell language="Haskell"}
+putStrLn "\nKarakter ikili agaclarinin ikili agaci:"
   print $ (treeFromList . map (treeFromList . map treeFromList))
-             [ ["YO","DAWG"]
-             , ["I","HEARD"]
-             , ["I","HEARD"]
-             , ["YOU","LIKE","TREES"] ]
+  [ ["YO","DAWG"]
+    , ["I","HEARD"]
+    , ["I","HEARD"]
+    , ["YOU","LIKE","TREES"] ]
 ```
 
-ki bu da şuna denk:
+ki bu da şuna denk (*equivalent*,"eşdeğer"):
 
-```haskell
+``` {.haskell language="Haskell"}
 print ( treeFromList (
-          map treeFromList
-             [ map treeFromList ["YO","DAWG"]
-             , map treeFromList ["I","HEARD"]
-             , map treeFromList ["I","HEARD"]
-             , map treeFromList ["YOU","LIKE","TREES"] ]))
+  map treeFromList
+  [ map treeFromList ["YO","DAWG"]
+    , map treeFromList ["I","HEARD"]
+    , map treeFromList ["I","HEARD"]
+    , map treeFromList ["YOU","LIKE","TREES"] ]))
 ```
 
-ve şu çıktıyı vermeli:
+şu çıktıyı vermeli:
 
-```
-Karakter ikili agaclarinin ikili agaci:
-< < < 'Y'
-: : : `--'O'
-: : `--< 'D'
-: :    : |--'A'
-: :    : `--'W'
-: :    :    `--'G'
-: |--< < 'I'
-: |  : `--< 'H'
-: |  :    : |--'E'
-: |  :    : |  `--'A'
-: |  :    : |     `--'D'
-: |  :    : `--'R'
-: `--< < 'Y'
-:    : : `--'O'
-:    : :    `--'U'
-:    : `--< 'L'
-:    :    : `--'I'
-:    :    :    |--'E'
-:    :    :    `--'K'
-:    :    `--< 'T'
-:    :       : `--'R'
-:    :       :    |--'E'
-:    :       :    `--'S'
-```
+      Karakter ikili agaclarinin ikili agaci:
+      < < < 'Y'
+      : : : `--'O'
+      : : `--< 'D'
+      : :    : |--'A'
+      : :    : `--'W'
+      : :    :    `--'G'
+      : |--< < 'I'
+      : |  : `--< 'H'
+      : |  :    : |--'E'
+      : |  :    : |  `--'A'
+      : |  :    : |     `--'D'
+      : |  :    : `--'R'
+      : `--< < 'Y'
+      :    : : `--'O'
+      :    : :    `--'U'
+      :    : `--< 'L'
+      :    :    : `--'I'
+      :    :    :    |--'E'
+      :    :    :    `--'K'
+      :    :    `--< 'T'
+      :    :       : `--'R'
+      :    :       :    |--'E'
+      :    :       :    `--'S'
 
-Tekrar edilen ağaçların eklenmediğine dikkat edin; `"I","HEARD"`'e denk gelen sadece bir ağaç var. Bunun için (neredeyse) hiçbir şey yapmadık, çünkü Tree yapısını `Eq` tip sınıfından türettik.
+Yinelenen ağaçların eklenmediğine özen gösterin; `"I","HEARD"`'e denk
+gelen yalnızca bir ağaç var. Bunun için (neredeyse) hiçbir nes yapmadık
+çünkü Tree yapısını `Eq` tip klasından türettik.
 
-Bu yapının ne kadar müthiş olduğunu görebiliyor musunuz: Sadece sayılardan, karakter dizilerinden, karakterlerden değil, başka ağaçlardan da ağaçlar yapabiliyoruz. İstersek ağaçlardan oluşan ağaçlardan oluşan ağaç bile yapabiliriz!
+Bu yapının ne denli iyi olduğunu görebiliyor musunuz: Yalnızca
+sayılardan, karakter dizilerinden, karakterlerden değil, başka
+ağaçlardan da ağaçlar yapabiliyoruz. İstersek ağaçlardan oluşan
+ağaçlardan oluşan ağaç bile yapabiliriz!
 
-[02_Hard_Part/31_Trees.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/31_Trees.lhs)
+### Sonsuz Yapılar {#sonsuz-yapux131lar}
 
-***
+![Infinite](img/escher_infinite_lizards.jpg){width="0.4\\linewidth"}
 
-[02_Hard_Part/40_Infinites_Structures.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/40_Infinites_Structures.lhs)
+Haskell'in *üşengeç* olduğu sıkça söylenir. Esasında biraz titizseniz,
+Haskell'in non-strict[^12] ( hemen işlem yapmayan, kesin olmayan)
+olduğunu söylemelisiniz. Üşengeçlik yalnızca *non-strict* dillerin ortak
+bir uygulamasıdır. Öyleyse "non-strict" net biçimde ne anlama geliyor?
+Haskell vikisiden alıntılayalım:
 
-## 3.3. Sonsuz Yapılar
-
-![Infinite](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/escher_infinite_lizards.jpg)
-
-Haskell'in *tembel* olduğu sıkça söylenir.
-
-Aslında, eğer biraz titizseniz, Haskell'in [*non-strict*](http://www.haskell.org/haskellwiki/Lazy_vs._non-strict) (aceleci olmayan, kesin olmayan) olduğunu söylemelisiniz. Tembellik sadece *non-strict* dillerin ortak bir tatbikidir.
-
-Öyleyse "non-strict" tam olarak ne anlama geliyor? Haskell vikisiden alıntılayalım:
-
-> Sadeleştirme (hesaplama için matematiksel terim) dıştan içe doğru ilerler.
->
-> yani eğer `(a+(b*c))`'yi ele alıyorsanız, önce `+`'yi sadeleştirirsiniz, sonra iç `(b*c)`'yi sadeleştirirsiniz.
+Yalınlaştırma ( kalkülasyon için matematiksel terim) dıştan içe doğru
+ilerler. dolayısıyla `(a+(b*c))`'yi ele alıyorsanız, önce `+`'yi
+yalınlaştırır, sonra iç `(b*c)`'yi yalınlaştırırsınız.
 
 Örneğin Haskell'de şunu yapabilirsiniz:
 
-```haskell
+``` {.haskell language="Haskell"}
 -- numbers = [1,2,..]
-numbers :: [Integer]
-numbers = 0:map (1+) numbers
+  numbers :: [Integer]
+  numbers = 0:map (1+) numbers
 
-take' n [] = []
-take' 0 l = []
-take' n (x:xs) = x:take' (n-1) xs
+  take' n [] = []
+  take' 0 l = []
+  take' n (x:xs) = x:take' (n-1) xs
 
-main = print $ take' 10 numbers
+  main = print $ take' 10 numbers
 ```
 
-Sonra duruyor.
+Sonra duruyor. Neden?
 
-Neden?
+`numbers` değişkeninin tümünü kalküle etmek yerine, yalnızca gereksinimi
+olan elemanları, gereksinimi olduğunda kalküllüyor.
 
-`numbers` değişkeninin tamamını hesaplamak yerine, sadece ihtiyacı olan elemanları, ihtiyacı olduğu zaman hesaplıyor.
+Ayrıca, Haskell'de sonsuz listeler için bir notasyon olduğunu da
+söylemiş olayım:
 
-Ayrıca, Haskell'de sonsuz listeler için bir notasyon olduğunu da söylemiş olayım:
-
-```haskell
+``` {.haskell language="Haskell"}
 [1..]   ⇔ [1,2,3,4...]
-[1,3..] ⇔ [1,3,5,7,9,11...]
+  [1,3..] ⇔ [1,3,5,7,9,11...]
 ```
 
-ve çoğu fonksiyon da onlarla çalışır. Ayrıca, Haskell'de, bizim `take'` fonksiyonumuza denk bir `take` fonksiyonu mevcuttur.
+ayrıca çoğu fonksiyon da onlarla çalışır. Ek olarak, Haskell'de, bizim
+`take'` fonksiyonumuza denk bir `take` fonksiyonu vardır.
 
-[02_Hard_Part/40_Infinites_Structures.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/40_Infinites_Structures.lhs)
+Sıralı ikili ağaç yaptığımızı varsayalım. Sonsuz bir ikili ağaç şöyle
+olur:
 
-***
-
-[02_Hard_Part/41_Infinites_Structures.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/41_Infinites_Structures.lhs)
-
-Sıralı ikili ağaç yaptığımızı varsayalım. Sonsuz bir ikili ağaç şöyle olur:
-
-```haskell
+``` {.haskell language="Haskell"}
 nullTree = Node 0 nullTree nullTree
 ```
 
-Her düğümün 0'a eşit olduğu, geçerli ve tam bir ikili ağaç. Şimdi bu objeyi aşağıdaki fonksiyonla işleyebileceğimi kanıtlayacağım:
+Her düğümün 0'a eşit olduğu, geçerli, bütün bir ikili ağaç. Şimdi bu
+objeyi aşağıdaki fonksiyonla işleyebileceğimi kanıtlayacağım:
 
-```haskell
+``` {.haskell language="Haskell"}
 -- bir BinTree'nin tum elemanlarini
--- belli bir derinlige kadar al
-treeTakeDepth _ Empty = Empty
-treeTakeDepth 0 _     = Empty
-treeTakeDepth n (Node x left right) = let
-          nl = treeTakeDepth (n-1) left
-          nr = treeTakeDepth (n-1) right
-          in
-              Node x nl nr
+  -- belli bir derinlige dek al
+  treeTakeDepth _ Empty = Empty
+  treeTakeDepth 0 _     = Empty
+  treeTakeDepth n (Node x left right) = let
+  nl = treeTakeDepth (n-1) left
+  nr = treeTakeDepth (n-1) right
+  in
+  Node x nl nr
 ```
 
 Bu programın sonucunu görelim.
 
-```haskell
+``` {.haskell language="Haskell"}
 main = print $ treeTakeDepth 4 nullTree
 ```
 
-Kodumuz derleniyor, çalışıyor ve şu sonucu vererek duruyor:
+Kodumuz derleniyor, çalışıp şu sonucu vererek duruyor:
 
-```
-<  0
-: |-- 0
-: |  |-- 0
-: |  |  |-- 0
-: |  |  `-- 0
-: |  `-- 0
-: |     |-- 0
-: |     `-- 0
-: `-- 0
-:    |-- 0
-:    |  |-- 0
-:    |  `-- 0
-:    `-- 0
-:       |-- 0
-:       `-- 0
-```
+      <  0
+      : |-- 0
+      : |  |-- 0
+      : |  |  |-- 0
+      : |  |  `-- 0
+      : |  `-- 0
+      : |     |-- 0
+      : |     `-- 0
+      : `-- 0
+      :    |-- 0
+      :    |  |-- 0
+      :    |  `-- 0
+      :    `-- 0
+      :       |-- 0
+      :       `-- 0
 
 Nöronlarınızı biraz daha ısındırmak için daha ilginç bir ağaca bakalım:
 
-```haskell
+``` {.haskell language="Haskell"}
 iTree = Node 0 (dec iTree) (inc iTree)
-        where
-           dec (Node x l r) = Node (x-1) (dec l) (dec r)
-           inc (Node x l r) = Node (x+1) (inc l) (inc r)
+  where
+  dec (Node x l r) = Node (x-1) (dec l) (dec r)
+  inc (Node x l r) = Node (x+1) (inc l) (inc r)
 ```
 
-Bu ağacı oluşturmanın başka bir yolu da üst derece fonksiyonları kullanmaktır. Bu fonksiyon `map` fonksiyonuna benziyor, ama listeler yerine `BinTree`'ler üzerinde çalışıyor. Ortaya şöyle bir fonksiyon çıkacak:
+Bu ağacı oluşturmanın başka bir yolu da üst derece fonksiyonları
+kullanmaktır. Bu fonksiyon `map` fonksiyonuna benziyor, ancak listeler
+yerine `BinTree`'ler üzerinde çalışıyor. Ortaya şöyle bir fonksiyon
+çıkacak:
 
-```haskell
+``` {.haskell language="Haskell"}
 -- bir fonksiyonu agacin her dugumune uygular
-treeMap :: (a -> b) -> BinTree a -> BinTree b
-treeMap f Empty = Empty
-treeMap f (Node x left right) = Node (f x)
-                                     (treeMap f left)
-                                     (treeMap f right)
+  treeMap :: (a -> b) -> BinTree a -> BinTree b
+  treeMap f Empty = Empty
+  treeMap f (Node x left right) = Node (f x)
+  (treeMap f left)
+  (treeMap f right)
 ```
 
-*Not:* Bunun hakkında burada daha fazla konuşmayacağım. Eğer `map`'in diğer veri yapılarına genellemesiyle ilgileniyorsanız, *functor*ları ve `fmap`'i araştırın.
+*Not:* Bunun üzerine burada daha öte konuşmayacağım. `map`'in öteki veri
+yapılarına genellemesiyle ilgileniyorsanız, *functor*ları ile `fmap`'i
+araştırın.
 
 Şimdi tanımımız şöyle oldu:
 
-```haskell
+``` {.haskell language="Haskell"}
 infTreeTwo :: BinTree Int
-infTreeTwo = Node 0 (treeMap (\x -> x-1) infTreeTwo)
-                    (treeMap (\x -> x+1) infTreeTwo)
+  infTreeTwo = Node 0 (treeMap (\x -> x-1) infTreeTwo)
+  (treeMap (\x -> x+1) infTreeTwo)
 ```
 
 Şunun sonucuna bakalım:
 
-```haskell
+``` {.haskell language="Haskell"}
 main = print $ treeTakeDepth 4 infTreeTwo
 ```
 
-```
-<  0
-: |-- -1
-: |  |-- -2
-: |  |  |-- -3
-: |  |  `-- -1
-: |  `-- 0
-: |     |-- -1
-: |     `-- 1
-: `-- 1
-:    |-- 0
-:    |  |-- -1
-:    |  `-- 1
-:    `-- 2
-:       |-- 1
-:       `-- 3
-```
+      <  0
+      : |-- -1
+      : |  |-- -2
+      : |  |  |-- -3
+      : |  |  `-- -1
+      : |  `-- 0
+      : |     |-- -1
+      : |     `-- 1
+      : `-- 1
+      :    |-- 0
+      :    |  |-- -1
+      :    |  `-- 1
+      :    `-- 2
+      :       |-- 1
+      :       `-- 3
 
-[02_Hard_Part/41_Infinites_Structures.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/02_Hard_Part/41_Infinites_Structures.lhs)
+# Çok Zor Bölüm {#uxe7ok-zor-kux131sux131m}
 
-# 4. Çok Zor Kısım
+Buraya geldiyseniz kutlamalar! Şimdi gerçekten çok zor bölüm
+başlayabilir.
 
-Buraya kadar geldiyseniz tebrikler! Şimdi gerçekten çok zor kısım başlayabilir.
+Benim gibiyseniz, fonksiyonel stili anlamış olmalısınız. Ayrıca
+üşengeçliğin bir norm olmasının avantajlarını da biraz anlamış
+olmalısınız. Ancak gerçek bir program yapmaya nereden başlamanız
+gerektiğini bilmiyorsunuz. Özellikle de şu soruların yanıtlarını:
 
-Eğer benim gibiyseniz, fonksiyonel stili anlamış olmalısınız. Ayrıca tembelliğin varsayılan olmasının avantajlarını da biraz anlamış olmalısınız. Ama gerçek bir program yapmaya nereden başlamanız gerektiğini bilmiyorsunuz. Özellikle de şu soruların cevaplarını:
-* Yan etkilerle nasıl baş edilir?
-* Neden IO (girdi-çıktı) ile baş etmek için imperatifliğe benzer bir notasyon var?
+-   Yan etkilerle nasıl baş edilir?
 
-Karmaşık cevaplara hazır olun. Ama hepsi sonunda çok faydalı.
+-   Neden IO (girdi-çıktı) ile baş etmek için imperatifliğe benzer bir
+    notasyon var?
 
-***
+Karmaşık yanıtlara tetikte olun. Ancak hepsi sonunda çok yararlı.
 
-[03_Hell/01_IO/01_progressive_io_example.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/01_IO/01_progressive_io_example.lhs)
+### IO ile Baş Etmek (*Deal With IO*) {#io-ile-baux15f-etmek}
 
-## 4.1. IO ile Baş Etmek
+![IO](img/magritte_carte_blanche.jpg)
 
-![IO](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/magritte_carte_blanche.jpg)
+IO ile uğraşan tipik bir fonksiyon imperatif bir programa çok benzer:
 
-> TL;DR: (Çok uzundu okumadım)
-
-> IO ile uğraşan tipik bir fonksiyon imperatif bir programa çok benzer:
-
-```haskell
+``` {.haskell language="Haskell"}
 f :: IO a
-f = do
+  f = do
   x <- action1
   action2 x
   y <- action3
   action4 x y
 ```
 
-> * Bir nesnenin değerini belirtmek için `<-` kullanıyoruz.
-> * Her satırın tipi `IO *`, bu örnekte:
-   * `action1 :: IO b`
-   * `action2 x :: IO ()`
-   * `action3 :: IO c`
-   * `action4 x y :: IO a`
-   * `x :: b, y :: c`
-   * Az sayıda nesnenin tipi `IO a`'dir, bu seçmenize yardım eder. Farklı olarak, burada saf fonksiyonları doğrudan kullanamazsınız. Saf fonksiyonları kullanmak için örneğin `action2 (saffonksiyon x)` yazabilirsiniz.
+-   Bir nesnenin değerini belirtmek için `<-` kullanıyoruz.
 
-Bu bölümde size IO kullanmayı anlatacağım, ama nasıl çalıştığını değil. Haskell'in nasıl saf ve saf olmayan kısımları ayırdığını göreceksiniz.
+-   Her sıra kodun tipi `IO *`, bu örnekte:
 
-Söz dizimindeki detayları anlamaya çalışmak için durmayın. Cevaplar ilerleyen bölümde gelecek.
+-   `action1 :: IO b`
+
+-   `action2 x :: IO ()`
+
+-   `action3 :: IO c`
+
+-   `action4 x y :: IO a`
+
+-   `x :: b, y :: c`
+
+-   Az sayıda nesnenin tipi `IO a`'dir, bu seçmenize yardım eder. İnce
+    bir ayrım olarak, burada yalın fonksiyonları doğrudan (*directly*)
+    kullanamazsınız. Yalın fonksiyonları kullanmak için örneğin
+    `action2 (saffonksiyon x)` yazabilirsiniz.
+
+Bu bölümde size IO kullanmayı anlatacağım, ancak hangi yolla çalıştığını
+değil. Haskell'in arı ile arı olmayan kodları hangi yolla ayırt ettiğini
+göreceksiniz.
+
+Söz dizimindeki detayları anlamaya çalışmak için duraksamayın. (*Don't
+stop because you're trying to understand the details of the syntax*)
+Yanıtlar ilerleyen bölümde gelecek)
 
 Ne yapalım?
 
-> Kullanıcıdan bir sayı listesi girmesini isteyin. Sayıların toplamını ekrana yazdırın.
+Kullanıcıdan bir sayı listesi girmesini isteyin. Sayıların toplamını
+ekrana yazdırın.
 
-```haskell
+``` {.haskell language="Haskell"}
 toList :: String -> [Integer]
-toList input = read ("[" ++ input ++ "]")
+  toList input = read ("[" ++ input ++ "]")
 
-main = do
+  main = do
   putStrLn "Bir sayi listesi girin (virgulle ayirin):"
   input <- getLine
   print $ sum (toList input)
 ```
 
-Bu programın ne yaptığı oldukça açık olmalı. Tiplere biraz daha ayrıntılı bakalım.
+Bu programın ne yaptığı oldukça açık olmalı. Tiplere biraz daha
+ayrıntılı bakalım.
 
-```
-putStrLn :: String -> IO ()
-getLine  :: IO String
-print    :: Show a => a -> IO ()
-```
+      putStrLn :: String -> IO ()
+      getLine  :: IO String
+      print    :: Show a => a -> IO ()
 
-Daha da ilginç şekilde, `do` bloğunun içindeki her ifadenin `IO a` tipinde olduğuna dikkat edelim.
+Daha da ilginç biçimde , `do` bloğunun içindeki her deyimin `IO a`
+tipinde olduğuna ilgi gösterelim.
 
-```haskell
+``` {.haskell language="Haskell"}
 main = do
   putStrLn "Enter ... " :: IO ()
   getLine               :: IO String
   print Something       :: IO ()
 ```
 
-Ayrıca `<-` işaretinin etkisine de dikkat edelim.
+Ayrıca `<-` iminin etkisine de ilgi gösterelim.
 
-```
-do
- x <- something -- bir seyler
-```
+      do
+      x <- something -- bir nesler
 
-Eğer `something :: IO a` tipinde ise `x :: a`'dir.
+`something :: IO a` tipinde ise `x :: a`'dir.
 
-`IO` kullanımıyla ilgili başka bir önemli nokta da şudur: `do` bloğunun içindeki tüm satırlar şu iki şekilden birinde olmalı:
+`IO` kullanımıyla ilgili başka bir önemli ayrıntı da şudur: `do`
+bloğunun içindeki tüm kod sıraları şu iki türden birindeki olmalı:
 
-```haskell
+``` {.haskell language="Haskell"}
 action1             :: IO a
-                    -- bu durumda, a = ()
+  -- bu durumda, a = ()
 ```
 
-veya
+yada
 
-```haskell
+``` {.haskell language="Haskell"}
 deger <- action2    -- ki burada
-                    -- bar z t :: IO b
-                    -- deger   :: b
+  -- bar z t :: IO b
+  -- deger   :: b
 ```
 
-Bu iki çeşit komut aksiyonları sıralamanın iki farklı yolunu ifade ediyor. Bu cümlenin anlamı önümüzdeki bölümün sonunda netleşecek.
+Bu iki tür komut aksiyonları sıralamanın iki değişik yolunu anlatıyor.
+Bu tümcenin anlamı önümüzdeki bölümün sonunda netleşecek.
 
-[03_Hell/01_IO/01_progressive_io_example.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/01_IO/01_progressive_io_example.lhs)
+Şimdi programımızın nasıl davrandığına bakalım. Örneğin, kullanıcı
+sıradışı bir nes girerse ne olacak? Deneyelim:
 
-***
+      % runghc 02_progressive_io_example.lhs
+      Enter a list of numbers (separated by comma):
+      foo
+      Prelude.read: no parse
 
-[03_Hell/01_IO/02_progressive_io_example.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/01_IO/02_progressive_io_example.lhs)
+Püf! Değişik bir yanıl mesajından sonra programımız çöktü! İlk
+iyileştirmemiz daha anlaşılır bir yanıl mesajı vermek olsun.
 
-Şimdi programımızın nasıl davrandığına bakalım. Örneğin, eğer kullanıcı garip bir şey girerse ne olacak? Deneyelim:
+Bunu yapmak için önce bir neslerin yanlış gittiğini saptayabilmemiz
+gerekiyor. İşte bunu yapmanın bir yolu: `Maybe` (Türkçesi: "belki")
+tipini kullanmak. Bu Haskell'de sık kullanılan bir tiptir.
 
-```
-    % runghc 02_progressive_io_example.lhs
-    Enter a list of numbers (separated by comma):
-    foo
-    Prelude.read: no parse
-```
-
-Püf! Garip bir hata mesajından sonra programımız çöktü! İlk iyileştirmemiz daha anlaşılır bir hata mesajı vermek olsun.
-
-Bunu yapmak için önce bir şeylerin yanlış gittiğini tespit edebilmemiz gerekiyor. İşte bunu yapmanın bir yolu: `Maybe` (Türkçesi: belki) tipini kullanmak. Bu Haskell'de sık kullanılan bir tiptir.
-
-```haskell
+``` {.haskell language="Haskell"}
 import Data.Maybe
 ```
 
-Peki bu nedir ki? `Maybe` bir parametre alan bir tiptir. Tanımı da şudur:
+Peki bu nedir ki? `Maybe` bir tane parametre alan bir tiptir. Tanımı da
+şudur:
 
-```haskell
+``` {.haskell language="Haskell"}
 data Maybe a = Nothing | Just a
 ```
 
-Bu bir değer okumaya veya yaratmaya çalışırken bir hata olduğunu ifade etmenin güzel bir yoludur. `maybeRead` fonksiyonu bunun iyi bir örneği. Bu `read`'e [^fn-5] benzer bir fonksiyon, ama eğer bir şeyler yanlış giderse dönen değer `Nothing` olacak. Eğer bir değer okuyabilirse, dönen değer `Just <değer>` olacak. Bu fonksiyonu çok anlamaya çalışmayın; `read`'den daha alt seviye bir fonksiyon olan `reads`'i kullanıyorum.
+Bu bir değer okumaya yada oluşturmaya çalışırken bir yanıl olduğunu
+belirtmenin güzel bir yoludur. `maybeRead` fonksiyonu bunun iyi bir
+örneği. Bu `read`'e [^13] benzer bir fonksiyon, ancak bir nesler yanlış
+giderse dönen değer `Nothing` olacak. Bir değer okuyabilirse, dönen
+değer `Just <değer>` olacak. Bu fonksiyonu çok anlamaya çalışmayın;
+`read`'den daha alt düzey bir fonksiyon olan `reads`'i kullanıyorum.
 
-```haskell
+``` {.haskell language="Haskell"}
 maybeRead :: Read a => String -> Maybe a
-maybeRead s = case reads s of
-                  [(x,"")]    -> Just x
-                  _           -> Nothing
+  maybeRead s = case reads s of
+  [(x,"")]    -> Just x
+  _           -> Nothing
 ```
 
-Biraz daha okunaklı olması için, şu şekilde giden bir fonksiyon tanımlayalım: Eğer karakter dizisinin formatı yanlışsa, `Nothing` döndürülecek. Aksi halde, örneğin "1,2,3" için `Just [1,2,3]` döndürülecek.
+Biraz daha okunaklı olması için, şu biçimde ilerleyen bir fonksiyon
+tanımlayalım: Karakter dizisinin formatı (*biçemi*) yanlışsa, `Nothing`
+döndürülecek. Tersi durumda, örneğin "1,2,3" için `Just [1,2,3]`
+döndürülecek.
 
-```haskell
+``` {.haskell language="Haskell"}
 getListFromString :: String -> Maybe [Integer]
-getListFromString str = maybeRead $ "[" ++ str ++ "]"
+  getListFromString str = maybeRead $ "[" ++ str ++ "]"
 ```
 
-Sonrasında tek yapmamız gereken dönen değeri ana fonksiyonumuzda test etmek.
+Sonrasında tek yapmamız gereken dönen değeri ana fonksiyonumuzda test
+etmek (*denetlemek*)
 
-```haskell
+``` {.haskell language="Haskell"}
 main :: IO ()
-main = do
+  main = do
   putStrLn "Bir sayi listesi girin (virgulle ayirin):"
   input <- getLine
   let maybeList = getListFromString input in
-      case maybeList of
-          Just l  -> print (sum l)
-          Nothing -> error "Kotu format. Hoscakalin."
+  case maybeList of
+  Just l  -> print (sum l)
+  Nothing -> error "Kotu format. Hoscakalin."
 ```
 
-Hata durumunda, iyi sayılabilecek bir hata mesajı göstermiş olalım.
+Kodun yanıl vermesi durumunda, iyi sayılabilecek bir yanıl mesajı
+göstermiş olalım.
 
-`main` fonksiyonunun `do` bloğundaki her ifadenin tipinin `IO a` formatında olduğuna dikkat edin. Tek bilmediğiniz yapı `error`. Ama `error msg` de gerekli tipi alıyor. (burada `IO ()`).
+`main` fonksiyonunun `do` bloğundaki her deyimin tipinin `IO a`
+formatında olduğuna gözatın. Tek bilmediğiniz yapı `error`. Ancak
+`error msg` de gerekli tipi alıyor. (burada `IO ()`).
 
-Bu programda fark etmeniz gereken şey tanımladığımız fonksiyonların tipleri. Yazdığımız fonksiyonlar arasında sadece bir tanesinin tipinde `IO` var: `main`. Bu demek oluyor ki `main` saf olmayan bir fonksiyon. Ama `main` içinde saf bir fonksiyon olan  `getListFromString` kullanılıyor. Yani sadece bakarak bile fonksiyonların saf olup olmadıklarını anlayabilirsiniz.
+Bu programda bilincine varmanız gereken nes, tanımladığımız
+fonksiyonların tipleri. Yazdığımız fonksiyonlar arasında yalnızca bir
+tanesinin tipinde `IO` var: `main`. Bu demek oluyor ki `main` arı
+olmayan bir fonksiyon. Ancak `main` içinde arı bir fonksiyon olan
+`getListFromString` kullanılıyor. Dolayısıyla yalnızca bakarak bile
+fonksiyonların arı olup olmadıklarını anlayabilirsiniz.
 
-Peki saflık neden önemlidir? Bir sürü avantajının üçü şunlar:
+Peki arılık neden önemlidir? Bir sürü avantajından üçü şunlar:
 
-* Saf kod hakkında mantık yürütmek saf olmayan kod hakkında mantık yürütmekten çok daha kolaydır.
-* Saflık sizi yan etkilerden ötürü kolayca test edemeyeceğiniz hatalardan korur.
-* Saf fonksiyonları herhangi bir sırayla veya eşzamanlı olarak hiçbir risk olmadan hesaplayabilirsiniz.
+-   Arı kod üzerine us yürütmek arı olmayan kod üzerine us yürütmekten
+    çok daha kolaydır.
 
-İşte bu yüzden, olabildiğince fazla kodunuzu saf fonksiyonlarla yazmalısınız.
+-   Arılık sizi yan etkilerden ötürü kolayca test edemeyeceğiniz
+    yanıllardan korur.
 
-[03_Hell/01_IO/02_progressive_io_example.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/01_IO/02_progressive_io_example.lhs)
+-   Arı fonksiyonları herhangi bir sırayla yada eş anlı olarak hiçbir
+    risk olmadan bilgisaydırabilirsiniz.
 
-***
+İşte bu yüzden, olabildiğince yüksek sayıda kodu arı fonksiyonlarla
+yazmalısınız.
 
-[03_Hell/01_IO/03_progressive_io_example.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/01_IO/03_progressive_io_example.lhs)
+Sonraki adımımız kullanıcı geçerli bir yanıt girene dek yinelecek
+biçimde sormak olsun.
 
-Sonraki adımımız kullanıcı geçerli bir cevap girene kadar tekrar tekrar sormak olsun.
+İlk bölümü olduğu gibi kullanabiliriz:
 
-İlk bölümü aynen kullanabiliriz:
-
-```haskell
+``` {.haskell language="Haskell"}
 import Data.Maybe
 
-maybeRead :: Read a => String -> Maybe a
-maybeRead s = case reads s of
-                  [(x,"")]    -> Just x
-                  _           -> Nothing
-getListFromString :: String -> Maybe [Integer]
-getListFromString str = maybeRead $ "[" ++ str ++ "]"
+  maybeRead :: Read a => String -> Maybe a
+  maybeRead s = case reads s of
+  [(x,"")]    -> Just x
+  _           -> Nothing
+  getListFromString :: String -> Maybe [Integer]
+  getListFromString str = maybeRead $ "[" ++ str ++ "]"
 ```
 
-Şimdi kullanıcı doğru bir girdi yazana kadar tekrar soran bir fonksiyon yazalım:
+Şimdi kullanıcı doğru bir girdi yazana dek yine soran bir fonksiyon
+yazalım:
 
-```
-askUser :: IO [Integer]
-askUser = do
-  putStrLn "Bir sayi listesi girin (virgulle ayirin):"
-  input <- getLine
-  let maybeList = getListFromString input in
+      askUser :: IO [Integer]
+      askUser = do
+      putStrLn "Bir sayi listesi girin (virgulle ayirin):"
+      input <- getLine
+      let maybeList = getListFromString input in
       case maybeList of
-          Just l  -> return l
-          Nothing -> askUser
-```
+      Just l  -> return l
+      Nothing -> askUser
 
-Fonksiyonumuzun tipi `IO [Integer]`. Bu demek oluyor ki belirli IO aksiyonları sonucu `[Integer]` tipinde bir değer elde ediyoruz. Bazıları bunu şöyle açıklıyor:
+Fonksiyonumuzun tipi `IO [Integer]`. Bu demek oluyor ki belirli IO
+aksiyonları sonucu `[Integer]` tipinde bir değer elde ediyoruz. Kimileri
+bunu şöyle açıklıyor:
 
-> «IO içinde [Integer] var.»
+"IO içinde \[Integer\] var"
 
-Eğer bunun arkasındaki detayları anlamak istiyorsanız, sonraki bölümü okumanız gerekecek. Ama eğer IO'yu sadece *kullanmak* istiyorsanız, biraz tekrar yapın ve tipler hakkında düşünmeniz gerektiğini hatırlayın.
+Bunun arkasındaki (*ardındaki* detayları anlamak istiyorsanız, sonraki
+bölümü okumanız gerekecek. Ancak IO'yu yalnızca *kullanmak*
+istiyorsanız, konuların üzerinden gidip tipler üzerine düşünmeniz
+gerektiğini anımsayın.
 
-Son olarak, `main` fonksiyonumuz çok daha basit:
+Son olarak, `main` fonksiyonumuz çok daha kolay:
 
-```haskell
+``` {.haskell language="Haskell"}
 main :: IO ()
-main = do
+  main = do
   list <- askUser
   print $ sum list
 ```
 
-IO'ya girişimizi bitirdik. Biraz hızlıydı, değil mi? Hatırlamamız gereken temel şeyler sunlar:
+IO'ya girişimizi bitirdik. Biraz hızlıydı, değil mi? Anımsamanız gereken
+temel nesler şunlar:
 
-* `do` bloğunun içinde, her ifade `IO a` tipinde olmalı. Bu sizi belli ifadelerle kısıtlıyor. Örneğin, `getLine`, `print`, `putStrLn`, vs.
-* Saf fonksiyonları olabildiğince saf olmayan kısımların dışında tutmaya çalışın, işin mümkün olduğunca büyük kısmını saf fonksiyonlara yaptırın.
-* `IO a`, `a` tipinde bir eleman döndüren IO aksiyonu demektir. `IO` aksiyonu temsil eder, `IO a` aslında bir fonksiyonun tipidir. Daha fazlasını merak ediyorsanız sonraki bölümü okuyun.
+-   `do` bloğunun içinde, her deyim `IO a` tipinde olmalı. Bu sizi belli
+    deyimlere sınırlıyor. Örneğin, `getLine`, `print`, `putStrLn`, de
+    bunun gibi.
+
+-   Arı fonksiyonları olabildiğince arı olmayan bölümlerin dışında
+    tutmaya çalışın, işin olabildiğince büyük bölümünü arı fonksiyonlara
+    yaptırın.
+
+-   `IO a`, `a` tipinde bir eleman döndüren IO aksiyonu demektir. `IO`
+    aksiyonu simgeler, `IO a` esasında bir fonksiyonun tipidir. Daha
+    ötesi ile ilgileniyorsanız sonraki bölümü okuyun.
 
 Biraz çalışırsanız, `IO` kullanabiliyor olmalısınız.
 
-> Alıştırma: Tüm argümanlarının toplamını alan bir program yazın. İpucu: `getArgs` fonksiyonunu kullanın.
+Alıştırma: Tüm argümanlarının toplamını alan bir program yazın. İpucu:
+`getArgs` fonksiyonunu kullanın.
 
-[03_Hell/01_IO/03_progressive_io_example.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/01_IO/03_progressive_io_example.lhs)
+### IO'nun Püf Noktası {#ionun-puxfcf-noktasux131}
 
-## 4.2. IO'nun Püf Noktası
+![Bu bir pipo degildir](img/magritte_pipe.jpg){width="0.5\\linewidth"}
 
-![Bu bir pipo degildir](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/magritte_pipe.jpg)
+Arı olan ile arı olmayan kodları ayırmak için, `main` tüm ortamın
+durumunu değiştiren bir fonksiyon olarak tanımlanır.
 
-> Bu bölüm için TL; DR (Çok uzundu okumadım)
-
-> Saf ve saf olmayan kısımları ayırmak için, `main` dünyanın durumunu değiştiren bir fonksiyon olarak tanımlanır.
-
-```haskell
+``` {.haskell language="Haskell"}
 main :: World -> World
 ```
 
-> Bir fonksiyon, sadece ve sadece bu tipe sahipse yan etkide bulunur. Tipik bir `main` fonksiyonuna bakalım:
+Bir fonksiyon, yalnızca bir tek bu tipi içeriyorsa yan etkide bulunur.
+Tipik bir `main` fonksiyonuna bakalım:
 
-```haskell
+``` {.haskell language="Haskell"}
 main w0 =
-    let (v1,w1) = action1 w0 in
-    let (v2,w2) = action2 v1 w1 in
-    let (v3,w3) = action3 v2 w2 in
-    action4 v3 w3
+  let (v1,w1) = action1 w0 in
+  let (v2,w2) = action2 v1 w1 in
+  let (v3,w3) = action3 v2 w2 in
+  action4 v3 w3
 ```
 
-> Sonraki aksiyona aktarmamız gereken bir sürü geçici elemanımız var. (burada `w1`, `w2` ve `w3`)
+Sonraki aksiyona aktarmamız gereken bir sürü geçici elemanımız var.
+(burada `w1`, `w2` ile `w3`)
 
-> `bind` veya `(>>=)` fonksiyonu yaratıyoruz. `bind` ile artık geçici isimlere ihtiyacımız yok.
+`bind` yada `(>>=)` fonksiyonu yaratıyoruz. `bind` ile artık geçici
+adlara gereksinimimiz yok.
 
-```haskell
+``` {.haskell language="Haskell"}
 main =
   action1 >>= action2 >>= action3 >>= action4
 ```
 
-> Bonus: Haskell'in şöyle bir söz dizimsel kolaylığı var:
+Bonus: Haskell'in şöyle bir söz dizimsel (sentaks) kolaylığı var:
 
-```haskell
+``` {.haskell language="Haskell"}
 main = do
   v1 <- action1
   v2 <- action2 v1
@@ -1940,269 +2118,316 @@ main = do
   action4 v3
 ```
 
-***
+Neden böyle alışılmadık bir söz dizimi kullandık, ayrıca bu `IO` tipi
+net olarak nedir? Anlaşılmaz duruyor ancak, değil.
 
-Neden böyle garip bir söz dizimi kullandık ve bu `IO` tipi tam olarak nedir? Anlaşılmaz duruyor ama, değil.
+Şimdilik, programımızın arı bölümlerini bir kenara bırakıp arı olmayan
+bölümler üzerine yoğunlaşalım:
 
-Şimdilik, programımızın saf kısımlarını bir kenara bırakıp saf olmayan kısımlar üzerinde yoğunlaşalım:
-
-```haskell
+``` {.haskell language="Haskell"}
 askUser :: IO [Integer]
-askUser = do
+  askUser = do
   putStrLn "Bir sayi listesi girin (virgulle ayirin):"
   input <- getLine
   let maybeList = getListFromString input in
-      case maybeList of
-          Just l  -> return l
-          Nothing -> askUser
+  case maybeList of
+  Just l  -> return l
+  Nothing -> askUser
 
-main :: IO ()
-main = do
+  main :: IO ()
+  main = do
   list <- askUser
   print $ sum list
 ```
 
-İlk tepki: İmperatif duruyor. Haskell saf olmayan kodu imperatif gösterecek kadar güçlüdür. Örneğin, isterseniz Haskell'de `while` yapısı yaratabilirsiniz. Hatta, `IO` ile uğraşman için imperatif stip genellikle daha uygundur.
+İlk tepki: İmperatif duruyor. Haskell arı olmayan kodu imperatif
+gösterecek ölçüde güçlüdür. Örneğin, isterseniz Haskell'de `while`
+yapısı yaratabilirsiniz. , Üstelik ayrıca `IO` ile uğraşman için
+imperatif stil genellikle daha uygundur.
 
-Ama notasyonun alışılmışın dışında olduğunu fark etmiş olmalısınız. Şimdi bunun sebeplerini detaylıca tartışalım.
+Ancak notasyonun alışılmışın dışında olduğu gözünüze ilişmiş olmalı.
+Şimdi bunun nedenlerini detaylıca tartışalım.
 
-Saf olmayan bir dilde, dünyanın durumu devasa ve gizli bir global değişken olarak görülebilir. Bu gizli değişkene dildeki tüm fonksiyonlar tarafından erişilebilir. Örneğin herhangi bir fonksiyon içinde bir dosya ile okuma/yazma işlemleri yapabilirsiniz. Dosyanın var olup olmaması "dünya"nızın alabileceği olası durumlardır.
+Arı olmayan bir dilde, ortamın durumu devasa, gizli bir global değişken
+olarak görülebilir. Bu gizli değişkene dildeki tüm fonksiyonlar
+aracılığıyla erişilebilir. Örneğin herhangi bir fonksiyon içinde bir
+dosya ile okuma/yazma işlemleri yapabilirsiniz. Dosyanın var olup
+olmaması "ortam"ınızın alabileceği olası durumlardır.
 
-Haskell'de bu durum gizli değildir. Tam tersine, Haskell'de `main`'in dünyanızın durumunu değiştirme olasılığı olduğu özellikle ayrıca söylenir. Bu fonksiyonun tipi şunun gibi bir şeydir:
+Haskell'de bu durum gizli değildir. Direkt tersine, Haskell'de `main`'in
+ortamınızın durumunu değiştirme olasılığı olduğu ayrıca özel olarak
+belirtilir. Bu fonksiyonun tipi şunun gibi bir nesdir:
 
-```haskell
+``` {.haskell language="Haskell"}
 main :: World -> World
 ```
 
-Bu değişkene tüm fonksiyonların erişimi yoktur. Erişimi olan fonksiyonlar saf değildir. Dünya değişkenine erişimi olmayan fonksiyonlar ise saftır. [^fn-6]
+Bu değişkene tüm fonksiyonların erişimi yoktur. Erişimi olan
+fonksiyonlar arı değildir. (Global) ortam değişkenine erişimi olmayan
+fonksiyonlar ise arıdır. [^14]
 
-Haskell, dünyanın durumunu `main` fonksiyonuna bir girdi değişkeni olarak görür. Ama `main`'in asıl tipi suna daha yakındır: [^fn-7]
+Haskell, ortamın durumunu `main` fonksiyonuna bir girdi değişkeni olarak
+görür. Ancak `main`'in esas tipi şuna daha yakındır: [^15]
 
-```haskell
+``` {.haskell language="Haskell"}
 main :: World -> ((),World)
 ```
 
-`()` tipi birim tipidir. Burda görülecek bir şey yok.
+`()` tipi birim tipidir. Burda görülecek bir nes yok.
 
-Şimdi bunu aklımızda tutarak `main` fonksiyonumuzu baştan yazalım:
+Şimdi bunu belleğimizde tutarak `main` fonksiyonumuzu baştan yazalım:
 
-```haskell
+``` {.haskell language="Haskell"}
 main w0 =
-    let (list,w1) = askUser w0 in
-    let (x,w2) = print (sum list,w1) in
-    x
+  let (list,w1) = askUser w0 in
+  let (x,w2) = print (sum list,w1) in
+  x
 ```
 
-İlk olarak, yan etkisi olan tüm fonksiyonların şu tipte olması gerektiğini hatırlayalım:
+İlk olarak, yan etkisi olan tüm fonksiyonların şu tipte olması
+gerektiğini anımsayalım:
 
-```haskell
+``` {.haskell language="Haskell"}
 World -> (a,World)
 ```
 
-Burada `a` sonucun tipi oluyor. Örneğin `getChar` fonksiyonu bu durumda `World -> (Char,World)` tipindedir.
+Burada `a` sonucun tipi oluyor. Örneğin `getChar` fonksiyonu bu durumda
+`World -> (Char,World)` tipindedir.
 
-Dikkat edilmesi gereken diğer bir şey ise hesaplama/değerlendirme sırası. Örneğin `f a b`'yi hesaplarken birden fazla seçeneğiniz var:
+Özen gösterilmesi gereken öteki ayrıntı ise kalkülasyon / değerlendirme
+sırası. Örneğin `f a b`'yi kalküle ederken birden çok seçeneğiniz var:
 
-* önce `a`'yi, sonra `b`'yi, sonra da `f a b`'yi hesapla.
-* önce `b`'yi, sonra `a`'yi, sonra da `f a b`'yi hesapla.
-* `a`'yi ve `b`'yi paralel olarak, sonra da `f a b`'yi hesapla.
+-   önce `a`'yi, sonra `b`'yi, sonra da `f a b`'yi kalküle et.
 
-Bu böyle çünkü dilin saf kısmında çalışıyoruz.
+-   önce `b`'yi, sonra `a`'yi, sonra da `f a b`'yi kalküle et.
 
-Şimdi, eğer `main` fonksiyonuna bakarsanız, ilk satırı ikinci satırdan önce hesaplamanız gerektiği açık, çünkü ikinci satırda birinci satırda elde ettiğiniz bir değeri parametre olarak kullanıyorsunuz.
+-   `a`'yi ve `b`'yi paralel olarak, sonra da `f a b`'yi kalküle et.
 
-Bu işe yarıyor. Derleyici her adımda yeni bir gerçek dünya tanımı/kodu (*id*) sağlıyor. Gizli olarak, `print` şöyle işliyor:
+Bu böyle çünkü dilin arı yanında çalışıyoruz.
 
-* ekrana bir şey yazdır
-* dünyanın id'sini değiştir.
-* `((), yeni dünya id'si)` değerini döndür.
+Şimdi, `main` fonksiyonuna bakarsanız, ilk kod sırası ikinci kod
+sırasından önce kalküle etmemiz gerektiği açık, çünkü ikinci kod
+sırasında birincidekinden elde ettiğiniz bir değeri parametre olarak
+kullanıyorsunuz.
 
-Şimdi, eğer `main` fonksiyonunun stiline bakarsanız, biraz garip olduğunu göreceksiniz. Aynısını `askUser` fonksiyonuna da uygulayalım:
+Bu işe yarıyor. Derleyici her adımda yeni bir gerçek global ortam tanımı
+/ kodu (*id*) sağlıyor. Gizli olarak, `print` şöyle işliyor:
 
-```haskell
+-   ekrana bir nes yazdır
+
+-   global ortamın id'sini değiştir.
+
+-   `((), yeni global ortam id'si)` değerini döndür.
+
+Şimdi, `main` fonksiyonunun stiline bakarsanız, biraz değişik olduğunu
+göreceksiniz. Tıpatıp özdeşini `askUser` fonksiyonuna da uygulayalım:
+
+``` {.haskell language="Haskell"}
 askUser :: World -> ([Integer],World)
 ```
 
 Öncesi:
 
-```haskell
+``` {.haskell language="Haskell"}
 askUser :: IO [Integer]
-askUser = do
+  askUser = do
   putStrLn "Bir sayi listesi girin:"
   input <- getLine
   let maybeList = getListFromString input in
-      case maybeList of
-          Just l  -> return l
-          Nothing -> askUser
+  case maybeList of
+  Just l  -> return l
+  Nothing -> askUser
 ```
 
 Sonrası:
 
-```haskell
+``` {.haskell language="Haskell"}
 askUser w0 =
-    let (_,w1)     = putStrLn "Bir sayi listesi girin:" in
-    let (input,w2) = getLine w1 in
-    let (l,w3)     = case getListFromString input of
-                      Just l   -> (l,w2)
-                      Nothing  -> askUser w2
-    in
-        (l,w3)
+  let (_,w1)     = putStrLn "Bir sayi listesi girin:" in
+  let (input,w2) = getLine w1 in
+  let (l,w3)     = case getListFromString input of
+  Just l   -> (l,w2)
+  Nothing  -> askUser w2
+  in
+  (l,w3)
 ```
 
-Benzer, ama biraz daha garip. Tüm şu geçici `w?`'lere bakın.
+Benzer, ancak biraz daha değişik. Tüm şu geçici `w`'lere bakın.
 
-Çıkarılacak ders şu: Saf fonksiyonel dillerdeki naif IO uygulamaları gariptir!
+Çıkarılacak öğreti şu: Arı fonksiyonel dillerdeki naif IO uygulamaları
+sıradışıdır!
 
-Şanslıyız ki, bu sorunu halletmek için daha iyi bir yol var. Bir kalip goruyoruz, her satir su sekilde:
+Şanslıyız ki, bu sorunu çözümlemek için daha iyi bir yol var. Bir desen
+görüyoruz, her kod sırası şu biçimde:
 
-```haskell
+``` {.haskell language="Haskell"}
 let (y,w') = action x w in
 ```
 
-Herhangi bir satır için ilk `x` argümanı gerekmese bile. Dönen sonucun tipi bir ikili, `(sonuç, yeniDünyaDeğeri)`. Her `f` fonksiyonu şuna benzer bir tipe sahip olmak zorunda:
+Herhangi bir kod sırası için ilk `x` argümanı gerekmese bile. Dönen
+sonucun tipi bir ikili, `(sonuç, yeniGlobalOrtamDegeri)` Her `f`
+fonksiyonu şuna benzer bir tipi içermek zorunda:
 
-```haskell
+``` {.haskell language="Haskell"}
 f :: World -> (a,World)
 ```
 
-Her zaman aynı kalıbı takip ettiğimize dikkat edin:
+Her durumda özdeş deseni izlediğimize özel ilgi gösterin:
 
-```haskell
+``` {.haskell language="Haskell"}
 let (y,w1) = action1 w0 in
-let (z,w2) = action2 w1 in
-let (t,w3) = action3 w2 in
-...
+  let (z,w2) = action2 w1 in
+  let (t,w3) = action3 w2 in
+  ...
 ```
 
-Her aksiyon 0'dan n'ye kadar parametre alabilir. Ve özellikle, her aksiyon bir üstündeki satırın sonucundan parametre alabilir.
+Her aksiyon hiçten(0) n'ye dek parametre alabilir. Ayrıca özellikle, her
+aksiyon bir üstündeki kod sırasının sonucundan parametre alabilir.
 
 Örneğin, şöyle diyebiliriz:
 
-```haskell
+``` {.haskell language="Haskell"}
 let (_,w1) = action1 x w0   in
-let (z,w2) = action2 w1     in
-let (_,w3) = action3 x z w2 in
-...
+  let (z,w2) = action2 w1     in
+  let (_,w3) = action3 x z w2 in
+  ...
 ```
 
-Ve tabii ki `actionN w :: (World) -> (a,World)`.
+Buradan doğal olarak `actionN w :: (World) -> (a,World)`.
 
-> Önemli: Dikkat edilmesi gereken iki kalıp var:
+Önemli: Göz atılması gereken iki desen var:
 
-```haskell
+``` {.haskell language="Haskell"}
 let (x,w1) = action1 w0 in
-let (y,w2) = action2 x w1 in
+  let (y,w2) = action2 x w1 in
 ```
 
-> ve
+ile
 
-```haskell
+``` {.haskell language="Haskell"}
 let (_,w1) = action1 w0 in
-let (y,w2) = action2 w1 in
+  let (y,w2) = action2 w1 in
 ```
 
-***
+![Joker](img/jocker_pencil_trick.jpg)
 
-![Joker](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/jocker_pencil_trick.jpg)
+Şimdi biraz oyunculuk yapalım. Geçici global ortam sembolünü "yok
+edelim". İki kod sırasını `bind` ile birbirine bağlayacağız. İşe `bind`
+fonksiyonunu tanımlayarak başlayalım. Fonksiyonun tipi başta biraz
+korkutucu gelebilir:
 
-Şimdi biraz sihirbazlık yapalım. Geçici dünya sembolünü "yok edelim". İki satırı `bind` ile birbirine bağlayacağız. İşe `bind` fonksiyonunu tanımlayarak başlayalım. Fonksiyonun tipi başta biraz korkutucu gelebilir:
-
-```haskell
+``` {.haskell language="Haskell"}
 bind :: (World -> (a,World))
-        -> (a -> (World -> (b,World)))
-        -> (World -> (b,World))
+  -> (a -> (World -> (b,World)))
+  -> (World -> (b,World))
 ```
 
-Ama hatırlayın ki `(World -> (a,World))` IO aksiyonlarının tipidir. Daha açık olması için ona yeni bir isim verelim:
+Ancak anımsayın ki `(World -> (a,World))` IO aksiyonlarının tipidir.
+Daha açık olması için ona yeni bir ad verelim:
 
-```haskell
+``` {.haskell language="Haskell"}
 type IO a = World -> (a, World)
 ```
 
-Bazı fonksiyon örnekleri:
+Kimi fonksiyon örnekleri:
 
-```haskell
+``` {.haskell language="Haskell"}
 getLine :: IO String
-print :: Show a => a -> IO ()
+  print :: Show a => a -> IO ()
 ```
 
-`getLine` dünyayı parametre olarak alan ve `(String,World)` ikilisini döndüren bir IO aksiyonudur. Bu şöyle özetlenebilir: `getLine`, `IO String` tipindedır, ki bunu "IO içine gömülmüş" String döndüren bir IO aksiyonu olarak görebiliriz.
+`getLine` global ortamı parametre olarak alıp `(String,World)` ikilisini
+döndüren bir IO aksiyonudur. Bu şöyle özetlenebilir: `getLine`,
+`IO String` tipindedır ki bunu "IO içine gömülmüş" String döndüren bir
+IO aksiyonu olarak görebiliriz.
 
-`print` fonksiyonu da ayrıca ilginçtir. Gösterilebilir bir argüman alır, ama aslında iki argüman almaktadır. İlki ekrana yazdırılacak değerdir, ikincisi de dünyanın durumudur. Sonrasında ise `((),World)` ikilisini döndürür. Bu fonksiyonun dünyanın durumunu değiştirdiği ama başka bir veri üretmediği anlamına gelir.
+`print` fonksiyonu da ayrıca ilginçtir. Gösterilebilir bir argüman alır,
+ancak esasında iki argüman almaktadır. İlki ekrana yazdırılacak
+değerdir, ikincisi de global ortamın durumudur. Sonrasında ise
+`((),World)` ikilisini döndürür. Bu fonksiyonun global ortamın durumunu
+değiştirdiği ancak başka bir veri üretmediği anlamına gelir.
 
-Bu tip, `bind` fonksiyonun tipini basitleştirmemize yardımcı olur:
+Bu tip, `bind` fonksiyonun tipini yalınlaştırmamıza yardımcı olur:
 
-```haskell
+``` {.haskell language="Haskell"}
 bind :: IO a
-        -> (a -> IO b)
-        -> IO b
+  -> (a -> IO b)
+  -> IO b
 ```
 
-Bu demek oluyor ki `bind` fonksiyonu iki IO aksiyonunu parametre olarak alıyor ve başka bir IO aksiyonunu geri döndürüyor.
+Bu demek oluyor ki `bind` fonksiyonu iki IO aksiyonunu parametre olarak
+alıp başka bir IO aksiyonunu geri döndürüyor.
 
-Önemli kalıpları tekrar hatırlayın. İlki şuydu:
+Önemli desenleri yeniden anımsayın. İlki şuydu:
 
-```haskell
+``` {.haskell language="Haskell"}
 let (x,w1) = action1 w0 in
-let (y,w2) = action2 x w1 in
-(y,w2)
+  let (y,w2) = action2 x w1 in
+  (y,w2)
 ```
 
 Fonksiyonların tiplerine bakalım:
 
-```haskell
+``` {.haskell language="Haskell"}
 action1  :: IO a
-action2  :: a -> IO b
-(y,w2)   :: IO b
+  action2  :: a -> IO b
+  (y,w2)   :: IO b
 ```
 
 Tanıdık gelmiyor mu?
 
-```haskell
+``` {.haskell language="Haskell"}
 (bind action1 action2) w0 =
-    let (x, w1) = action1 w0
-        (y, w2) = action2 x w1
-    in  (y, w2)
+  let (x, w1) = action1 w0
+  (y, w2) = action2 x w1
+  in  (y, w2)
 ```
 
-Amacımız World argümanını bu fonksiyonla gizlemek. Örnek olarak, şunu gerçekleştirmek istediğimizi varsayalım:
+Amacımız World argümanını bu fonksiyonla gizlemek. Örnek olarak, şunu
+gerçekleştirmek istediğimizi varsayalım:
 
-```haskell
+``` {.haskell language="Haskell"}
 let (line1,w1) = getLine w0 in
-let ((),w2) = print line1 in
-((),w2)
+  let ((),w2) = print line1 in
+  ((),w2)
 ```
 
 Şimdi, `bind` fonksiyonunu kullanarak:
 
-```haskell
+``` {.haskell language="Haskell"}
 (res,w2) = (bind getLine (\l -> print l)) w0
 ```
 
-`print` fonksiyonu `(World -> ((),World))` tipinde olduğu için, `res = ()` (boş tip) Eğer bundaki sihirbazlığı görmediyseniz, bu sefer üç satırla deneyelim:
+`print` fonksiyonu `(World -> ((),World))` tipinde olduğu için,
+`res = ()` (boş tip) Bundaki oyunu görmediyseniz, bu kez üç sıra kodla
+deneyelim:
 
-```haskell
+``` {.haskell language="Haskell"}
 let (line1,w1) = getLine w0 in
-let (line2,w2) = getLine w1 in
-let ((),w3) = print (line1 ++ line2) in
-((),w3)
+  let (line2,w2) = getLine w1 in
+  let ((),w3) = print (line1 ++ line2) in
+  ((),w3)
 ```
 
 Bu da şuna denk:
 
-```haskell
+``` {.haskell language="Haskell"}
 (res,w3) = (bind getLine (\line1 ->
-             (bind getLine (\line2 ->
-               print (line1 ++ line2))))) w0
+  (bind getLine (\line2 ->
+  print (line1 ++ line2))))) w0
 ```
 
-Bir şey fark ettiniz mi? Evet, artık hiçbir yerde geçici World değişkenleri kullanılmıyor. Sihirbazlık gibi.
+Bir nes ilginizi çekti mi? Evet, artık hiçbir yerde geçici World
+değişkenleri kullanılmıyor. Büyücülük gibi.
 
-Daha iyi bir notasyon kullanabiliriz. `bind` yerine `(>>=)` kullanalım. `(>>=)`, `(+)` gibi bir iç notasyonlu fonksiyondur; ki şöyle çalışır: `3 + 4 ⇔ (+) 3 4`
+Daha iyi bir notasyon kullanabiliriz. `bind` yerine `(>>=)` kullanalım.
+`(>>=)`, `(+)` gibi bir iç notasyonlu fonksiyondur; ki şöyle çalışır:
+`3 + 4 ⇔ (+) 3 4`
 
-Ho Ho Ho! Herkese Mutlu Noeller! Haskell bize söz dizimsel kolaylık sağlıyor:
+Ho Ho Ho! Herkese Mutlu Noeller! Haskell bize söz dizimsel kolaylık
+sağlıyor:
 
-```haskell
+``` {.haskell language="Haskell"}
 do
   x <- action1
   y <- action2
@@ -2210,121 +2435,126 @@ do
   ...
 ```
 
-yerine, şöyle yazabiliriz:
+yerine şöyle yazabiliriz:
 
-```haskell
+``` {.haskell language="Haskell"}
 action1 >>= (\x ->
-action2 >>= (\y ->
-action3 >>= (\z ->
-...
-)))
+  action2 >>= (\y ->
+  action3 >>= (\z ->
+  ...
 ```
 
-`action2` içinde `x`, `action3` içinde hem `x` hem de `y` değişkenlerini kullanabildiğinize dikkat edin.
+`action2` içinde `x`, `action3` içinde hem `x` hem de `y` değişkenlerini
+kullanabildiğinize dikkat edin.
 
-Peki `<-` kullanmayan satırlarda ne yapacağız? Kolay, `blindBind` diye başka bir fonksiyon tanımlayalım:
+Peki `<-` kullanmayan kodlarda ne yapacağız? Kolay, `blindBind` diye
+başka bir fonksiyon tanımlayalım:
 
-```haskell
+``` {.haskell language="Haskell"}
 blindBind :: IO a -> IO b -> IO b
-blindBind action1 action2 w0 =
-    bind action (\_ -> action2) w0
+  blindBind action1 action2 w0 =
+  bind action (\_ -> action2) w0
 ```
 
-Bu tanımı daha açık olması için basitleştirmedim. Tabii daha basit bir notasyon kullanabiliriz, bunun için `(>>)` operatörü var.
+Bu tanımı daha açık olması için yalınlaştırmadım. Doğal olarak daha
+yalın bir notasyon kullanabiliriz, bunun için `(>>)` operatörü var.
 
-```haskell
+``` {.haskell language="Haskell"}
 do
-    action1
-    action2
-    action3
+  action1
+  action2
+  action3
 ```
 
 Şuna dönüşüyor:
 
-```haskell
+``` {.haskell language="Haskell"}
 action1 >>
-action2 >>
-action3
+  action2 >>
+  action3
 ```
 
 Kullanışlı bir fonksiyon daha var.
 
-```haskell
+``` {.haskell language="Haskell"}
 putInIO :: a -> IO a
-putInIO x = IO (\w -> (x,w))
+  putInIO x = IO (\w -> (x,w))
 ```
 
-Bu saf değerleri IO bağlamına sokmak için kullanılan genel bir yoldur. `putInIO` için kullanılan genel isim `return`'dür. Haskell öğrenirken bu oldukça kötü bir isim, çünkü Haskell'deki `return` alışık olduğunuzden çok farklıdır.
-
-[03_Hell/01_IO/21_Detailled_IO.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/01_IO/21_Detailled_IO.lhs)
+Bu arı değerleri IO bağlamına sokmak için kullanılan genel bir yoldur.
+`putInIO` için kullanılan genel ad `return`'dür. Haskell öğrenirken bu
+oldukça kötü bir adlandırmadır çünkü Haskell'deki `return` alışık
+olduğunuzden çok değişiktir.
 
 Örneğimizi çevirerek bu bölümü bitirelim:
 
-```haskell
+``` {.haskell language="Haskell"}
 askUser :: IO [Integer]
-askUser = do
+  askUser = do
   putStrLn "Bir sayi listesi girin (virgullerle ayirin):"
   input <- getLine
   let maybeList = getListFromString input in
-      case maybeList of
-          Just l  -> return l
-          Nothing -> askUser
+  case maybeList of
+  Just l  -> return l
+  Nothing -> askUser
 
-main :: IO ()
-main = do
+  main :: IO ()
+  main = do
   list <- askUser
-  print $ sum list
+  print \$ sum list
 ```
 
-Şu hale geliyor:
+Şu duruma geliyor:
 
-```haskell
+``` {.haskell language="Haskell"}
 import Data.Maybe
 
-maybeRead :: Read a => String -> Maybe a
-maybeRead s = case reads s of
-                  [(x,"")]    -> Just x
-                  _           -> Nothing
-getListFromString :: String -> Maybe [Integer]
-getListFromString str = maybeRead $ "[" ++ str ++ "]"
-askUser :: IO [Integer]
-askUser =
-    putStrLn "Bir sayi listesi girin (virgullerle ayirin):" >>
-    getLine >>= \input ->
-    let maybeList = getListFromString input in
-      case maybeList of
-        Just l -> return l
-        Nothing -> askUser
+  maybeRead :: Read a => String -> Maybe a
+  maybeRead s = case reads s of
+  [(x,"")]    -> Just x
+  _           -> Nothing
+  getListFromString :: String -> Maybe [Integer]
+  getListFromString str = maybeRead $ "[" ++ str ++ "]"
+  askUser :: IO [Integer]
+  askUser =
+  putStrLn "Bir sayi listesi girin (virgullerle ayirin):" >>
+  getLine >>= \input ->
+  let maybeList = getListFromString input in
+  case maybeList of
+  Just l -> return l
+  Nothing -> askUser
 
-main :: IO ()
-main = askUser >>=
+  main :: IO ()
+  main = askUser >>=
   \list -> print $ sum list
 ```
 
 Çalıştığını doğrulamak için derleyebilirsiniz.
 
-`(>>)` ve `(>>=)` olmadan nasıl olacağını düşünün.
+`(>>)` ile `(>>=)` olmadan ne yolla olacağını düşünün.
 
+### Monad
 
-[03_Hell/01_IO/21_Detailled_IO.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/01_IO/21_Detailled_IO.lhs)
+![Monad](img/dali-reve.jpg)
 
-***
+Artık bu gizemi açıklayabiliriz: `IO` bir *monad*dir. Monad olmak, `do`
+notasyonu ile belirli söz dizimsel kolaylıklara iye olmak demektir.
+Ancak temel olarak, kodunuzun akışını kolaylaştıracak belirli kod
+desenlerine erişim sağlar.
 
-[03_Hell/02_Monads/10_Monads.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/02_Monads/10_Monads.lhs)
+Önemli ayrıntılar:
 
-## 4.3. Monad
+-   Monadlar etkilerle ilgili olmak zorunda değildir! Arı monadlar da
+    vardır.
 
-![Monad](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/dali_reve.jpg)
+-   Monadlar daha çok sıralama ile ilgilidir.
 
-Artık bu sırrı açıklayabiliriz: `IO` bir *monad*dir. Monad olmak, `do` notasyonu ile belirli söz dizimsel kolaylıklara sahip olmak demektir. Ama temel olarak, kodunuzun akışını kolaylaştıracak belirli kod kalıplarına erişim sağlar.
+Haskell'de `Monad` bir tip klasıdır. Bu klasın bir üyesi olmak için
+`(>>=)` ile `return` fonksiyonlarını sağlamalısınız. `(>>)` fonksiyonu
+`(>>=)` fonksiyonundan türer. Temel olarak `Monad` tip klası şöyle
+belirtilir:
 
-> Önemli noktalar:
-> * Monadlar etkilerle ilgili olmak zorunda değildir! Saf monadlar da vardır.
-> * Monadlar daha çok sıralama ile ilgilidir.
-
-Haskell'de `Monad` bir tip sınıfıdır. Bu sınıfın bir üyesi olmak için `(>>=)` ve `return` fonksiyonlarını sağlamalısınız. `(>>)` fonksiyonu `(>>=)` fonksiyonundan türer. Basit olarak `Monad` tip sınıfı şöyle belirtilir:
-
-```haskell
+``` {.haskell language="Haskell"}
 class Monad m  where
   (>>=) :: m a -> (a -> m b) -> m b
   return :: a -> m a
@@ -2332,76 +2562,89 @@ class Monad m  where
   (>>) :: m a -> m b -> m b
   f >> g = f >>= \_ -> g
 
-  -- Sadece tarihsel sebeplerden dolayi oldugunu dusundugum
-  -- bu fonksiyonu dikkate almayabilirsiniz
+  -- Yalnızca gecmisteki (tarihsel) nedenlerden dolayi oldugunu dusundugum
+  -- bu fonksiyonu degerlendirmeye (dikkate) almayabilirsiniz
   fail :: String -> m a
   fail = error
 ```
 
-> Notlar:
-> * `class` anahtar kelimesi dostunuz değildir. Haskell'deki class nesne yönelimli programlamada karşılaştığınız class gibi değildir. Haskell'deki class Java'daki interface'le benzeşir. `typeclass` daha iyi bir isimlendirme olurdu, çünkü o tip grubu anlamına geliyor. Bir tipin bir sınıfa ait olması için, bir sınıfın tüm fonksiyonlarının o tip için sağlanabilir olması gerekiyor.
-> * Tip sınıflarının bu örneğinde, `m` tipinin argüman alan bir tip olması gerekiyor, örneğin `IO a`, ama aynı zamanda `Maybe a`, `[a]`, vs.
-> * Fonksiyonunuzun kullanışlı bir monad olması için bazı kurallara uyması gerekiyor. Eğer yapınız bu kurallara uymuyorsa garip şeyler gerçekleşebilir: `~ return a >>= k == k a m >>= return == m m >>= (-> k x >>= h) == (m >>= k) >>= h ~`
+Notlar:
 
-### 4.3.1 Maybe Monad'ı
+-   `class` anahtar sözcüğü dostunuz değildir. Haskell'deki class nesne
+    yönelimli programlamada karşılaştığınız class gibi değildir.
+    Haskell'deki class Java'daki interface'le benzeşir. `typeclass` daha
+    iyi bir adlandırma olurdu, çünkü o tip grubu anlamına geliyor. Bir
+    tipin bir klasa bağlı olması için, bir klasın tüm fonksiyonlarının o
+    tip için sağlanabilir olması gerekiyor.
 
-`Monad` tip sınıfının üyesi olan bir sürü farklı tip vardır. Tarif etmesi en kolay olanlarından biri de `Maybe`'dir. Eğer `Maybe` değerlerinden oluşan bir diziniz varsa, etkilemek için monadları kullanabilirsiniz. Uzayıp giden `ıf..then..else..` yapılarından kurtulmak için oldukça kullanışlı bir yoldur.
+-   Tip sınıflarının bu örneğinde, `m` tipinin argüman alan bir tip
+    olması gerekiyor, örneğin `IO a`, ancak eş anlı olarak `Maybe a`,
+    `[a]`, de bunun gibi.
 
-Karmaşık bir banka işlemi düşünün. Eğer bakiyeniz sıfırın altına düşmeden belli işlemleri yapabilecek kadar paranız varsa, 700€ kazanma hakkınız olsun.
+-   Fonksiyonunuzun kullanışlı bir monad olması için bazı kurallara
+    uyması gerekiyor. Eğer yapınız bu kurallara uymuyorsa garip şeyler
+    gerçekleşebilir:
+    `~ return a >>= k == k a m >>= return == m m >>= (-> k x >>= h) == (m >>= k) >>= h ~`
 
-```haskell
+##### Maybe Monad'ı {#maybe-monadux131}
+
+`Monad` tip klasının üyesi olan bir sürü değişik tip vardır. Tanımlaması
+en kolay olanlarından biri de `Maybe`'dir. `Maybe` değerlerinden oluşan
+bir diziniz varsa, etkilemek için monadları kullanabilirsiniz. Uzayıp
+giden `if then else  ` yapılarından kurtulmak için oldukça kullanışlı
+bir yoldur.
+
+Karmaşık bir banka işlemi düşünün. Kontoda kalan paranız hiçin altına
+düşmeden belli işlemleri yapabilecek yeterlikte paranız varsa, 700€
+kazanma olanağınız/payınız olsun.
+
+``` {.haskell language="Haskell"}
 deposit  value account = account + value --para yatirma
-withdraw value account = account - value --para cekme
+  withdraw value account = account - value --para cekme
 
---para kazanmaya hak kazanip kazanmadiginizi donduren fonksiyon
-eligible :: (Num a,Ord a) => a -> Bool
-eligible account =
+  --para kazanmaya pay kazanip kazanmadiginizi donduren fonksiyon
+  eligible :: (Num a,Ord a) => a -> Bool
+  eligible account =
   let account1 = deposit 100 account in
-    if (account1 < 0)
-    then False
-    else
-      let account2 = withdraw 200 account1 in
-      if (account2 < 0)
-      then False
-      else
-        let account3 = deposit 100 account2 in
-        if (account3 < 0)
-        then False
-        else
-          let account4 = withdraw 300 account3 in
-          if (account4 < 0)
-          then False
-          else
-            let account5 = deposit 1000 account4 in
-            if (account5 < 0)
-            then False
-            else
-              True
+  if (account1 < 0)
+  then False
+  else
+  let account2 = withdraw 200 account1 in
+  if (account2 < 0)
+  then False
+  else
+  let account3 = deposit 100 account2 in
+  if (account3 < 0)
+  then False
+  else
+  let account4 = withdraw 300 account3 in
+  if (account4 < 0)
+  then False
+  else
+  let account5 = deposit 1000 account4 in
+  if (account5 < 0)
+  then False
+  else
+  True
 
-main = do
+  main = do
   print $ eligible 300 -- True
   print $ eligible 299 -- False
 ```
 
-[03_Hell/02_Monads/10_Monads.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/02_Monads/10_Monads.lhs)
+Şimdi `Maybe` kullanıp monadlardan yararlanarak iyileştirelim:
 
-***
-
-[03_Hell/02_Monads/11_Monads.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/02_Monads/11_Monads.lhs)
-
-Şimdi `Maybe` kullanarak ve monadlardan faydalanarak iyileştirelim:
-
-```haskell
+``` {.haskell language="Haskell"}
 deposit :: (Num a) => a -> a -> Maybe a
-deposit value account = Just (account + value)
+  deposit value account = Just (account + value)
 
-withdraw :: (Num a,Ord a) => a -> a -> Maybe a
-withdraw value account = if (account < value)
-                         then Nothing
-                         else Just (account - value)
+  withdraw :: (Num a,Ord a) => a -> a -> Maybe a
+  withdraw value account = if (account < value)
+  then Nothing
+  else Just (account - value)
 
-eligible :: (Num a, Ord a) => a -> Maybe Bool
-eligible account = do
+  eligible :: (Num a, Ord a) => a -> Maybe Bool
+  eligible account = do
   account1 <- deposit 100 account
   account2 <- withdraw 200 account1
   account3 <- deposit 100 account2
@@ -2409,30 +2652,24 @@ eligible account = do
   account5 <- deposit 1000 account4
   Just True
 
-main = do
+  main = do
   print $ eligible 300 -- Just True
   print $ eligible 299 -- Nothing
 ```
 
-[03_Hell/02_Monads/11_Monads.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/02_Monads/11_Monads.lhs)
+Kötü değil, ancak daha da iyileştirebiliriz:
 
-***
-
-[03_Hell/02_Monads/12_Monads.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/02_Monads/12_Monads.lhs)
-
-Kötü değil, ama daha da iyileştirebiliriz:
-
-```haskell
+``` {.haskell language="Haskell"}
 deposit :: (Num a) => a -> a -> Maybe a
-deposit value account = Just (account + value)
+  deposit value account = Just (account + value)
 
-withdraw :: (Num a,Ord a) => a -> a -> Maybe a
-withdraw value account = if (account < value)
-                         then Nothing
-                         else Just (account - value)
+  withdraw :: (Num a,Ord a) => a -> a -> Maybe a
+  withdraw value account = if (account < value)
+  then Nothing
+  else Just (account - value)
 
-eligible :: (Num a, Ord a) => a -> Maybe Bool
-eligible account =
+  eligible :: (Num a, Ord a) => a -> Maybe Bool
+  eligible account =
   deposit 100 account >>=
   withdraw 200 >>=
   deposit 100  >>=
@@ -2440,280 +2677,370 @@ eligible account =
   deposit 1000 >>
   return True
 
-main = do
+  main = do
   print $ eligible 300 -- Just True
   print $ eligible 299 -- Nothing
 ```
 
-Monadların kodumuzu daha zarifleştirmenin iyi bir yolu olduğunu gösterdik. Dikkat edin ki, bu tip bir kod düzenlemesi, özellikle `Maybe`, pek çok imperatif dilde de uygulanabilir. Aslında, bu tip bir yapıyı normalde de yapıyoruz.
+Monadların kodumuzu daha şirinleştirmenin iyi bir yolu olduğunu
+gösterdik. Özellikle bakın ki, bu tip bir kod düzenlemesi, özellikle
+`Maybe`, pek çok imperatif dilde de uygulanabilir. Esasında, bu tip bir
+yapıyı normalde de yapıyoruz.
 
-> Önemli bir nokta: Dizideki ilk elemanın `Nothing` olarak hesaplanması tüm hesaplamayı durduracaktır. Bu demek oluyor ki, tüm satırları hesaplamıyorsunuz. Tembellik sayesinde bunun için fazladan bir şey yapmanıza gerek yok.
+Önemli bir ayrıntı: Dizideki ilk elemanın `Nothing` olarak kalküle
+edilmesi tüm işlemi durduracaktır. Bu demek oluyor ki, tüm kod
+sıralarını işletmiyorsunuz. Üşengeçlik sayesinde bunun için ekstradan
+bir nes yapmanıza gerek yok.
 
-Bunu göz önünde bulundurarak `Maybe` için `(>>=)` fonksiyonunu şöyle tanımlayabilirsiniz:
+Bunu göz önünde bulundurarak `Maybe` için `(>>=)` fonksiyonunu şöyle
+tanımlayabilirsiniz:
 
-```haskell
+``` {.haskell language="Haskell"}
 instance Monad Maybe where
-    (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
-    Nothing  >>= _  = Nothing
-    (Just x) >>= f  = f x
+  (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
+  Nothing  >>= _  = Nothing
+  (Just x) >>= f  = f x
 
-    return x = Just x
+  return x = Just x
 ```
 
-Bu basit örnek ile `Maybe` monadının ne kadar kullanışlı olabileceğini ve nasıl kullanılabileceğini gördük. Ama daha iyi bir örnek için listelere bakalım.
+Bu temel örnek ile `Maybe` monadının ne denli kullanışlı olabileceğini
+de ne yolla kullanılabileceğini gördük. Ancak daha iyi bir örnek için
+listelere bakalım.
 
-[03_Hell/02_Monads/12_Monads.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/02_Monads/12_Monads.lhs)
+##### Liste Monad'ı {#liste-monadux131}
 
-***
+![Golconda (Listeler)](img/golconda.jpg)
 
-[03_Hell/02_Monads/13_Monads.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/02_Monads/13_Monads.lhs)
+Liste monadı deterministik (belirlenimci) olmayan kalkülasyonları simüle
+etmemize yardımcı olur. Şöyle:
 
-### 4.3.2. Liste Monad'ı
-
-![liste](http://yannesposito.com/Scratch/img/blog/Haskell-the-Hard-Way/golconde.jpg)
-
-Liste monadı deterministik (belirlenimci) olmayan hesaplamaları simüle etmemize yardımcı olur. Şöyle:
-
-```haskell
+``` {.haskell language="Haskell"}
 import Control.Monad (guard)
 
-allCases = [1..10]
+  allCases = [1..10]
 
-resolve :: [(Int,Int,Int)]
-resolve = do
-              x <- allCases
-              y <- allCases
-              z <- allCases
-              guard $ 4*x + 2*y < z
-              return (x,y,z)
+  resolve :: [(Int,Int,Int)]
+  resolve = do
+  x <- allCases
+  y <- allCases
+  z <- allCases
+  guard $ 4*x + 2*y < z
+  return (x,y,z)
 
-main = do
+  main = do
   print resolve
 ```
 
-Resmen sihirbazlık.
+Açıkça oyunbazlık.
 
-```haskell
+``` {.haskell language="Haskell"}
 [(1,1,7),(1,1,8),(1,1,9),(1,1,10),(1,2,9),(1,2,10)]
 ```
 
 Liste monadı için, şöyle bir söz dizimsel kolaylık da vardır:
 
-```haskell
-  print $ [ (x,y,z) | x <- allCases,
-                      y <- allCases,
-                      z <- allCases,
-                      4*x + 2*y < z ]
+``` {.haskell language="Haskell"}
+print $ [ (x,y,z) | x <- allCases,
+    y <- allCases,
+    z <- allCases,
+    4*x + 2*y < z ]
 ```
 
-Tüm monadları sıralamayacağım, ancak bir sürü monad bulunmakta. Saf dillerdeki belli kavramlar monad kullanımı ile basitleştirilebilir. Özellikle monadlar şunlar için kullanışlıdır:
+Tüm monadları sıralamayacağım, ancak bir sürü monad bulunmakta. Arı
+dillerdeki belli kavramlar monad kullanımı ile yalınlaştırılmıştır.
+Monadlar özellikle şunlar için kullanışlıdır:
 
-* IO
-* deterministik olmayan hesaplamalar
-* (sözde) rastgele sayı üretimi
-* konfigürasyon durumunu tutma
-* yazma durumu
-* ..
+-   IO
 
-Eğer buraya kadar beni takip edebildiyseniz, başardınız! Monadları öğrendiniz! [^fn-8]
+-   deterministik olmayan kalkülasyonlar
 
-[03_Hell/02_Monads/13_Monads.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/03_Hell/02_Monads/13_Monads.lhs)
+-   (sözde) gelişigüzel sayı üretimi
 
-# 5. Ekler
+-   konfigürasyon durumunu tutma
 
-Bu bölüm doğrudan Haskell'le ilgili değil. Bazı ayrıntılı açıklamalar için okuyabilirsiniz.
+-   yazma durumu
 
-[04_Appendice/01_More_on_infinite_trees/10_Infinite_Trees.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/04_Appendice/01_More_on_infinite_trees/10_Infinite_Trees.lhs)
+Buraya dek beni izleyebildiyseniz, başardınız demektir! Monadları
+öğrendiniz. [^16]
 
-## 5.1. Sonsuz Ağaçlar Hakkında
+# Ekler
 
-[Sonsuz Yapılar](#33-sonsuz-yap%C4%B1lar) kısmında bazı basit yapılar görmüştük. Ancak ağacımızdan iki özellik çıkartmıştık:
+Bu bölüm doğrudan Haskell'le ilgili değil. Kimi ayrıntılı açıklamalar
+için okuyabilirsiniz.
 
-1. tekrar eden düğümlerin olmaması
-2. düzgün sıralı ağaç olması
+### Sonsuz Ağaçlara İlişkin {#sonsuz-aux11fauxe7lar-hakkux131nda}
 
-Bu bölümde ilk özelliği sağlamaya çalışacağız. İkincisiyle ilgili olarak da şimdilik bir şey yapmayacağız ama nasıl olabildiğince sıralı tutabileceğimizi tartışacağız.
+[Sonsuz Yapılar](#33-sonsuz-yapux131lar) bölümünde kimi yalın yapılar
+görmüştük. Ancak ağacımızdan iki özellik çıkartmıştık:
 
-İlk adımımız (sözde) rastgele bir sayı listesi oluşturmak olsun:
+1.  yinelenen (duplike) düğümlerin (node) olmaması
 
-```haskell
+2.  düzgün sıralı ağaç olması
+
+Bu bölümde ilk özelliği sağlamaya (iletmeye) çalışacağız. İkincisiyle
+ilgili olarak şimdilik pek bir nes yapmayacağız ancak onu ne yaparak
+olabildiğince düzgün sıralı tutabileceğimizi tartışacağız.
+
+(In this section we will try to keep the first property. Concerning the
+second one, we must relax it but we'll discuss how to keep it as much as
+possible.)
+
+İlk adımımız (sözde) gelişigüzel bir sayı listesi oluşturmak olsun:
+
+``` {.haskell language="Haskell"}
 shuffle = map (\x -> (x*3123) `mod` 4331) [1..]
 ```
 
-`treeFromList` fonksiyonunun tanımını hatırlayalım:
+`treeFromList` fonksiyonunun tanımını anımsayalım
 
-```haskell
+``` {.haskell language="Haskell"}
 treeFromList :: (Ord a) => [a] -> BinTree a
-treeFromList []    = Empty
-treeFromList (x:xs) = Node x (treeFromList (filter (<x) xs))
-                             (treeFromList (filter (>x) xs))
+  treeFromList []    = Empty
+  treeFromList (x:xs) = Node x (treeFromList (filter (<x) xs))
+  (treeFromList (filter (>x) xs))
 ```
 
 `treeTakeDepth` de şöyleydi:
 
-```haskell
+``` {.haskell language="Haskell"}
 treeTakeDepth _ Empty = Empty
-treeTakeDepth 0 _     = Empty
-treeTakeDepth n (Node x left right) = let
-          nl = treeTakeDepth (n-1) left
-          nr = treeTakeDepth (n-1) right
-          in
-              Node x nl nr
+  treeTakeDepth 0 _     = Empty
+  treeTakeDepth n (Node x left right) = let
+  nl = treeTakeDepth (n-1) left
+  nr = treeTakeDepth (n-1) right
+  in
+  Node x nl nr
 ```
 
-Programımız da şu şekilde:
+Programımız da şu biçimde:
 
-```haskell
+``` {.haskell language="Haskell"}
 main = do
-      putStrLn "take 10 shuffle"
-      print $ take 10 shuffle
-      putStrLn "\ntreeTakeDepth 4 (treeFromList shuffle)"
-      print $ treeTakeDepth 4 (treeFromList shuffle)
+  putStrLn "take 10 shuffle"
+  print $ take 10 shuffle
+  putStrLn "\ntreeTakeDepth 4 (treeFromList shuffle)"
+  print $ treeTakeDepth 4 (treeFromList shuffle)
 ```
 
-```
-% runghc 02_Hard_Part/41_Infinites_Structures.lhs
-take 10 shuffle
-[3123,1915,707,3830,2622,1414,206,3329,2121,913]
-treeTakeDepth 4 (treeFromList shuffle)
+      % runghc 02_Hard_Part/41_Infinites_Structures.lhs
+      take 10 shuffle
+      [3123,1915,707,3830,2622,1414,206,3329,2121,913]
+      treeTakeDepth 4 (treeFromList shuffle)
 
-< 3123
-: |--1915
-: |  |--707
-: |  |  |--206
-: |  |  `--1414
-: |  `--2622
-: |     |--2121
-: |     `--2828
-: `--3830
-:    |--3329
-:    |  |--3240
-:    |  `--3535
-:    `--4036
-:       |--3947
-:       `--4242
-```
+      < 3123
+      : |--1915
+      : |  |--707
+      : |  |  |--206
+      : |  |  `--1414
+      : |  `--2622
+      : |     |--2121
+      : |     `--2828
+      : `--3830
+      :    |--3329
+      :    |  |--3240
+      :    |  `--3535
+      :    `--4036
+      :       |--3947
+      :       `--4242
 
-Hey! Sonlanıyor! Ama dikkat edin, program sadece dallara koyacak veri olduğu sürece çalışacak.
+Hey, sonlanıyor! Ancak bir göz atın, program yalnızca dallara
+koyulabilecek veri olduğu sürece çalışacak.
 
 Örneğin:
 
-```haskell
+``` {.haskell language="Haskell"}
 treeTakeDepth 4 (treeFromList [1..])
 ```
 
-sonsuza kadar çalışacak, çünkü `filter (<1) [2..]` ifadesinin ilk elemanını almaya çabalayacak. Ama `filter` fonksiyonu sonucun boş liste olduğunu anlayacak kadar akıllı değil.
+sonsuza dek çalışacak çünkü `filter (<1) [2..]` deyiminin ilk elemanını
+almaya çabalayacak. Ancak `filter` fonksiyonu sonucun boş liste olduğunu
+anlayacak ölçüde soybağ değil.
 
 Bunlar da okur için alıştırma olarak kalsın:
 
-* `treeTakeDepth n (treeFromList shuffle)` ifadesini sonsuz döngüye sokacak bir `n` değeri olduğunu kanıtlayın.
-* `n` için bir üst sınır bulun.
-* Hiçbir `shuffle` listesinin programı bitiremeyeceğini kanıtlayın.
+-   `treeTakeDepth n (treeFromList shuffle)` deyimini sonsuz döngüye
+    sokacak bir `n` değeri olduğunu kanıtlayın.
 
-[04_Appendice/01_More_on_infinite_trees/10_Infinite_Trees.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/04_Appendice/01_More_on_infinite_trees/10_Infinite_Trees.lhs)
+-   `n` için bir üst sınır bulun.
 
-***
+-   Hiçbir `shuffle` listesinin programı bitiremeyeceğini kanıtlayın.
 
-[04_Appendice/01_More_on_infinite_trees/11_Infinite_Trees.lhs](http://yannesposito.com/Scratch/en/blog/Haskell-the-Hard-Way/code/04_Appendice/01_More_on_infinite_trees/11_Infinite_Trees.lhs)
+Bu sorunları çözmek için `treeFromList` ve `shuffle` fonksiyonlarımızı
+biraz değiştireceğiz.
 
-Bu sorunları çözmek için `treeFromList` ve `shuffle` fonksiyonlarımızı biraz değiştireceğiz.
+İlk sorunumuz, `shuffle` fonksiyon tanımımızda sonsuz ayrık sayı üreten
+bir yapı olmaması. Yalnızca `4331` ayrık sayı ürettik. Bunu çözmek için
+daha iyi bir `shuffle` fonksiyonu yazalım.
 
-İlk sorunumuz, `shuffle` fonksiyon tanımımızda sonsuz farklı sayı üreten bir yapı olmaması. Sadece `4331` farklı sayı ürettik. Bunu çözmek için daha iyi bir `shuffle` fonksiyonu yazalım.
-
-```haskell
+``` {.haskell language="Haskell"}
 shuffle = map rand [1..]
-          where
-              rand x = ((p x) `mod` (x+c)) - ((x+c) `div` 2)
-              p x = m*x^2 + n*x + o -- bir polinom
-              m = 3123
-              n = 31
-              o = 7641
-              c = 1237
-```
-
-Bu `shuffle` fonksiyonunun (umarız ki) bir alt veya üst limiti yok. Ama daha iyi bir rastgele sayı fonksiyonu sonsuz döngüye girmeyi engellemiyor.
-
-Genel olarak, `filter (<x) xs`'in boş liste olup olmadığını anlamıyoruz. Öyleyse bu sorunu çözmek için, ikili ağacımızı oluştururken hata vermeyi deneyelim. Kodumuzun bu yeni versiyonu düğümleri için şu özelliğe sahip olan bir ikili ağaç oluşturacak:
-
-> Sol alt ağaçtaki herhangi bir eleman, kökün değeriden daha küçük olmalı.
-
-Dikkat edin ki genel olarak sıralı bir ikili ağaç olarak kalacak. Ayrıca, yapı itibarıyla, her düğüm değeri ağaçta tek olacak, tekrarlanmayacak.
-
-```haskell
-treeFromList :: (Ord a, Show a) => [a] -> BinTree a
-treeFromList []    = Empty
-treeFromList (x:xs) = Node x left right
-          where
-              left = treeFromList $ safefilter (<x) xs
-              right = treeFromList $ safefilter (>x) xs
-```
-
-Bu yeni `safefilter` fonksiyonu `filter` fonksiyonuna neredeyse denk, ancak eğer liste sonsuzsa sonsuz döngüye girmiyor. Eğer art arda 10000 değerin testi olumsuz çıkarsa, bunu aramanın sonu sayıyor.
-
-```haskell
-safefilter :: (a -> Bool) -> [a] -> [a]
-safefilter f l = safefilter' f l nbTry
   where
-      nbTry = 10000
-      safefilter' _ _ 0 = []
-      safefilter' _ [] _ = []
-      safefilter' f (x:xs) n =
-                  if f x
-                     then x : safefilter' f xs nbTry
-                     else safefilter' f xs (n-1)
+  rand x = ((p x) `mod` (x+c)) - ((x+c) `div` 2)
+  p x = m*x^2 + n*x + o -- bir polinom
+  m = 3123
+  n = 31
+  o = 7641
+  c = 1237
+```
+
+Bu `shuffle` fonksiyonunun (umarız ki) bir alt yada üst limiti yok.
+Ancak daha iyi bir gelişigüzel sayı fonksiyonu sonsuz döngüye girmeyi
+engellemiyor.
+
+Genel olarak, `filter (<x) xs`'in boş liste olup olmadığını anlamıyoruz.
+Öyleyse bu sorunu çözmek için, ikili ağacımızı oluştururken yanıl
+verdirmeyi deneyelim. Kodumuzun bu yeni versiyonu düğümleri için şu
+özelliği olan bir ikili ağaç oluşturacak:
+
+Sol alt ağaçtaki herhangi bir eleman, kökün değeriden daha küçük olmalı.
+
+Özellikle göz atın ki genel olarak sıralı bir ikili ağaç olarak kalacak.
+Ayrıca, yapı olarak, her düğüm değeri ağaçta tek olacak, yinelenmeyecek.
+
+``` {.haskell language="Haskell"}
+treeFromList :: (Ord a, Show a) => [a] -> BinTree a
+  treeFromList []    = Empty
+  treeFromList (x:xs) = Node x left right
+  where
+  left = treeFromList $ safefilter (<x) xs
+  right = treeFromList $ safefilter (>x) xs
+```
+
+Bu yeni `safefilter` fonksiyonu `filter` fonksiyonuna neredeyse denk
+ancak liste sonsuzsa, sonsuz döngüye girmiyor. Ardarda 10000 değerin
+testi olumsuz çıkarsa, bunu aramanın sonu olarak değerlendiriyor.
+
+``` {.haskell language="Haskell"}
+safefilter :: (a -> Bool) -> [a] -> [a]
+  safefilter f l = safefilter' f l nbTry
+  where
+  nbTry = 10000
+  safefilter' _ _ 0 = []
+  safefilter' _ [] _ = []
+  safefilter' f (x:xs) n =
+  if f x
+  then x : safefilter' f xs nbTry
+  else safefilter' f xs (n-1)
 ```
 
 Şimdi programı çalıştırıp mutlu olabilirsiniz:
 
-```haskell
+``` {.haskell language="Haskell"}
 main = do
-      putStrLn "take 10 shuffle"
-      print $ take 10 shuffle
-      putStrLn "\ntreeTakeDepth 8 (treeFromList shuffle)"
-      print $ treeTakeDepth 8 (treeFromList $ shuffle)
+  putStrLn "take 10 shuffle"
+  print $ take 10 shuffle
+  putStrLn "\ntreeTakeDepth 8 (treeFromList shuffle)"
+  print $ treeTakeDepth 8 (treeFromList $ shuffle)
 ```
 
-Ekrana yazdırılan her değerin yazma zamanının farklı olduğunu fark etmelisiniz. Bunun sebebi Haskell'in her değeri sadece ihtiyacı olduğu zaman hesaplaması. Ve bu durumda, bu zaman ekrana yazdırılacağı zaman.
+Ekrana yazdırılan her değerin yazma anının değişik olduğunu
+sezinlemelisiniz. Bunun nedeni Haskell'in her değeri yalnızca
+gereksinimi olduğu anda kalküle etmesi. Ek olarak bu durumda, bu an
+ekrana yazdırılacağında.
 
-Daha da etkileyici bir şey görmek için `depth` değerini `8`'den `100`'e cikarın. RAM'inizi boğmadan çalışacak! Akış ve hafıza yönetimi Haskell tarafından doğal olarak yapılıyor.
+Daha da etkileyici bir nes görmek için `depth` değerini `8`'den `100`'e
+çıkarın. RAM'inizi boğmadan çalışacak! Akış ile bellek yönetimi Haskell
+aracılığı ile doğal olarak yapılıyor.
 
 Bu da okura alıştırma olarak kalsın:
 
-* `deep` ve `nbTry` için yüksek sabit değer ile bile, iyi şekilde çalışıyor gibi gözüküyor. Ama en kötü durumda üstel olabilir. `treeFromList` için olabilecek kötü bir liste oluşturun. *ipucu*: [0,-1,-1,....,-1,1,-1,...,-1,1,...] listesini düşünün.
-* `safefilter` fonksiyonunu şöyle tanımlamayı denedim:
+-   `deep` ve `nbTry` için yüksek değişmez (sabit) değer ile bile, iyi
+    biçimde çalışıyor gibi gözüküyor. Ancak en kötü durumda üstel
+    olabilir. `treeFromList` için olabilecek kötü bir liste oluşturun.
+    *ipucu*: \[0,-1,-1,....,-1,1,-1,...,-1,1,...\] listesini düşünün.
 
-```haskell
-  safefilter' f l = if filter f (take 10000 l) == []
-                    then []
-                    else filter f l
-```
-Neden çalışmadığını ve sonsuz döngüye girebileceğini açıklayın.
-* `shuffle`'in artan sınırlarla gerçek bir rastgele liste olduğunu farz edin. Bu yapı üzerinde biraz çalışırsanız, bu yapının 1 olasılıkla sonlu olduğunu fark edeceksiniz. Aşağıdaki kodu kullanarak (hiç `safefilter` yokmuş gibi doğrudan `safefilter'` kullanın) `f` için 1 olasılıkla treeFromList' shuffle'ın sonlu olduğu bir tanım bulun, ve kanıtlayın. Dikkat: bu sadece bir konjektür.
+-   `safefilter` fonksiyonunu şöyle tanımlamayı denedim:
 
-# 6. Teşekkürler
+    ``` {.haskell language="Haskell"}
+    safefilter' f l = if filter f (take 10000 l) == []
+      then []
+      else filter f l
+    ```
 
-[r/haskell](http://reddit.com/r/haskell) ve [r/programming](http://reddit.com/r/programming) gruplarına teşekkür ediyorum. Yorumları bana çok yardımcı oldu.
+\* Neden çalışmayıp sonsuz döngüye girebileceğini açıklayın. \*
+`shuffle`'in artan sınırlarla gerçek bir gelişigüzel liste olduğunu
+varsayın. Bu yapı üzerinde biraz çalışırsanız, bu yapının bir olasılıkla
+sonlu olduğunu yakalayacaksınız. Aşağıdaki kodu kullanarak (hiç
+`safefilter` yokmuş gibi doğrudan `safefilter'` kullanın) `f` için bir
+olasılıkla treeFromList' shuffle'ın sonlu olduğu bir tanım bulup
+kanıtlayın. Önemli: Bu yalnızca bir konjektür.
 
-Özellikle, [Emm](https://github.com/Emm)'e, İngilizce'mi düzeltmekle uğraştığı zaman için binlerce kez teşekkür ederim.
+### Mutsözleri {#teux15mutsozleri}
 
-> Çevirmen Notu: Klavyemde Türkçe karakterler olmadığı için mecburen [deasciifier](https://github.com/joom/turkish-deasciifier.vim) kullanıyorum. Yazıda herhangi bir Türkçe karakter veya çeviri hatası bulursanız, beni bilgilendirirseniz, veya *pull request* yollayarak düzeltirseniz çok sevinirim. Daha iyi çevirilebileceğini düşündüğünüz bölümler için de bu geçerli. Teşekkürler.
+r/haskell[^17] ile r/programming[^18] esenlikler diliyorum. Yorumları
+bana çok yardımcı oldu.
 
-***
+Özellikle, Emm[^19]'e, İngilizcemi düzeltmekle uğraştığı süre için
+binlerce kez mutsözlerimi iletirim.
 
-#### Dipnotlar
+Çevirmen Notu (Joomy Korkut): Klavyemde Türkçe karakterler olmadığı için
+zoraken deasciifier[^20] kullanıyorum. Yazıda herhangi bir Türkçe
+karakter yada çeviri yanlışı bulursanız, beni bilgilendirirseniz, yada
+*pull request* yollayarak düzeltirseniz çok sevinirim. Bu, daha iyi
+çevirilebileceğini düşündüğünüz bölümler için de geçerli. Esenlikler.
 
-[^fn-1]: Son zamanda çıkan diller onları saklamaya çalışsa da, onlar oradalar.
+###### Dipnotlar
 
-[^fn-2]: Hile yaptığımı biliyorum. Ama tembellikle ilgili sonra konuşacağız.
+[]{#dipnotlar label="dipnotlar"}
 
-[^fn-3]: Daha cesur olanlarınız için örüntülü eşlemeyle ilgili daha kapsamlı bir açıklama [şuradan](http://www.cs.auckland.ac.nz/references/haskell/haskell-intro-html/patterns.html) okunabilir.
+No.1
 
-[^fn-4]: `squareEvenSum''` fonksiyonunun diğer ikisinden daha verimli olduğuna dikkat edin. `(.)` fonksiyonunun sırası önemlidir.
+# Özgür Belge Lisansı
 
-[^fn-5]: Ki kendisi JavaScript'te JSON bulunduran bir karakter dizisi üzerinde `eval` çalıştırmaya çok benzer. (Çevirmen notu: `JSON.parse` daha iyi çözüm olabilir.)
+Özgür Belge Lisansı
 
-[^fn-6]: Bu kurala bazı güvenli olmayan istisnalar da var. Ama belki hata ayıklama amacı dışında hiçbir gerçek uygulamada böyle bir kullanım görmezsiniz.
+[^1]: Too Long, Didn't Read *Çok uzundu, okumadım*
 
-[^fn-7]: Merak edenler için: gerçek tip şöyle: `data IO a = IO {unIO :: State# RealWorld -> (# State# RealWorld, a #)}`. `#` işareti optimizasyonla ilgili, ve ben örneğimde alan yerlerini değiştirdim. Ama ana fikir bu.
+[^2]: Son dönemde çıkan diller onları saklamaya çalışsa da, onlar
+    oradalar.
 
-[^fn-8]: Tabii ki alışana ve tamamen anlayana kadar çalışmanız gerekiyor. Ama bu yönde büyük bir adım attınız bile.
+[^3]: `learnyouahaskellcom`, No Starch Press
+
+[^4]: `www.realworldhaskellorg`, O'Reilly
+
+[^5]: `yannespositocom/Scratch/en/blog/Haskell-the-Hard-Way/code/01_basic/10_Introduction/00_hello_world.lhs`
+
+[^6]: www.destroyallsoftwarecom/talks/wat
+
+[^7]: aldatma yaptığımı biliyorum. Ancak üşengeçlik konusuna sonra yine
+    değineceğiz.
+
+[^8]: Daha yiğit olanlarınız için örüntü eşleme üzerine daha kapsamlı
+    bir açıklama
+    [şuradan](http://www.cs.auckland.ac.nz/references/haskell/haskell-intro-html/patterns.html)
+    okunabilir.
+
+[^9]: `squareEvenSum''` fonksiyonunun öteki ikisinden daha verimli
+    olduğuna özellikle ilgi gösterin `(.)` fonksiyonunun sırası
+    önemlidir.
+
+[^10]: eprints.eemcs.utwentenl/7281/01/db-utwente-40501F46.pdf
+
+[^11]: bartoszmilewskicom/2009/10/21/what-does-haskell-have-to-do-with-c
+
+[^12]: www.haskell.org/haskellwiki/Lazy_vs.\_non-strict
+
+[^13]: Ki kendisi JavaScript'te JSON bulunduran bir karakter dizisi
+    üzerinde `eval` çalıştırmaya çok benzer. (Çevirmen notu:
+    `JSON.parse` daha iyi çözüm olabilir.)
+
+[^14]: Bu kurala uymayan kimi güvenli olmayan dış durumlar da var. Ancak
+    belki yanıl ayıklama amacı dışında hiçbir gerçek uygulamada böyle
+    bir kullanım görmezsiniz.
+
+[^15]: İlgilenenler için: gerçek tip şöyle:\
+    `data IO a = IO {unIO :: State# RealWorld -> (# State# RealWorld, a #)}`.
+    `#` imi optimizasyonla ilgili olup ben örneğimde alan yerlerini
+    değiştirdim. Ancak ana düşünce bu.
+
+[^16]: Doğal olarak alışıp tümüyle anlayana dek çalışmanız gerekiyor.
+    Ancak bu yönde büyük bir adım attınız bile.
+
+[^17]: reddit.com/r/haskell
+
+[^18]: reddit.com/r/programming
+
+[^19]: githubcom/Emm, Danimarkab, www.imperocom
+
+[^20]: githubcom/joom/turkish-deasciifier.vim
