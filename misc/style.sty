@@ -1,0 +1,73 @@
+\usepackage{listings} 		% for code segments
+
+% language={[Visual]Basic}
+% \lstset{defaultdialect=[ANSI]C}
+
+\makeatletter
+\lstdefinestyle{mystyle}{
+  basicstyle=%
+    \ttfamily
+    \color{blue}%
+    \lst@ifdisplaystyle\small\fi%scriptsize
+}
+\makeatother
+
+% \usepackage{color} 		% for links and code highlighting
+\usepackage{xcolor} 		% for links and code highlighting
+% darkgray 'i desteklemiyor, yukardaki
+
+\usepackage{makeidx} 		% for index of functions, programs, and other proper nouns
+% \usepackage[pdftex]{hyperref}	% for external links (light blue) and table of contents and index links (dark blue)
+\usepackage{graphicx}		% for titlepage logo
+
+\setcounter{secnumdepth}{0} 	% number chapters
+\setcounter{tocdepth}{2}	% list chapters, sections, subsections, and subsubsections in the table of contents
+
+\makeindex
+
+\newcommand{\editsection}[2]{ % create [edit section] link in the margin: \editsection{sub_page_name}{sectionnumber}
+  \marginpar{
+    \href{http://en.wikibooks.org}{\texttt{[Zor Yoldan Haskell]}}
+  }
+}
+
+% SONRADAN EKLENEN
+
+% color definitions for code highlighting - also used manually in document (in for example parseString)
+\definecolor{comment}{rgb}{1,0.55,0}
+\definecolor{string}{rgb}{0.00,0.55,0.55}
+\definecolor{identifier}{rgb}{0.10,0.10,0.44}
+\definecolor{keyword}{rgb}{0.55,0,0}
+
+% general code listing format
+% inline operators, code snippets, and references to code use \lstinline
+% inline function names and keywords use \verb
+% inline general programming terms like list, boolean, funtion, etc use neither
+
+\lstset{
+ language=Haskell,
+ % backgroundcolor=\color{green},  % choose the background color. You must add \usepackage{color}
+ % numbers=left,
+ numberstyle=\tiny,
+ stepnumber=1,
+ numberblanklines=true,
+ %	
+ identifierstyle=\color{identifier},
+ basicstyle=\small,
+ keywordstyle=\color{keyword}\bfseries,
+ commentstyle=\color{comment},
+ stringstyle=\color{string}\ttfamily,
+ %	
+ showstringspaces=false,
+ breaklines=true,
+ %	
+ morekeywords=define,
+ escapechar=; % manually format segments between semicolons (see for example parseString)
+}
+ 
+\lstdefinelanguage{shell}{ % format shell commands
+  morekeywords={user,ghc,Lisp},
+  morestring=[b]"
+}
+
+\newcommand{\highlightcode}[1]{\underline{\textbf{\texttt{#1}}}} % highlight code mentioned in text, used in ch2  
